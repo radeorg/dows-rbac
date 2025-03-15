@@ -1,0 +1,15 @@
+dows:
+  rbac:
+    initScan: false
+    init:
+      rbac:
+        menu:
+          update: true
+          items: rbac
+        uri:
+          update: true
+          items: org.dows.rbac.rest.admin
+        role:
+          update: true
+          items: role1,role2,role3
+

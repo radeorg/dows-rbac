@@ -1,0 +1,18 @@
+server:
+  port: 8080
+  undertow:
+    buffer-size: 1024
+    direct-buffers: true
+    threads:
+      io: 4
+      worker: 32
+  #  servlet:
+  #    context-path: /${spring.application.name}
+spring:
+  application:
+    name: dows-rbac
+  profiles:
+    include: mysql,apidoc,mybatis,rbac-root,rbac-caffeine,rbac-rbac
+    active: dev
+
+

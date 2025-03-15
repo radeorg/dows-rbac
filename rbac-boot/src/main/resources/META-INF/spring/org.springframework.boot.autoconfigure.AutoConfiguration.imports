@@ -1,0 +1,4 @@
+#org.dows.rbac.RbacAutoConfig
+#org.dows.rbac.admin.RbacAdminAutoConfig
+#org.dows.rbac.tenant.RbacTenantAutoConfig
+#org.dows.rbac.user.RbacUserAutoConfig

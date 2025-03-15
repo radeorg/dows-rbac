@@ -1,0 +1,19 @@
+dows:
+  rbac:
+    initScan: true
+    config-file:
+      rbac: classpath://application-%s-rbac.yml
+#      menu: classpath://application-%s-menu.yml
+#      uri: classpath://application-%s-uri.yml
+    init:
+      rbac:
+        menu:
+          update: true
+          items: rbac
+        uri:
+          update: true
+          items: org.dows.rbac.rest.admin
+        role:
+          update: true
+          items: rbac
+

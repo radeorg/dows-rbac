@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "dows.rbac.autoUpdate",
+      "type": "java.lang.String",
+      "description": "Description for dows.rbac.autoUpdate."
+    }
+  ]
+}
