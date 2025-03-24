@@ -1,6 +1,5 @@
 package org.dows.rbac;
 
-import org.dows.framework.api.web.ResponseWrapperHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -16,10 +15,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    @Bean
-    public ResponseWrapperHandler responseWrapperHandler() {
-        return new ResponseWrapperHandler();
-    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

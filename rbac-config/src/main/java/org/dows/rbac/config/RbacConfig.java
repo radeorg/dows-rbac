@@ -1,7 +1,5 @@
 package org.dows.rbac.config;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollectionUtil;
 import jakarta.annotation.PostConstruct;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +55,7 @@ public class RbacConfig /*implements InitializingBean*/ {
                         Map<String, Object> load = yaml.load(classPathResource.getInputStream());
                         if ("rbac".equalsIgnoreCase(configFileKey)) {
                             List<MenuItem> menuItems = getConfigObject(load, "dows.menu.items", MenuItem.class);
-                            if (CollectionUtil.isNotEmpty(menuItems)) {
+                            /*if (CollectionUtil.isNotEmpty(menuItems)) {
                                 menuSetting.getItems().addAll(menuItems);
                             }
                             List<UriItem> uriItems = getConfigObject(load, "dows.uri.items", UriItem.class);
@@ -67,7 +65,7 @@ public class RbacConfig /*implements InitializingBean*/ {
                             List<RoleItem> roleItems = getConfigObject(load, "dows.role.items", RoleItem.class);
                             if (CollectionUtil.isNotEmpty(roleItems)) {
                                 roleSetting.getItems().addAll(roleItems);
-                            }
+                            }*/
                         }
                     }
                     if (ymlFileName.startsWith("file://")) {
@@ -103,7 +101,7 @@ public class RbacConfig /*implements InitializingBean*/ {
         if (result instanceof List) {
             List results = (List<T>) result;
             for (Object o : results) {
-                resultList.add(BeanUtil.toBean(o, clazz));
+                //resultList.add(BeanUtil.toBean(o, clazz));
             }
         }
         return resultList;
