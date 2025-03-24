@@ -17,7 +17,7 @@ public class RbacResources {
 //
 //    Integer getState();
 
-//    void setResourceId(Long resourceId);
+    //    void setResourceId(Long resourceId);
 //
 //    void setAuthority(String authority);
 //

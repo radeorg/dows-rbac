@@ -3,20 +3,17 @@ package org.dows.rbac.handler;
 import cn.hutool.core.collection.CollectionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.framework.crud.mybatis.utils.BeanConvert;
 import org.dows.rbac.api.RbacHandler;
 import org.dows.rbac.api.admin.request.FindRbacRulesRequest;
 import org.dows.rbac.api.admin.request.SaveRbacRulesRequest;
 import org.dows.rbac.entity.RbacRuleEntity;
-import org.dows.rbac.repository.RbacRuleRepository;
+import org.dows.rbac.service.RbacRuleService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * @description: </br>
@@ -31,9 +28,10 @@ import java.util.Objects;
 @Service
 public class RuleHandler implements RbacHandler {
 
-    private final RbacRuleRepository rbacRuleRepository;
+    private final RbacRuleService rbacRuleService;
 
     private final RbacCache rbacCache;
+
     @Override
     public void handle(Object rbacResources) {
 
@@ -46,40 +44,41 @@ public class RuleHandler implements RbacHandler {
 
 
     @Cacheable(value = "rules", key = "#root.method.name + '_' + T(java.math.BigInteger).valueOf(#findRbacRulesRequest.hashCode()).toString(32)")
-    public List<RbacRuleEntity> getRules(FindRbacRulesRequest findRbacRulesRequest){
-        return rbacRuleRepository.lambdaQuery()
+    public List<RbacRuleEntity> getRules(FindRbacRulesRequest findRbacRulesRequest) {
+       /* return rbacRuleService.lambdaQuery()
                 .eq(Objects.nonNull(findRbacRulesRequest.getRbacRuleId()), RbacRuleEntity::getRbacRuleId, findRbacRulesRequest.getRbacRuleId())
                 .eq(Objects.nonNull(findRbacRulesRequest.getRbacRoleId()), RbacRuleEntity::getRbacRoleId, findRbacRulesRequest.getRbacRoleId())
                 .eq(Objects.nonNull(findRbacRulesRequest.getDataTable()), RbacRuleEntity::getDataTable, findRbacRulesRequest.getDataTable())
                 .eq(Objects.nonNull(findRbacRulesRequest.getAppId()), RbacRuleEntity::getAppId, findRbacRulesRequest.getAppId())
                 .like(Objects.nonNull(findRbacRulesRequest.getRuleDescr()), RbacRuleEntity::getRuleDescr, findRbacRulesRequest.getRuleDescr())
-                .list();
+                .list();*/
+        return null;
     }
 
     @CacheEvict(value = "rules", allEntries = true)
     @Transactional
     public void deleteByIds(List<Long> rbacRulesIds) {
-        rbacRuleRepository.removeByIds(rbacRulesIds);
+        rbacRuleService.removeByIds(rbacRulesIds);
     }
 
     @CacheEvict(value = "rules", allEntries = true)
     @Transactional
     public void save(List<SaveRbacRulesRequest> saveRbacRules) {
         for (SaveRbacRulesRequest saveRbacRule : saveRbacRules) {
-            if(null == saveRbacRule.getRbacRuleId()){
+            if (null == saveRbacRule.getRbacRuleId()) {
                 FindRbacRulesRequest findRbacRulesRequest = new FindRbacRulesRequest();
                 findRbacRulesRequest.setAppId(saveRbacRule.getAppId());
                 findRbacRulesRequest.setRbacRoleId(saveRbacRule.getRbacRoleId());
                 findRbacRulesRequest.setDataTable(saveRbacRule.getDataTable());
                 List<RbacRuleEntity> rules = getRules(findRbacRulesRequest);
-                if(CollectionUtil.isNotEmpty(rules)){
+                if (CollectionUtil.isNotEmpty(rules)) {
                     throw new IllegalArgumentException("对应表名和角色有对应的规则配置");
                 }
             }
         }
 
-        List<RbacRuleEntity> rbacRuleEntities = BeanConvert.beanConvert(saveRbacRules, RbacRuleEntity.class);
-        rbacRuleRepository.saveOrUpdateBatch(rbacRuleEntities);
+        /*List<RbacRuleEntity> rbacRuleEntities = BeanConvert.beanConvert(saveRbacRules, RbacRuleEntity.class);
+        rbacRuleService.saveOrUpdateBatch(rbacRuleEntities);*/
     }
 
 //    public List<RbacRuleEntity> getAllRules() {

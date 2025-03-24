@@ -1,6 +1,5 @@
 package org.dows.rbac.api;
 
-import cn.hutool.core.lang.tree.TreeNode;
 import org.dows.rbac.api.admin.request.FindRbacResourcesRequest;
 import org.dows.rbac.api.admin.request.SaveRbacRoleRequest;
 import org.dows.rbac.api.admin.response.*;
@@ -62,9 +61,9 @@ public interface RbacApi {
      */
     void saveResource(List<InitResources> resources);
 
-    List<RbacMenu> initAppMenu(List<TreeNode<String>> menus, String appId);
+//    List<RbacMenu> initAppMenu(List<TreeNode<String>> menus, String appId);
 
-    void initRoleMenu(List<TreeNode<String>> menus, String roleCode, String appId);
+//    void initRoleMenu(List<TreeNode<String>> menus, String roleCode, String appId);
 
     void initRoleUri(List<InitResources> resources, String roleCode, String appId);
 

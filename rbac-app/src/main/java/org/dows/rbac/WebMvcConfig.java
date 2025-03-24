@@ -1,11 +1,8 @@
 package org.dows.rbac;
 
 import org.dows.framework.api.web.ResponseWrapperHandler;
-import org.dows.rbac.api.RbacContext;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -17,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //
 @EnableWebMvc
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer{
+public class WebMvcConfig implements WebMvcConfigurer {
 
     @Bean
     public ResponseWrapperHandler responseWrapperHandler() {
@@ -103,7 +100,6 @@ public class WebMvcConfig implements WebMvcConfigurer{
         corsConfiguration.setMaxAge(3600L);
         return corsConfiguration;
     }
-
 
 
 }

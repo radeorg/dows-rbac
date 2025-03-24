@@ -1,7 +1,7 @@
 package org.dows;
 
 import org.dows.rbac.RbacApplication;
-import org.dows.rbac.repository.RbacPermissionRepository;
+import org.dows.rbac.repository.RbacPermissionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,12 +19,12 @@ public class TestRbac {
 
 
     @Autowired
-    private RbacPermissionRepository rbacPermissionRepository;
+    private RbacPermissionService rbacPermissionService;
 
     @Test
     public void testMssqlQuery() {
-//        ScanPointEntity scanPointEntity = scanPointRepository.getById("36CA7D71-9CFD-43E7-9A5E-001993D26366");
-        rbacPermissionRepository.list();
+//        ScanPointEntity scanPointEntity = scanPointService.getById("36CA7D71-9CFD-43E7-9A5E-001993D26366");
+        rbacPermissionService.list();
 //        System.out.println(scanPointEntity);
 
     }

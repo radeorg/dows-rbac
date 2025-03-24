@@ -15,14 +15,6 @@ public enum DataScopeEnum {
         this.description = description;
     }
 
-    public int getValue() {
-        return value;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
     public static DataScopeEnum getByValue(int value) {
         for (DataScopeEnum scope : values()) {
             if (scope.value == value) {
@@ -30,5 +22,13 @@ public enum DataScopeEnum {
             }
         }
         throw new IllegalArgumentException("Invalid DataScopeEnum value: " + value);
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

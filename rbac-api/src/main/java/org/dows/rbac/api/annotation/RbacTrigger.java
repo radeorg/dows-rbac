@@ -1,6 +1,5 @@
 package org.dows.rbac.api.annotation;
 
-import org.dows.rbac.api.RbacHandler;
 
 import java.lang.annotation.*;
 
@@ -9,6 +8,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface RbacTrigger {
 
-    Class<? extends RbacHandler> handler() default RbacHandler.class;
+    //Class<? extends RbacHandler> handler() default RbacHandler.class;
 
 }

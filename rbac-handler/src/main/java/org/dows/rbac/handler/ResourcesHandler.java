@@ -1,14 +1,11 @@
 package org.dows.rbac.handler;
 
 import lombok.RequiredArgsConstructor;
-import org.dows.framework.crud.mybatis.utils.BeanConvert;
 import org.dows.rbac.api.InitResources;
 import org.dows.rbac.api.admin.request.FindRbacResourcesRequest;
 import org.dows.rbac.api.admin.response.RbacResourcesQueryResponse;
-import org.dows.rbac.entity.RbacResourcesEntity;
-import org.dows.rbac.repository.RbacMenuRepository;
-import org.dows.rbac.repository.RbacResourcesRepository;
-import org.dows.rbac.repository.RbacUriRepository;
+import org.dows.rbac.service.RbacMenuService;
+import org.dows.rbac.service.RbacUriService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,13 +14,12 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Service
 public class ResourcesHandler {
-    private final RbacResourcesRepository rbacResourcesRepository;
 
-    private final RbacMenuRepository rbacMenuRepository;
-    private final RbacUriRepository rbacUriRepository;
+    private final RbacMenuService rbacMenuService;
+    private final RbacUriService rbacUriService;
 
-    public List<RbacResourcesQueryResponse> listByQuery(FindRbacResourcesRequest findRbacResources) {
-        List<RbacResourcesEntity> rbacResourcesEntities = rbacResourcesRepository.lambdaQuery()
+    /*public List<RbacResourcesQueryResponse> listByQuery(FindRbacResourcesRequest findRbacResources) {
+        List<RbacResourcesEntity> rbacResourcesEntities = rbacResourcesService.lambdaQuery()
                 .eq(Objects.nonNull(findRbacResources.getResourceId()), RbacResourcesEntity::getResourceId, findRbacResources.getResourceId())
                 .eq(Objects.nonNull(findRbacResources.getResourceType()), RbacResourcesEntity::getResourceType, findRbacResources.getResourceType())
                 .eq(Objects.nonNull(findRbacResources.getAppId()), RbacResourcesEntity::getAppId, findRbacResources.getAppId())
@@ -37,7 +33,7 @@ public class ResourcesHandler {
 
 
     public List<RbacResourcesEntity> listByModuleIdAndResourceType(Long moduleId, Integer resourceType) {
-        return rbacResourcesRepository.lambdaQuery()
+        return rbacResourcesService.lambdaQuery()
                 .eq(Objects.nonNull(moduleId), RbacResourcesEntity::getRbacModuleId, moduleId)
                 .eq(Objects.nonNull(resourceType), RbacResourcesEntity::getResourceType, resourceType)
                 .list();
@@ -46,6 +42,6 @@ public class ResourcesHandler {
     public void saveOrUpdateResource(List<InitResources> resources) {
 
 
-    }
+    }*/
 
 }

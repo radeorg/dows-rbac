@@ -1,7 +1,5 @@
 package org.dows.rbac.config;
 
-import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.convert.Convert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -9,23 +7,11 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.dows.rbac.api.RbacHandler;
-import org.dows.rbac.api.RbacResources;
-import org.dows.rbac.api.admin.request.SaveRbacPermissionRequest;
-import org.dows.rbac.api.admin.request.SaveRbacRoleRequest;
-import org.dows.rbac.api.annotation.RbacTrigger;
-import org.dows.rbac.api.constant.ResourceEnum;
-import org.dows.rbac.api.event.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Aspect
 @Order(1)
@@ -41,7 +27,7 @@ public class RbacAspect {
     private final RbacHandler urisHandler;
     private final RbacHandler ruleHandler;
     private final RbacHandler roleHandler;*/
-    private final RbacHandler commonHandler;
+//    private final RbacHandler commonHandler;
 
     @Pointcut("@annotation(org.dows.rbac.api.annotation.RbacTrigger) || @within(org.dows.rbac.api.annotation.RbacTrigger)")
     public void rbacPointcut() {
@@ -56,8 +42,8 @@ public class RbacAspect {
 //            log.error("error :{}", e.getMessage());
 //            throw new BizException("权限修改异常");
 //        }
-        proceed = point.proceed();
-        publisher.publishEvent(new CommonEvent(""));
+//        proceed = point.proceed();
+//        publisher.publishEvent(new CommonEvent(""));
         /*String methodName = point.getSignature().getName();
         Object[] args = point.getArgs();
         RbacTrigger annotation = null;
@@ -103,10 +89,10 @@ public class RbacAspect {
         ruleHandler.handle(null);
     }*/
 
-    @EventListener(value = CommonEvent.class/*condition = "#p0.getClass().equals('rbacEvent')"*/)
-    public void adminListen(CommonEvent commonEvent) {
-        commonHandler.handle(commonEvent);
-    }
+//    @EventListener(value = CommonEvent.class/*condition = "#p0.getClass().equals('rbacEvent')"*/)
+//    public void adminListen(CommonEvent commonEvent) {
+//        commonHandler.handle(commonEvent);
+//    }
 
     /*@EventListener(value = RoleEvent.class*//*condition = "#p0.getClass().equals('rbacEvent')"*//*)
     public void adminListen(RoleEvent rbacEvent) {

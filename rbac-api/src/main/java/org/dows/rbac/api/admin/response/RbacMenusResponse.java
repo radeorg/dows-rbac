@@ -61,7 +61,7 @@ public class RbacMenusResponse {
     private Boolean visible;
 
     @Schema(title = "是否框架")
-   private Integer isframe;
+    private Integer isframe;
 
     @Schema(title = "状态")
     private Boolean state;

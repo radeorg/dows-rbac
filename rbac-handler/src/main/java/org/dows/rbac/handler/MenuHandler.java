@@ -1,21 +1,14 @@
 package org.dows.rbac.handler;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.framework.cache.caffeine.CaffeineTemplate;
 import org.dows.rbac.api.InitResources;
 import org.dows.rbac.api.RbacHandler;
-import org.dows.rbac.api.RbacMenuResources;
 import org.dows.rbac.api.RbacResources;
 import org.dows.rbac.api.constant.ResourceEnum;
-import org.dows.rbac.api.constant.StateEnum;
-import org.dows.rbac.api.constant.UserInfoEnum;
 import org.dows.rbac.entity.RbacMenuEntity;
-import org.dows.rbac.entity.RbacRoleEntity;
-import org.dows.rbac.repository.RbacMenuRepository;
+import org.dows.rbac.service.RbacMenuService;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -25,14 +18,14 @@ import java.util.*;
 @Service
 public class MenuHandler implements RbacHandler {
 
-    private final RbacMenuRepository rbacMenusRepository;
+    private final RbacMenuService rbacMenusService;
 
     private final RbacCache rbacCache;
 
     public void saveOrUpdateResource(List<InitResources> resources) {
-        List<RbacMenuEntity> newMenus = new ArrayList<>();
+        /*List<RbacMenuEntity> newMenus = new ArrayList<>();
         List<RbacMenuEntity> updateMenus = new ArrayList<>();
-        List<RbacMenuEntity> menuList = rbacMenusRepository.list();
+        List<RbacMenuEntity> menuList = rbacMenusService.list();
 
         for (InitResources resource : resources) {
             if (StrUtil.isBlank(resource.getCode())) {
@@ -66,7 +59,7 @@ public class MenuHandler implements RbacHandler {
                     if (Objects.isNull(resource.getPid())) {
                         throw new IllegalArgumentException("父类id为空");
                     }
-                    RbacMenuEntity preRbacMenuEntity = rbacMenusRepository.getById(rbacMenuEntity.getPid());
+                    RbacMenuEntity preRbacMenuEntity = rbacMenusService.getById(rbacMenuEntity.getPid());
                     if (Objects.isNull(preRbacMenuEntity)) {
                         throw new IllegalArgumentException("未找到对应父类信息");
                     }
@@ -88,41 +81,45 @@ public class MenuHandler implements RbacHandler {
 
         newMenus.addAll(updateMenus);
         if (!newMenus.isEmpty()) {
-            rbacMenusRepository.saveOrUpdateBatch(newMenus);
-        }
+            rbacMenusService.saveOrUpdateBatch(newMenus);
+        }*/
     }
 
     public List<RbacMenuEntity> getByIds(List<Long> ids) {
-        if (CollectionUtil.isEmpty(ids)) {
+        /*if (CollectionUtil.isEmpty(ids)) {
             return null;
         }
-        return rbacMenusRepository.lambdaQuery()
-                .in(RbacMenuEntity::getRbacMenuId,ids)
+        return rbacMenusService.lambdaQuery()
+                .in(RbacMenuEntity::getRbacMenuId, ids)
                 .eq(RbacMenuEntity::getState, StateEnum.AVAILABLE)
-                .list();
+                .list();*/
+        return null;
     }
 
 
     public RbacMenuEntity getByMenuCode(String menuCode) {
-        if (StrUtil.isBlank(menuCode)) {
+        return null;
+        /*if (StrUtil.isBlank(menuCode)) {
             return null;
         }
-        List<RbacMenuEntity> list = rbacMenusRepository.lambdaQuery()
+        List<RbacMenuEntity> list = rbacMenusService.lambdaQuery()
                 .eq(RbacMenuEntity::getCode, menuCode)
                 .eq(RbacMenuEntity::getState, StateEnum.AVAILABLE).list();
 
         if (CollectionUtil.isEmpty(list)) {
             return null;
         }
-        return list.get(0);
+        return list.get(0);*/
     }
 
     public List<RbacMenuEntity> getByMenuName(String menuName, Integer state, String appId) {
-        return rbacMenusRepository.lambdaQuery()
+        /*return rbacMenusService.lambdaQuery()
                 .eq(Objects.nonNull(menuName), RbacMenuEntity::getName, menuName)
                 .eq(Objects.nonNull(state), RbacMenuEntity::getState, state)
                 .eq(Objects.nonNull(appId), RbacMenuEntity::getAppId, appId)
-                .list();
+                .list();*/
+
+        return null;
     }
 
     public Boolean hasMenuName(String menuName, String appId) {
@@ -134,15 +131,15 @@ public class MenuHandler implements RbacHandler {
     @Override
 //    public void handle(Map<Long, List<RbacMenuResources>> rbacResources) {
     public void handle(Object args) {
-        Map<Long, List<RbacResources>> rbacResources = (Map<Long, List<RbacResources>>)args;
+        Map<Long, List<RbacResources>> rbacResources = (Map<Long, List<RbacResources>>) args;
         Set<Long> roleIds = rbacResources.keySet();
         for (Long roleId : roleIds) {
             List<RbacResources> rbacMenuResources = rbacResources.get(roleId);
-            if(CollectionUtil.isNotEmpty(rbacMenuResources)){
+            if (CollectionUtil.isNotEmpty(rbacMenuResources)) {
                 List<Long> list = rbacMenuResources.stream().map(RbacResources::getResourceId).toList();
-                rbacCache.putCache(UserInfoEnum.ROLE_MENU.getKey(), roleId, getByIds(list));
-            }else{
-                rbacCache.evictCache(UserInfoEnum.ROLE_MENU.getKey(), roleId);
+                //rbacCache.putCache(UserInfoEnum.ROLE_MENU.getKey(), roleId, getByIds(list));
+            } else {
+                //rbacCache.evictCache(UserInfoEnum.ROLE_MENU.getKey(), roleId);
             }
         }
     }

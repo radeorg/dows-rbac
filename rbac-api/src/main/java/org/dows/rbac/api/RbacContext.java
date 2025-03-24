@@ -7,12 +7,12 @@ public class RbacContext {
 
     static ThreadLocal<String> threadLocal = new ThreadLocal<>();
 
-    public static void setAppId(String appId) {
-        threadLocal.set(appId);
-    }
-
     public static String getAppId() {
         return threadLocal.get();
+    }
+
+    public static void setAppId(String appId) {
+        threadLocal.set(appId);
     }
 
     public static void removeAppId() {

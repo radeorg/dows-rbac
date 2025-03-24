@@ -3,11 +3,8 @@ package org.dows.rbac.biz.admin;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.tree.TreeNode;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.app.api.AppContext;
-import org.dows.framework.crud.mybatis.utils.BeanConvert;
 import org.dows.rbac.api.*;
 import org.dows.rbac.api.admin.request.*;
 import org.dows.rbac.api.admin.response.*;
@@ -19,10 +16,10 @@ import org.dows.rbac.entity.RbacPermissionEntity;
 import org.dows.rbac.entity.RbacRoleEntity;
 import org.dows.rbac.entity.RbacUriEntity;
 import org.dows.rbac.handler.*;
-import org.dows.rbac.repository.RbacMenuRepository;
-import org.dows.rbac.repository.RbacPermissionRepository;
-import org.dows.rbac.repository.RbacRoleRepository;
-import org.dows.rbac.repository.RbacUriRepository;
+import org.dows.rbac.service.RbacMenuService;
+import org.dows.rbac.service.RbacPermissionService;
+import org.dows.rbac.service.RbacRoleService;
+import org.dows.rbac.service.RbacUriService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
@@ -44,13 +41,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class PermissionBiz implements RbacApi {
-    private final RbacPermissionRepository rbacPermissionRepository;
+    private final RbacPermissionService rbacPermissionService;
 
-    private final RbacUriRepository rbacUriRepository;
+    private final RbacUriService rbacUriService;
 
-    private final RbacMenuRepository rbacMenusRepository;
+    private final RbacMenuService rbacMenusService;
 
-    private final RbacRoleRepository rbacRoleRepository;
+    private final RbacRoleService rbacRoleService;
 
     private final UrisHandler urisHandler;
 
@@ -81,7 +78,7 @@ public class PermissionBiz implements RbacApi {
     @RbacTrigger
     @Transactional
     public void save(List<SaveRbacPermissionRequest> saveRbacPermission) {
-        Map<Long, List<SaveRbacPermissionRequest>> groupedPermissions = saveRbacPermission.stream()
+        /*Map<Long, List<SaveRbacPermissionRequest>> groupedPermissions = saveRbacPermission.stream()
                 .collect(Collectors.groupingBy(SaveRbacPermissionRequest::getRbacRoleId));
         Set<Long> roleIds = groupedPermissions.keySet();
         List<RbacPermissionEntity> permissionByRoleIds = permissionHandler.getPermissionByRoleIds(CollUtil.newArrayList(roleIds));
@@ -98,14 +95,14 @@ public class PermissionBiz implements RbacApi {
                 rbacPermissionEntities.add(rbacPermissionEntity);
             }
         }
-        rbacPermissionRepository.saveOrUpdateBatch(rbacPermissionEntities);
+        rbacPermissionService.saveOrUpdateBatch(rbacPermissionEntities);
         // 解除旧绑定
-        permissionHandler.deleteByIds(removePermissionIds);
+        permissionHandler.deleteByIds(removePermissionIds);*/
     }
 
     @Transactional
     public void savePermissionMenu(SaveRbacPermissionMenuRequest saveRbacPermissionMenuRequest) {
-        RbacRoleEntity rbacRoleEntity = rbacRoleRepository.getById(saveRbacPermissionMenuRequest.getRoleId());
+        /*RbacRoleEntity rbacRoleEntity = rbacRoleService.getById(saveRbacPermissionMenuRequest.getRoleId());
         if (Objects.isNull(rbacRoleEntity)) {
             throw new IllegalArgumentException("未找到对应角色信息");
         }
@@ -115,7 +112,7 @@ public class PermissionBiz implements RbacApi {
         }
         List<RbacPermissionEntity> rbacPermissionEntities = new ArrayList<>();
         menuIds.forEach(menuId -> {
-            RbacMenuEntity rbacMenuEntity = rbacMenusRepository.getById(menuId);
+            RbacMenuEntity rbacMenuEntity = rbacMenusService.getById(menuId);
             RbacPermissionEntity rbacPermissionEntity = new RbacPermissionEntity();
             rbacPermissionEntity.setRbacRoleId(saveRbacPermissionMenuRequest.getRoleId());
             rbacPermissionEntity.setRolePid(rbacRoleEntity.getPid());
@@ -128,12 +125,12 @@ public class PermissionBiz implements RbacApi {
             rbacPermissionEntity.setState(StateEnum.AVAILABLE.getCode());
             rbacPermissionEntities.add(rbacPermissionEntity);
         });
-        rbacPermissionRepository.saveOrUpdateBatch(rbacPermissionEntities);
+        rbacPermissionService.saveOrUpdateBatch(rbacPermissionEntities);*/
     }
 
     @Transactional
     public void savePermissionModule(SaveRbacPermissionModuleRequest saveRbacPermissionModuleRequest) {
-        RbacRoleEntity rbacRoleEntity = rbacRoleRepository.getById(saveRbacPermissionModuleRequest.getRoleId());
+        /*RbacRoleEntity rbacRoleEntity = rbacRoleService.getById(saveRbacPermissionModuleRequest.getRoleId());
         if (Objects.isNull(rbacRoleEntity)) {
             throw new IllegalArgumentException("未找到对应角色信息");
         }
@@ -157,7 +154,7 @@ public class PermissionBiz implements RbacApi {
                 rbacPermissionEntities.add(rbacPermissionEntity);
             });
         });
-        rbacPermissionRepository.saveOrUpdateBatch(rbacPermissionEntities);
+        rbacPermissionService.saveOrUpdateBatch(rbacPermissionEntities);*/
     }
 
     /**
@@ -171,8 +168,9 @@ public class PermissionBiz implements RbacApi {
      * @创建时间: 2024年2月27日 上午11:52:56
      */
     public List<RbacUriResponse> listUrisByRoleId(Long rbacRoleId) {
-        List<RbacUriEntity> rbacUriEntities = permissionHandler.getUriByRoleId(rbacRoleId);
-        return BeanConvert.beanConvert(rbacUriEntities, RbacUriResponse.class);
+        /*List<RbacUriEntity> rbacUriEntities = permissionHandler.getUriByRoleId(rbacRoleId);
+        return BeanConvert.beanConvert(rbacUriEntities, RbacUriResponse.class);*/
+        return null;
     }
 
     /**
@@ -186,7 +184,8 @@ public class PermissionBiz implements RbacApi {
      * @创建时间: 2024年2月27日 上午11:52:56
      */
     public List<RbacMenusResponse> listMenusByRoleId(Long rbacRoleId) {
-        return BeanConvert.beanConvert(getMenusByRoleId(rbacRoleId), RbacMenusResponse.class);
+        //return BeanConvert.beanConvert(getMenusByRoleId(rbacRoleId), RbacMenusResponse.class);
+        return null;
     }
 
     public List<RbacMenuEntity> getMenusByRoleId(Long rbacRoleId) {
@@ -204,7 +203,7 @@ public class PermissionBiz implements RbacApi {
      * @创建时间: 2024年2月27日 上午11:52:56
      */
     public List<RbacPermissionResponse> listPermissionByRoleIds(List<Long> rbacRoleIds) {
-        List<RbacPermissionResponse> rbacMenuEntityList = new ArrayList<>();
+        /*List<RbacPermissionResponse> rbacMenuEntityList = new ArrayList<>();
         if (CollectionUtil.isNotEmpty(rbacRoleIds)) {
             for (Long rbacRoleId : rbacRoleIds) {
                 if (roleIsAvailable(rbacRoleId)) {
@@ -233,7 +232,8 @@ public class PermissionBiz implements RbacApi {
             }
             return BeanConvert.beanConvert(rbacPermissionEntity, RbacPermissionResponse.class);
         }
-        return rbacMenuEntityList;
+        return rbacMenuEntityList;*/
+        return null;
     }
 
     /**
@@ -247,18 +247,19 @@ public class PermissionBiz implements RbacApi {
      * @创建时间: 2024年2月27日 上午11:52:56
      */
     public List<RbacMenusResponse> listMenusTree() {
-        String appId = AppContext.getAppId();
-        List<RbacMenuEntity> rbacMenuEntityList = rbacMenusRepository.lambdaQuery()
+        /*String appId = AppContext.getAppId();
+        List<RbacMenuEntity> rbacMenuEntityList = rbacMenusService.lambdaQuery()
                 .eq(RbacMenuEntity::getAppId, appId)
                 .eq(RbacMenuEntity::getState, StateEnum.AVAILABLE.getCode())
                 .orderByDesc(RbacMenuEntity::getSorted)
                 .list();
-        return convertToTreeList(rbacMenuEntityList);
+        return convertToTreeList(rbacMenuEntityList);*/
+        return null;
     }
 
     @Override
     public List<RbacMenusResponse> listRoleMenusTree(List<Long> rbacRoleIds) {
-        List<RbacMenuEntity> rbacMenuEntityList = new ArrayList<>();
+        /*List<RbacMenuEntity> rbacMenuEntityList = new ArrayList<>();
         if (CollectionUtil.isEmpty(rbacRoleIds)) {
             return Collections.emptyList();
         }
@@ -281,7 +282,7 @@ public class PermissionBiz implements RbacApi {
                     return Collections.emptyList();
                 }
                 // 根据资源id查询接口信息 过滤对应 visible  和 state状态的
-                rbacMenuEntityList = rbacMenusRepository.listByIds(resourceIds);
+                rbacMenuEntityList = rbacMenusService.listByIds(resourceIds);
                 flushData();
             }
         }
@@ -291,7 +292,8 @@ public class PermissionBiz implements RbacApi {
                     .sorted(Comparator.comparing(RbacMenuEntity::getSorted).reversed())
                     .toList();
         }
-        return convertToTreeList(rbacMenuEntityList);
+        return convertToTreeList(rbacMenuEntityList);*/
+        return null;
     }
 
     private List<RbacMenusResponse> convertToTreeList(List<RbacMenuEntity> menuList) {
@@ -341,7 +343,7 @@ public class PermissionBiz implements RbacApi {
     @Override
     public List<RbacRoleResponse> getRole(List<Long> roleIds) {
 
-        List<RbacRoleResponse> rbacRoleResponses = new ArrayList<>();
+       /* List<RbacRoleResponse> rbacRoleResponses = new ArrayList<>();
         if (CollectionUtil.isNotEmpty(roleIds)) {
             for (Long rbacRoleId : roleIds) {
                 if (roleIsAvailable(rbacRoleId)) {
@@ -361,7 +363,8 @@ public class PermissionBiz implements RbacApi {
                 return BeanConvert.beanConvert(rbacRoleEntities, RbacRoleResponse.class);
             }
         }
-        return rbacRoleResponses;
+        return rbacRoleResponses;*/
+        return null;
     }
 
     public List<RbacRoleResponse> getRolesByAccount() {
@@ -378,7 +381,8 @@ public class PermissionBiz implements RbacApi {
 
     @Override
     public List<RbacResourcesQueryResponse> getResource(FindRbacResourcesRequest findRbacResources) {
-        return resourcesHandler.listByQuery(findRbacResources);
+        //return resourcesHandler.listByQuery(findRbacResources);
+        return null;
     }
 
     @Override
@@ -388,7 +392,7 @@ public class PermissionBiz implements RbacApi {
 
     @Override
     public Map<String, List<RbacUriRoleResponse>> getRoleUri() {
-        Map<String, List<RbacUriRoleResponse>> result = rbacContext.getRbacRoleUris();
+        /*Map<String, List<RbacUriRoleResponse>> result = rbacContext.getRbacRoleUris();
         if (CollectionUtil.isNotEmpty(result)) {
             return result;
         }
@@ -407,7 +411,8 @@ public class PermissionBiz implements RbacApi {
             }
         }
         rbacContext.initData();
-        return rbacUriRoleResponses.stream().collect(Collectors.groupingBy(RbacUriRoleResponse::getUrl));
+        return rbacUriRoleResponses.stream().collect(Collectors.groupingBy(RbacUriRoleResponse::getUrl));*/
+        return null;
     }
 
     @Override
@@ -416,22 +421,23 @@ public class PermissionBiz implements RbacApi {
     }
 
     public Boolean roleIsAvailable(Long roleId) {
-        if (null == roleId) {
+       /* if (null == roleId) {
             return false;
         }
         RbacRoleEntity rbacRoleEntity = rbacCache.getRoleByRoleId(roleId);
         if (null == rbacRoleEntity) {
-            rbacRoleEntity = rbacRoleRepository.getById(roleId);
+            rbacRoleEntity = rbacRoleService.getById(roleId);
         }
         if (null == rbacRoleEntity) {
             return false;
         }
-        return rbacRoleEntity.getState();
+        return rbacRoleEntity.getState();*/
+         return false;
     }
 
     @Override
     public List<String> getUriCode(List<Long> roleIds) {
-        List<RbacUriEntity> rbacURiEntityList = new ArrayList<>();
+       /* List<RbacUriEntity> rbacURiEntityList = new ArrayList<>();
         if (CollectionUtil.isNotEmpty(roleIds)) {
             for (Long rbacRoleId : roleIds) {
                 if (roleIsAvailable(rbacRoleId)) {
@@ -452,7 +458,7 @@ public class PermissionBiz implements RbacApi {
                         return null;
                     }
                     // 根据资源id查询接口信息 过滤对应 visible  和 state状态的
-                    rbacURiEntityList = rbacUriRepository.listByIds(resourceIds);
+                    rbacURiEntityList = rbacUriService.listByIds(resourceIds);
                     if (CollectionUtil.isNotEmpty(rbacURiEntityList)) {
                         rbacURiEntityList = rbacURiEntityList.stream().filter(item -> !item.getState()).toList();
                         flushData();
@@ -463,7 +469,8 @@ public class PermissionBiz implements RbacApi {
         if (CollectionUtil.isEmpty(rbacURiEntityList)) {
             return null;
         }
-        return rbacURiEntityList.stream().map(RbacUriEntity::getCode).toList();
+        return rbacURiEntityList.stream().map(RbacUriEntity::getCode).toList();*/
+        return null;
     }
 
 
@@ -479,10 +486,10 @@ public class PermissionBiz implements RbacApi {
         menuHandler.saveOrUpdateResource(menuResources);
     }
 
-    @Override
+
     public List<RbacMenu> initAppMenu(List<TreeNode<String>> menus, String appId) {
         // 新加的菜单实体
-        List<RbacMenuEntity> newMenuEntity = new ArrayList<>();
+       /* List<RbacMenuEntity> newMenuEntity = new ArrayList<>();
         // 需要更新的菜单实体
         List<RbacMenuEntity> updateMenuEntity = new ArrayList<>();
         List<RbacMenu> result = new ArrayList<>();
@@ -562,19 +569,20 @@ public class PermissionBiz implements RbacApi {
             codePath.setLength(0);
         }
         if (!newMenuEntity.isEmpty()) {
-            rbacMenusRepository.saveBatch(newMenuEntity);
+            rbacMenusService.saveBatch(newMenuEntity);
             result.addAll(BeanConvert.beanConvert(newMenuEntity, RbacMenu.class));
         }
         if (!updateMenuEntity.isEmpty()) {
-            rbacMenusRepository.updateBatchById(updateMenuEntity);
+            rbacMenusService.updateBatchById(updateMenuEntity);
             result.addAll(BeanConvert.beanConvert(updateMenuEntity, RbacMenu.class));
         }
-        return result;
+        return result;*/
+        return null;
     }
 
-    @Override
+
     public void initRoleMenu(List<TreeNode<String>> menus, String roleCode, String appid) {
-        List<RbacPermissionEntity> newPermissionsList = new ArrayList<>();
+        /*List<RbacPermissionEntity> newPermissionsList = new ArrayList<>();
         List<RbacPermissionEntity> updatePermissionsList = new ArrayList<>();
         List<RbacRoleEntity> rolesList = roleEntityHandler(roleCode, appid);
         for (TreeNode<String> menu : menus) {
@@ -605,16 +613,17 @@ public class PermissionBiz implements RbacApi {
             }
         }
         if (!newPermissionsList.isEmpty()) {
-            rbacPermissionRepository.saveBatch(newPermissionsList);
+            rbacPermissionService.saveBatch(newPermissionsList);
         }
         if (!updatePermissionsList.isEmpty()) {
-            rbacPermissionRepository.updateBatchById(updatePermissionsList);
-        }
+            rbacPermissionService.updateBatchById(updatePermissionsList);
+        }*/
+
     }
 
     @Override
     public void initRoleUri(List<InitResources> resources, String roleCode, String appId) {
-        List<RbacPermissionEntity> newPermissionsList = new ArrayList<>();
+        /*List<RbacPermissionEntity> newPermissionsList = new ArrayList<>();
         List<RbacPermissionEntity> updatePermissionsList = new ArrayList<>();
         List<RbacRoleEntity> rolesList = roleEntityHandler(roleCode, appId);
         for (InitResources resource : resources) {
@@ -646,11 +655,11 @@ public class PermissionBiz implements RbacApi {
             }
         }
         if (!newPermissionsList.isEmpty()) {
-            rbacPermissionRepository.saveBatch(newPermissionsList);
+            rbacPermissionService.saveBatch(newPermissionsList);
         }
         if (!updatePermissionsList.isEmpty()) {
-            rbacPermissionRepository.updateBatchById(updatePermissionsList);
-        }
+            rbacPermissionService.updateBatchById(updatePermissionsList);
+        }*/
     }
 
     private List<RbacRoleEntity> roleEntityHandler(String roleCode, String appid) {
@@ -670,7 +679,7 @@ public class PermissionBiz implements RbacApi {
 
     @Override
     public void initAppRole(List<SaveRbacRoleRequest> roleItems) {
-        List<RbacRoleEntity> newRoles = new ArrayList<>();
+        /*List<RbacRoleEntity> newRoles = new ArrayList<>();
         List<RbacRoleEntity> updateRoles = new ArrayList<>();
         StringBuilder idPath = new StringBuilder();
         StringBuilder namePath = new StringBuilder();
@@ -743,12 +752,12 @@ public class PermissionBiz implements RbacApi {
         }
 
         if (!newRoles.isEmpty()) {
-            rbacRoleRepository.saveBatch(newRoles);
+            rbacRoleService.saveBatch(newRoles);
         }
 
         if (!updateRoles.isEmpty()) {
-            rbacRoleRepository.updateBatchById(updateRoles);
-        }
+            rbacRoleService.updateBatchById(updateRoles);
+        }*/
     }
 
     @Async

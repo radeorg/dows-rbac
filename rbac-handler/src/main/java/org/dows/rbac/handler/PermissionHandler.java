@@ -4,67 +4,68 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.framework.crud.mybatis.utils.BeanConvert;
-import org.dows.rbac.api.admin.response.RbacMenusResponse;
 import org.dows.rbac.api.admin.response.RbacUriResponse;
 import org.dows.rbac.api.constant.ResourceEnum;
 import org.dows.rbac.api.constant.StateEnum;
 import org.dows.rbac.entity.RbacMenuEntity;
 import org.dows.rbac.entity.RbacPermissionEntity;
 import org.dows.rbac.entity.RbacUriEntity;
-import org.dows.rbac.repository.RbacMenuRepository;
-import org.dows.rbac.repository.RbacPermissionRepository;
-import org.dows.rbac.repository.RbacUriRepository;
-import org.springframework.beans.BeanUtils;
+import org.dows.rbac.service.RbacMenuService;
+import org.dows.rbac.service.RbacPermissionService;
+import org.dows.rbac.service.RbacUriService;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class PermissionHandler {
 
-    private final RbacUriRepository rbacUriRepository;
+    private final RbacUriService rbacUriService;
 
-    private final RbacMenuRepository rbacMenusRepository;
+    private final RbacMenuService rbacMenusService;
 
-    private final RbacPermissionRepository rbacPermissionRepository;
+    private final RbacPermissionService rbacPermissionService;
 //    private final AacApi aacApi;
 
     public RbacPermissionEntity getByMenuCodeAndRoleCode(String menuCode, String roleCode) {
-        if (StrUtil.isBlank(menuCode) || StrUtil.isBlank(roleCode)) {
+        /*if (StrUtil.isBlank(menuCode) || StrUtil.isBlank(roleCode)) {
             return null;
         }
-        return rbacPermissionRepository.lambdaQuery()
+        return rbacPermissionService.lambdaQuery()
                 .eq(RbacPermissionEntity::getAuthority, menuCode)
                 .eq(RbacPermissionEntity::getRoleCode, roleCode)
-                .last("limit 1").oneOpt().orElse(null);
+                .last("limit 1").oneOpt().orElse(null);*/
+        return null;
     }
 
     public void deleteByIds(List<Long> ids) {
         if (CollectionUtil.isNotEmpty(ids)) {
-            rbacPermissionRepository.removeByIds(ids);
+            rbacPermissionService.removeByIds(ids);
         }
     }
 
     public List<RbacPermissionEntity> getAllPermissions() {
-        return rbacPermissionRepository.lambdaQuery()
+        /*return rbacPermissionService.lambdaQuery()
                 .eq(RbacPermissionEntity::getState, StateEnum.AVAILABLE)
-                .list();
+                .list();*/
+        return null;
     }
 
     public List<RbacUriResponse> listUrisByMenuId(Long rbacMenuId) {
-        List<RbacUriEntity> rbacUriEntityList = rbacUriRepository.lambdaQuery()
+       /* List<RbacUriEntity> rbacUriEntityList = rbacUriService.lambdaQuery()
                 .eq(Objects.nonNull(rbacMenuId), RbacUriEntity::getRbacMenuId, rbacMenuId)
                 .eq(RbacUriEntity::getState, StateEnum.AVAILABLE)
                 .list();
 
-        return BeanConvert.beanConvert(rbacUriEntityList, RbacUriResponse.class);
+        return BeanConvert.beanConvert(rbacUriEntityList, RbacUriResponse.class);*/
+        return null;
     }
 
     public List<RbacUriEntity> getUriByRoleId(Long rbacRoleId) {
-        List<RbacPermissionEntity> list = rbacPermissionRepository.lambdaQuery()
+        /*List<RbacPermissionEntity> list = rbacPermissionService.lambdaQuery()
                 .eq(RbacPermissionEntity::getRbacRoleId, rbacRoleId)
                 .eq(RbacPermissionEntity::getResourceType, ResourceEnum.INTERFACE.getCode())
                 .eq(RbacPermissionEntity::getState, StateEnum.AVAILABLE.getCode())
@@ -77,37 +78,41 @@ public class PermissionHandler {
         if (CollectionUtil.isEmpty(resourceIds)) {
             return null;
         }
-        return rbacUriRepository.listByIds(resourceIds);
+        return rbacUriService.listByIds(resourceIds);*/
+        return null;
     }
 
 
-    public List<RbacPermissionEntity> getPermissionByResourceIds(List<Long> resourceIds,Integer resourceType) {
+    public List<RbacPermissionEntity> getPermissionByResourceIds(List<Long> resourceIds, Integer resourceType) {
         if (CollectionUtil.isEmpty(resourceIds)) {
             return null;
         }
-        return rbacPermissionRepository.lambdaQuery()
+        /*return rbacPermissionService.lambdaQuery()
                 .in(RbacPermissionEntity::getResourceId, resourceIds)
                 .eq(RbacPermissionEntity::getResourceType, resourceType)
-                .list();
+                .list();*/
+        return null;
     }
 
     public List<RbacPermissionEntity> getPermissionByRoleIds(List<Long> rbacRoleIds) {
-        return rbacPermissionRepository.lambdaQuery()
+        /*return rbacPermissionService.lambdaQuery()
                 .in(RbacPermissionEntity::getRbacRoleId, rbacRoleIds)
-                .eq(RbacPermissionEntity::getState,StateEnum.AVAILABLE)
-                .list();
+                .eq(RbacPermissionEntity::getState, StateEnum.AVAILABLE)
+                .list();*/
+        return null;
     }
 
-    public List<RbacPermissionEntity> getPermissionByRoleIds(List<Long> rbacRoleIds,Integer resourceType) {
-        return rbacPermissionRepository.lambdaQuery()
+    public List<RbacPermissionEntity> getPermissionByRoleIds(List<Long> rbacRoleIds, Integer resourceType) {
+        /*return rbacPermissionService.lambdaQuery()
                 .in(RbacPermissionEntity::getRbacRoleId, rbacRoleIds)
-                .eq(Objects.nonNull(resourceType),RbacPermissionEntity::getResourceType,resourceType)
-                .eq(RbacPermissionEntity::getState,StateEnum.AVAILABLE)
-                .list();
+                .eq(Objects.nonNull(resourceType), RbacPermissionEntity::getResourceType, resourceType)
+                .eq(RbacPermissionEntity::getState, StateEnum.AVAILABLE)
+                .list();*/
+        return null;
     }
 
     public List<RbacMenuEntity> getMenusByRoleId(Long rbacRoleId) {
-        List<RbacPermissionEntity> list = rbacPermissionRepository.lambdaQuery()
+        /*List<RbacPermissionEntity> list = rbacPermissionService.lambdaQuery()
                 .eq(RbacPermissionEntity::getRbacRoleId, rbacRoleId)
                 .eq(RbacPermissionEntity::getResourceType, ResourceEnum.MENU.getCode())
                 .eq(RbacPermissionEntity::getState, StateEnum.AVAILABLE.getCode())
@@ -120,7 +125,8 @@ public class PermissionHandler {
         if (CollectionUtil.isEmpty(resourceIds)) {
             return null;
         }
-        return rbacMenusRepository.listByIds(resourceIds);
+        return rbacMenusService.listByIds(resourceIds);*/
+        return null;
     }
 
 }

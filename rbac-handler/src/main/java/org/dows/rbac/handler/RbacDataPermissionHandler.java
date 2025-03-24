@@ -1,25 +1,17 @@
 package org.dows.rbac.handler;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
-import com.baomidou.mybatisplus.extension.plugins.inner.InnerInterceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
 import net.sf.jsqlparser.expression.operators.relational.InExpression;
-import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.Statement;
-import net.sf.jsqlparser.statement.select.Limit;
 import net.sf.jsqlparser.statement.select.PlainSelect;
-import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.util.TablesNamesFinder;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
@@ -27,20 +19,18 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
-import org.dows.aac.api.AacUser;
-import org.dows.framework.api.exceptions.BizException;
+//import org.dows.aac.api.AacUser;
 import org.dows.rbac.api.RbacContext;
-import org.dows.rbac.api.admin.request.FindRbacRulesRequest;
 import org.dows.rbac.api.constant.DataScopeEnum;
 import org.dows.rbac.entity.RbacRuleEntity;
-import org.dows.uat.api.AccountApi;
-import org.dows.uat.api.admin.response.AccountOrgIdsResponse;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.dows.uat.api.AccountApi;
+//import org.dows.uat.api.admin.response.AccountOrgIdsResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -49,17 +39,16 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class RbacDataPermissionHandler implements InnerInterceptor {
+public class RbacDataPermissionHandler /*implements InnerInterceptor */{
 
     private final RuleHandler ruleHandler;
     private final RbacCache rbacCache;
-    private final AccountApi accountApi;
-    private Boolean ENABLED_SCOPE = false;
+//    private final AccountApi accountApi;
     private final String GROUP_COLUMN = "group_id";
     private final String OWNER_COLUMN = "owner_id";
+    private Boolean ENABLED_SCOPE = false;
 
-
-    @Override
+    //@Override
     public void beforeQuery(Executor executor, MappedStatement ms, Object parameter,
                             RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) throws SQLException {
 //        InnerInterceptor.super.beforeQuery(executor, ms, parameter, rowBounds, resultHandler, boundSql);
@@ -165,7 +154,7 @@ public class RbacDataPermissionHandler implements InnerInterceptor {
 
     }
 
-    private boolean isCondition(MappedStatement ms,BoundSql boundSql){
+    private boolean isCondition(MappedStatement ms, BoundSql boundSql) {
         // 跳过初始化
         if (!RbacContext.flag) {
             return false;
@@ -178,24 +167,24 @@ public class RbacDataPermissionHandler implements InnerInterceptor {
         if (null == SecurityContextHolder.getContext()) {
             return false;
         }
-        if(boundSql.getSql().toUpperCase().contains("COUNT(*)")){
+        if (boundSql.getSql().toUpperCase().contains("COUNT(*)")) {
             return false;
         }
         return true;
     }
 
-    private void dataScopeHandler(Authentication authentication,Integer initDataScope,PlainSelect plain){
-        //数据范围过滤
-        if(ENABLED_SCOPE){
-            AacUser aacUser = (AacUser)authentication.getPrincipal();
-            if(null == aacUser){
+    private void dataScopeHandler(Authentication authentication, Integer initDataScope, PlainSelect plain) {
+       /* //数据范围过滤
+        if (ENABLED_SCOPE) {
+            AacUser aacUser = (AacUser) authentication.getPrincipal();
+            if (null == aacUser) {
                 throw new UsernameNotFoundException("用户不存在");
             }
             Long accountInstanceId = aacUser.getAccountId();
             List<Expression> groupIds = new ArrayList<>();
             List<Expression> groupIdsAll = new ArrayList<>();
             AccountOrgIdsResponse accountOrgIdsResponse = accountApi.getOrgIdsByAccountId(accountInstanceId, true);
-            if(null!=accountOrgIdsResponse){
+            if (null != accountOrgIdsResponse) {
                 List<Long> orgIds = accountOrgIdsResponse.getAccountOrgId();
                 List<Long> childrenOrgIds = accountOrgIdsResponse.getChildrenOrgIds();
                 for (Long orgId : orgIds) {
@@ -212,16 +201,16 @@ public class RbacDataPermissionHandler implements InnerInterceptor {
                     groupIdsAll.add(new LongValue(l));
                 }
             }
-            scopeDataHandler(plain,initDataScope,groupIds,groupIdsAll,accountInstanceId);
-        }
+            scopeDataHandler(plain, initDataScope, groupIds, groupIdsAll, accountInstanceId);
+        }*/
     }
 
-    private Map<String,List<RbacRuleEntity>> tableHandler(Statement statement,List<RbacRuleEntity> allRules,Collection<? extends GrantedAuthority> authorities){
+    private Map<String, List<RbacRuleEntity>> tableHandler(Statement statement, List<RbacRuleEntity> allRules, Collection<? extends GrantedAuthority> authorities) {
 
         // 获取table
         TablesNamesFinder tablesNamesFinder = new TablesNamesFinder();
         List<String> tableList = tablesNamesFinder.getTableList(statement);
-        Map<String,List<RbacRuleEntity>> map = new HashMap<>();
+        Map<String, List<RbacRuleEntity>> map = new HashMap<>();
         // 获取不同的表对应的规则
         Map<String, List<RbacRuleEntity>> collect = allRules.stream().collect(Collectors.
                 groupingBy(RbacRuleEntity::getDataTable));
@@ -239,8 +228,8 @@ public class RbacDataPermissionHandler implements InnerInterceptor {
                         }
                     }
                     // 当前角色有对应表的规则进行保存
-                    if(CollectionUtil.isNotEmpty(result)) {
-                        map.put(tableName,result);
+                    if (CollectionUtil.isNotEmpty(result)) {
+                        map.put(tableName, result);
                     }
                 }
             }
@@ -249,35 +238,35 @@ public class RbacDataPermissionHandler implements InnerInterceptor {
         return map;
     }
 
-    public void whereExpressionHandler(Expression where_expression,PlainSelect plain,Expression newExpression){
+    public void whereExpressionHandler(Expression where_expression, PlainSelect plain, Expression newExpression) {
         if (null == where_expression) {
             plain.setWhere(newExpression);
-        }else {
+        } else {
             plain.setWhere(new AndExpression(plain.getWhere(), newExpression));
         }
     }
 
-    public void scopeDataHandler(PlainSelect plain,Integer initDataScope,List<Expression> groupIds,
-                                 List<Expression> groupIdsAll,Long accountInstanceId){
+    public void scopeDataHandler(PlainSelect plain, Integer initDataScope, List<Expression> groupIds,
+                                 List<Expression> groupIdsAll, Long accountInstanceId) {
         DataScopeEnum dataScopeEnum = DataScopeEnum.getByValue(initDataScope);
         switch (dataScopeEnum) {
             case ALL:
                 break;
             case DEPT:
-                whereExpressionHandler(plain.getWhere(),plain,new InExpression(new Column(GROUP_COLUMN),
+                whereExpressionHandler(plain.getWhere(), plain, new InExpression(new Column(GROUP_COLUMN),
                         new ExpressionList(groupIds)));
                 break;
             case SELF:
                 EqualsTo selfEqualsTo = new EqualsTo();
                 selfEqualsTo.setLeftExpression(new Column(OWNER_COLUMN));
                 selfEqualsTo.setRightExpression(new LongValue(accountInstanceId));
-                whereExpressionHandler(plain.getWhere(),plain,selfEqualsTo);
+                whereExpressionHandler(plain.getWhere(), plain, selfEqualsTo);
                 break;
             // 默认部门及子部门数据权限
             case DEPT_AND_SUB:
                 InExpression inExpression2 = new InExpression(new Column(GROUP_COLUMN),
                         new ExpressionList(groupIdsAll));
-                whereExpressionHandler(plain.getWhere(),plain,inExpression2);
+                whereExpressionHandler(plain.getWhere(), plain, inExpression2);
                 break;
             default: {
             }
@@ -289,7 +278,7 @@ public class RbacDataPermissionHandler implements InnerInterceptor {
     // 提取SQL语句中的表名
     private String extractEndSql(String sql) {
         // 实现提取SQL语句中的表名的逻辑，这里简单示例为假设表名在FROM后面
-        int fromIndex = sql.toUpperCase().indexOf("FROM ")+5;
+        int fromIndex = sql.toUpperCase().indexOf("FROM ") + 5;
         return sql.substring(fromIndex);
 //        int endIndex = tableStr.indexOf(" ");
 //        return tableStr.substring(0, endIndex);

@@ -1,11 +1,10 @@
 package org.dows.rbac.biz.admin;
 
 import lombok.RequiredArgsConstructor;
-import org.dows.framework.crud.mybatis.utils.BeanConvert;
 import org.dows.rbac.api.admin.request.FindRbacGroupRequest;
 import org.dows.rbac.api.admin.request.SaveRbacGroupRequest;
 import org.dows.rbac.entity.RbacGroupEntity;
-import org.dows.rbac.repository.RbacGroupRepository;
+import org.dows.rbac.service.RbacGroupService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +19,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Service
 public class GroupBiz {
-    private final RbacGroupRepository rbacGroupRepository;
+    private final RbacGroupService rbacGroupService;
 
     /**
      * @param saveRbacGroup 保存的RbacGroupRequest列表
@@ -34,8 +33,8 @@ public class GroupBiz {
      */
     @Transactional
     public void save(List<SaveRbacGroupRequest> saveRbacGroup) {
-        List<RbacGroupEntity> rbacGroupEntities = BeanConvert.beanConvert(saveRbacGroup, RbacGroupEntity.class);
-        rbacGroupRepository.saveOrUpdateBatch(rbacGroupEntities);
+//        List<RbacGroupEntity> rbacGroupEntities = BeanConvert.beanConvert(saveRbacGroup, RbacGroupEntity.class);
+//        rbacGroupService.saveOrUpdateBatch(rbacGroupEntities);
     }
 
     /**
@@ -49,7 +48,7 @@ public class GroupBiz {
      * @创建时间: 2024年2月26日 上午9:44:35
      */
     public RbacGroupEntity getById(Long rbacGroupId) {
-        return rbacGroupRepository.getById(rbacGroupId);
+        return rbacGroupService.getById(rbacGroupId);
     }
 
     /**
@@ -63,11 +62,12 @@ public class GroupBiz {
      * @创建时间: 2024年2月26日 上午9:44:35
      */
     public List<RbacGroupEntity> listByQuery(FindRbacGroupRequest findRbacGroup) {
-        return rbacGroupRepository.lambdaQuery()
+        /*return rbacGroupService.lambdaQuery()
                 .eq(Objects.nonNull(findRbacGroup.getRbacGroupId()), RbacGroupEntity::getRbacGroupId, findRbacGroup.getRbacGroupId())
                 .eq(Objects.nonNull(findRbacGroup.getAppId()), RbacGroupEntity::getAppId, findRbacGroup.getAppId())
                 .like(Objects.nonNull(findRbacGroup.getGroupName()), RbacGroupEntity::getGroupName, findRbacGroup.getGroupName())
-                .list();
+                .list();*/
+        return null;
     }
 
     /**
@@ -82,6 +82,6 @@ public class GroupBiz {
      */
     @Transactional
     public void deleteByIds(List<Long> rbacGroupIds) {
-        rbacGroupRepository.removeByIds(rbacGroupIds);
+        rbacGroupService.removeByIds(rbacGroupIds);
     }
 }

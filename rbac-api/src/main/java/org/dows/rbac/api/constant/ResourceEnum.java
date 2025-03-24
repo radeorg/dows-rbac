@@ -12,14 +12,6 @@ public enum ResourceEnum {
         this.description = description;
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
     public static ResourceEnum getByCode(int code) {
         for (ResourceEnum type : ResourceEnum.values()) {
             if (type.code == code) {
@@ -27,5 +19,13 @@ public enum ResourceEnum {
             }
         }
         throw new IllegalArgumentException("Invalid Type code: " + code);
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

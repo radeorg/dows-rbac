@@ -37,11 +37,11 @@ public class RbacConfig /*implements InitializingBean*/ {
 
     @PostConstruct
     public void init() throws IOException {
-        if(initSetting.isInitScan()){
+        if (initSetting.isInitScan()) {
             log.info("菜单角色接口配置文件扫描开始...");
             Map<String, InitSetting.AppItem> init = initSetting.getInit();
             Map<String, String> fileName = initSetting.getConfigFile();
-            if(null == init || null == fileName){
+            if (null == init || null == fileName) {
                 return;
             }
             Yaml yaml = new Yaml();
@@ -57,15 +57,15 @@ public class RbacConfig /*implements InitializingBean*/ {
                         Map<String, Object> load = yaml.load(classPathResource.getInputStream());
                         if ("rbac".equalsIgnoreCase(configFileKey)) {
                             List<MenuItem> menuItems = getConfigObject(load, "dows.menu.items", MenuItem.class);
-                            if(CollectionUtil.isNotEmpty(menuItems)){
+                            if (CollectionUtil.isNotEmpty(menuItems)) {
                                 menuSetting.getItems().addAll(menuItems);
                             }
                             List<UriItem> uriItems = getConfigObject(load, "dows.uri.items", UriItem.class);
-                            if(CollectionUtil.isNotEmpty(uriItems)){
+                            if (CollectionUtil.isNotEmpty(uriItems)) {
                                 uriSetting.getItems().addAll(uriItems);
                             }
                             List<RoleItem> roleItems = getConfigObject(load, "dows.role.items", RoleItem.class);
-                            if(CollectionUtil.isNotEmpty(roleItems)){
+                            if (CollectionUtil.isNotEmpty(roleItems)) {
                                 roleSetting.getItems().addAll(roleItems);
                             }
                         }

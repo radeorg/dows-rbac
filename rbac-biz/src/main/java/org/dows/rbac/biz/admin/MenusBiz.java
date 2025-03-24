@@ -1,14 +1,9 @@
 package org.dows.rbac.biz.admin;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.framework.api.exceptions.BizException;
-import org.dows.framework.crud.api.model.PageRequest;
-import org.dows.framework.crud.api.model.PageResponse;
-import org.dows.framework.crud.mybatis.utils.BeanConvert;
+import org.dows.rbac.api.RbacException;
 import org.dows.rbac.api.admin.request.FindRbacMenusRequest;
 import org.dows.rbac.api.admin.request.SaveRbacMenusRequest;
 import org.dows.rbac.api.admin.response.RbacMenusResponse;
@@ -16,11 +11,9 @@ import org.dows.rbac.api.annotation.RbacTrigger;
 import org.dows.rbac.api.constant.ResourceEnum;
 import org.dows.rbac.entity.RbacMenuEntity;
 import org.dows.rbac.entity.RbacPermissionEntity;
-import org.dows.rbac.handler.CommonHandler;
 import org.dows.rbac.handler.MenuHandler;
 import org.dows.rbac.handler.PermissionHandler;
-import org.dows.rbac.handler.RoleHandler;
-import org.dows.rbac.repository.RbacMenuRepository;
+import org.dows.rbac.service.RbacMenuService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +29,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Service
 public class MenusBiz {
-    private final RbacMenuRepository rbacMenusRepository;
+    private final RbacMenuService rbacMenusService;
 
     private final PermissionHandler permissionHandler;
 
@@ -57,13 +50,13 @@ public class MenusBiz {
      * @创建时间: 2024年2月27日 上午11:52:56
      */
     // todo 触发缓存变化
-    @RbacTrigger(handler = CommonHandler.class)
+//    @RbacTrigger(handler = CommonHandler.class)
     @Transactional
     public void save(List<SaveRbacMenusRequest> saveRbacMenus) {
 
-        saveRbacMenus.forEach(rbacMenuEntity -> {
-            if(null == rbacMenuEntity.getRbacMenuId()){
-                if (menuHandler.hasMenuName(rbacMenuEntity.getName(),rbacMenuEntity.getAppId())) {
+        /*saveRbacMenus.forEach(rbacMenuEntity -> {
+            if (null == rbacMenuEntity.getRbacMenuId()) {
+                if (menuHandler.hasMenuName(rbacMenuEntity.getName(), rbacMenuEntity.getAppId())) {
                     throw new IllegalArgumentException("菜单名称已存在");
                 }
                 long id = IdWorker.getId();
@@ -86,7 +79,7 @@ public class MenusBiz {
                     if (Objects.isNull(rbacMenuEntity.getPid())) {
                         throw new IllegalArgumentException("父类id为空");
                     }
-                    RbacMenuEntity preRbacMenuEntity = rbacMenusRepository.getById(rbacMenuEntity.getPid());
+                    RbacMenuEntity preRbacMenuEntity = rbacMenusService.getById(rbacMenuEntity.getPid());
                     if (Objects.isNull(preRbacMenuEntity)) {
                         throw new IllegalArgumentException("未找到对应父类信息");
                     }
@@ -100,7 +93,7 @@ public class MenusBiz {
             rbacMenuEntity.setCodePath(codePath.toString());
         });
         List<RbacMenuEntity> rbacMenusEntities = BeanConvert.beanConvert(saveRbacMenus, RbacMenuEntity.class);
-        rbacMenusRepository.saveOrUpdateBatch(rbacMenusEntities);
+        rbacMenusService.saveOrUpdateBatch(rbacMenusEntities);*/
     }
 
     /**
@@ -114,11 +107,12 @@ public class MenusBiz {
      * @创建时间: 2024年2月27日 上午11:52:56
      */
     public List<RbacMenusResponse> listByAppId(String appId) {
-        List<RbacMenuEntity> menusEntities = rbacMenusRepository.lambdaQuery()
+        /*List<RbacMenuEntity> menusEntities = rbacMenusService.lambdaQuery()
                 .eq(Objects.nonNull(appId), RbacMenuEntity::getAppId, appId)
                 .list();
 
-        return BeanConvert.beanConvert(menusEntities, RbacMenusResponse.class);
+        return BeanConvert.beanConvert(menusEntities, RbacMenusResponse.class);*/
+        return null;
     }
 
     /**
@@ -131,10 +125,10 @@ public class MenusBiz {
      * @开始时间:
      * @创建时间: 2024年2月27日 上午11:52:56
      */
-    public PageResponse<RbacMenusResponse> paging(PageRequest<FindRbacMenusRequest> findRbacMenus) {
+    /*public PageResponse<RbacMenusResponse> paging(PageRequest<FindRbacMenusRequest> findRbacMenus) {
 
         FindRbacMenusRequest queryObject = findRbacMenus.getQueryObject();
-        Page<RbacMenuEntity> page = rbacMenusRepository.lambdaQuery()
+        Page<RbacMenuEntity> page = rbacMenusService.lambdaQuery()
                 .eq(Objects.nonNull(queryObject.getRbacMenuId()), RbacMenuEntity::getRbacMenuId, queryObject.getRbacMenuId())
                 .eq(Objects.nonNull(queryObject.getPid()), RbacMenuEntity::getPid, queryObject.getPid())
                 .eq(Objects.nonNull(queryObject.getAppId()), RbacMenuEntity::getAppId, queryObject.getAppId())
@@ -147,7 +141,7 @@ public class MenusBiz {
         List<RbacMenusResponse> eqptModelResponses = BeanConvert.beanConvert(page.getRecords(), RbacMenusResponse.class);
         result.setRecords(eqptModelResponses);
         return new PageResponse<>(result);
-    }
+    }*/
 
     /**
      * @param
@@ -160,14 +154,14 @@ public class MenusBiz {
      * @创建时间: 2024年2月27日 上午11:52:56
      */
     // todo 触发缓存变化
-    @RbacTrigger(handler = CommonHandler.class)
+    //@RbacTrigger(handler = CommonHandler.class)
     @Transactional
     public void deleteByIds(List<Long> rbacMenusIds) {
         List<RbacPermissionEntity> permissions = permissionHandler.getPermissionByResourceIds(rbacMenusIds, ResourceEnum.MENU.getCode());
-        if(CollectionUtil.isNotEmpty(permissions)){
+        if (CollectionUtil.isNotEmpty(permissions)) {
             log.info("存在角色绑定，不能删除");
-            throw new BizException("存在角色绑定，不能删除");
+            throw new RbacException("存在角色绑定，不能删除");
         }
-        rbacMenusRepository.removeByIds(rbacMenusIds);
+        rbacMenusService.removeByIds(rbacMenusIds);
     }
 }

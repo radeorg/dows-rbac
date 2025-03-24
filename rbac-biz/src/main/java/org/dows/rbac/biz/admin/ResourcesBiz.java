@@ -1,7 +1,6 @@
 package org.dows.rbac.biz.admin;
 
 import lombok.RequiredArgsConstructor;
-import org.dows.framework.crud.mybatis.utils.BeanConvert;
 import org.dows.rbac.api.admin.request.FindRbacResourcesRequest;
 import org.dows.rbac.api.admin.request.SaveRbacModuleResourcesRequest;
 import org.dows.rbac.api.admin.request.SaveRbacResourcesRequest;
@@ -9,14 +8,10 @@ import org.dows.rbac.api.admin.response.RbacResourcesQueryResponse;
 import org.dows.rbac.api.constant.ResourceEnum;
 import org.dows.rbac.api.constant.StateEnum;
 import org.dows.rbac.entity.RbacMenuEntity;
-import org.dows.rbac.entity.RbacModuleEntity;
-import org.dows.rbac.entity.RbacResourcesEntity;
 import org.dows.rbac.entity.RbacUriEntity;
 import org.dows.rbac.handler.ResourcesHandler;
-import org.dows.rbac.repository.RbacMenuRepository;
-import org.dows.rbac.repository.RbacModuleRepository;
-import org.dows.rbac.repository.RbacResourcesRepository;
-import org.dows.rbac.repository.RbacUriRepository;
+import org.dows.rbac.service.RbacMenuService;
+import org.dows.rbac.service.RbacUriService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -33,13 +28,10 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Service
 public class ResourcesBiz {
-    private final RbacResourcesRepository rbacResourcesRepository;
 
-    private final RbacModuleRepository rbacModuleRepository;
+    private final RbacMenuService rbacMenusService;
 
-    private final RbacMenuRepository rbacMenusRepository;
-
-    private final RbacUriRepository rbacUriRepository;
+    private final RbacUriService rbacUriService;
 
     private final ResourcesHandler resourcesHandler;
 
@@ -55,12 +47,12 @@ public class ResourcesBiz {
      */
     @Transactional
     public void save(List<SaveRbacResourcesRequest> saveRbacResources) {
-        List<RbacResourcesEntity> rbacResourcesEntities = BeanConvert.beanConvert(saveRbacResources, RbacResourcesEntity.class);
-        rbacResourcesRepository.saveOrUpdateBatch(rbacResourcesEntities);
+        /*List<RbacResourcesEntity> rbacResourcesEntities = BeanConvert.beanConvert(saveRbacResources, RbacResourcesEntity.class);
+        rbacResourcesService.saveOrUpdateBatch(rbacResourcesEntities);*/
     }
 
     public void saveRbacModuleResources(SaveRbacModuleResourcesRequest saveRbacModuleResourcesRequest) {
-        RbacModuleEntity rbacModuleEntity = rbacModuleRepository.getById(saveRbacModuleResourcesRequest.getRbacModuleId());
+        /*RbacModuleEntity rbacModuleEntity = rbacModuleService.getById(saveRbacModuleResourcesRequest.getRbacModuleId());
         if (Objects.isNull(rbacModuleEntity)) {
             throw new IllegalArgumentException("未找到权限模块信息");
         }
@@ -68,7 +60,7 @@ public class ResourcesBiz {
         List<Long> rbacMenusIds = saveRbacModuleResourcesRequest.getRbacMenusIds();
         if (!CollectionUtils.isEmpty(rbacMenusIds)) {
             rbacMenusIds.forEach(rbacResourcesId -> {
-                RbacMenuEntity rbacMenuEntity = rbacMenusRepository.getById(rbacResourcesId);
+                RbacMenuEntity rbacMenuEntity = rbacMenusService.getById(rbacResourcesId);
                 RbacResourcesEntity rbacResourcesEntity = new RbacResourcesEntity();
                 rbacResourcesEntity.setRbacModuleId(saveRbacModuleResourcesRequest.getRbacModuleId());
                 rbacResourcesEntity.setResourceId(rbacMenuEntity.getRbacMenuId());
@@ -83,7 +75,7 @@ public class ResourcesBiz {
         List<Long> rbacUrisIds = saveRbacModuleResourcesRequest.getRbacUrisIds();
         if (!CollectionUtils.isEmpty(rbacUrisIds)) {
             rbacUrisIds.forEach(rbacUrisId -> {
-                RbacUriEntity rbacUriEntity = rbacUriRepository.getById(rbacUrisId);
+                RbacUriEntity rbacUriEntity = rbacUriService.getById(rbacUrisId);
                 RbacResourcesEntity rbacResourcesEntity = new RbacResourcesEntity();
                 rbacResourcesEntity.setRbacModuleId(saveRbacModuleResourcesRequest.getRbacModuleId());
                 rbacResourcesEntity.setResourceId(rbacUriEntity.getRbacMenuId());
@@ -95,7 +87,7 @@ public class ResourcesBiz {
                 rbacResourcesEntities.add(rbacResourcesEntity);
             });
         }
-        rbacResourcesRepository.saveOrUpdateBatch(rbacResourcesEntities);
+        rbacResourcesService.saveOrUpdateBatch(rbacResourcesEntities);*/
     }
 
     /**
@@ -109,8 +101,9 @@ public class ResourcesBiz {
      * @创建时间: 2024年2月27日 上午11:52:56
      */
     public RbacResourcesQueryResponse getById(Long rbacResourcesId) {
-        RbacResourcesEntity rbacResourcesEntity = rbacResourcesRepository.getById(rbacResourcesId);
-        return BeanConvert.beanConvert(rbacResourcesEntity, RbacResourcesQueryResponse.class);
+        /*RbacResourcesEntity rbacResourcesEntity = rbacResourcesService.getById(rbacResourcesId);
+        return BeanConvert.beanConvert(rbacResourcesEntity, RbacResourcesQueryResponse.class);*/
+        return null;
     }
 
     /**
@@ -124,12 +117,13 @@ public class ResourcesBiz {
      * @创建时间: 2024年2月27日 上午11:52:56
      */
     public List<RbacResourcesQueryResponse> listByQuery(FindRbacResourcesRequest findRbacResources) {
-        return resourcesHandler.listByQuery(findRbacResources);
+        //return resourcesHandler.listByQuery(findRbacResources);
+        return new ArrayList<>();
     }
-
+/*
     public List<RbacResourcesEntity> listByModuleIdAndResourceType(Long moduleId, Integer resourceType) {
         return resourcesHandler.listByModuleIdAndResourceType(moduleId, resourceType);
-    }
+    }*/
 
     /**
      * @param
@@ -141,8 +135,7 @@ public class ResourcesBiz {
      * @开始时间:
      * @创建时间: 2024年2月27日 上午11:52:56
      */
-    @Transactional
-    public void deleteByIds(List<Long> rbacResourcesIds) {
-        rbacResourcesRepository.removeByIds(rbacResourcesIds);
-    }
+   /* public void deleteByIds(List<Long> rbacResourcesIds) {
+        rbacResourcesService.removeByIds(rbacResourcesIds);
+    }*/
 }

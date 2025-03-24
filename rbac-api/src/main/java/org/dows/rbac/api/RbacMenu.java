@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 public class RbacMenu {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -58,7 +56,7 @@ public class RbacMenu {
     private Boolean visible;
 
     @Schema(name = "isframe", title = "是否框架")
-   private Integer isframe;
+    private Integer isframe;
 
     @Schema(name = "state", title = "状态")
     private Boolean state;

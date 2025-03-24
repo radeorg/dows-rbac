@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.dows.rbac.api.RbacResources;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author
@@ -18,31 +17,22 @@ import java.util.Map;
 @NoArgsConstructor
 @Schema(name = "SaveRbacPermission 对象", title = "权限创建，如果permissionTyp为0，uriId不能为空，为1menuId不能为空")
 public class SaveRbacPermissionRequest {
-    @Schema(title = "权限ID")
-    private Long rbacPermissionId;
-
-    @Schema(title = "角色id")
-    private Long rbacRoleId;
-
-    @Schema(title = "父角色ID(继承时该字段有值)")
-    private Long rolePid;
-
-    @Schema(title = "角色CODE")
-    private String roleCode;
-
-    @Schema(title = "角色名字")
-    private String roleName;
-
-    @Schema(title = "应用id 从角色冗余")
-    private String appId;
-
-    @Schema(title = "描述")
-    private String descr;
-
     @Schema(title = "资源集合[menu,uri,rule]")
     List<RbacResources> rbacResource;
-
-
+    @Schema(title = "权限ID")
+    private Long rbacPermissionId;
+    @Schema(title = "角色id")
+    private Long rbacRoleId;
+    @Schema(title = "父角色ID(继承时该字段有值)")
+    private Long rolePid;
+    @Schema(title = "角色CODE")
+    private String roleCode;
+    @Schema(title = "角色名字")
+    private String roleName;
+    @Schema(title = "应用id 从角色冗余")
+    private String appId;
+    @Schema(title = "描述")
+    private String descr;
     @Schema(title = "资源ID")
     private Long resourceId;
 

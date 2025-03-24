@@ -1,1 +1,0 @@
-package org.dows.rbac.rest.tenant;

@@ -32,6 +32,5 @@ public class InitMenuResources implements InitResources {
     }
 
 
-
 }
 

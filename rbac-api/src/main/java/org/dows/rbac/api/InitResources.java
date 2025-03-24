@@ -23,6 +23,7 @@ public interface InitResources {
     String getPath();
 
     String getName();
+
     String getMenuName();
 
     String getPackageName();

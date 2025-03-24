@@ -19,12 +19,11 @@ import java.util.List;
 @Data
 public class RoleSetting {
 
+    @NestedConfigurationProperty
+    private final List<RoleItem> items = new ArrayList<>();
     /**
      * 启动时是否更新角色
      */
     private Boolean update = false;
-
-    @NestedConfigurationProperty
-    private final List<RoleItem> items = new ArrayList<>();
 }
 

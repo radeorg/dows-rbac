@@ -2,9 +2,6 @@ package org.dows.rbac.handler;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.baomidou.mybatisplus.extension.plugins.handler.MultiDataPermissionHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -21,15 +18,14 @@ import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
 import org.dows.rbac.api.constant.DataScopeEnum;
 import org.dows.rbac.entity.RbacRuleEntity;
-import org.dows.rbac.repository.RbacRoleRepository;
-import org.dows.rbac.repository.RbacRuleRepository;
-import org.dows.uat.api.AccountApi;
-import org.dows.uat.api.admin.response.AccountOrgIdsResponse;
+import org.dows.rbac.service.RbacRoleService;
+import org.dows.rbac.service.RbacRuleService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -40,20 +36,71 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class RbacDataPermissionRHandler implements MultiDataPermissionHandler {
-    private final RbacRoleRepository rbacRoleRepository;
-    private final RbacRuleRepository rbacRuleRepository;
-    private final AccountApi accountApi;
+public class RbacDataPermissionRHandler /*implements MultiDataPermissionHandler*/ {
+    private final RbacRoleService rbacRoleService;
+    private final RbacRuleService rbacRuleService;
+//    private final AccountApi accountApi;
 
     private final String GROUP_COLUMN = "group_id";
     private final String OWNER_COLUMN = "owner_id";
 
-    @Override
+    /**
+     * 构建过滤条件
+     *
+     * @param where 当前查询条件
+     * @return 构建后查询条件
+     */
+    @SneakyThrows
+    public static Expression dataScopeFilter(String deptAlias, String deptIdColumnName, String userAlias, String userIdColumnName, Expression where) {
+
+
+        //String deptColumnName = StrUtil.isNotBlank(deptAlias) ? (deptAlias + StringPool.DOT + deptIdColumnName) : deptIdColumnName;
+//        String userColumnName = StrUtil.isNotBlank(userAlias) ? (userAlias + StringPool.DOT + userIdColumnName) : userIdColumnName;
+
+        // 获取当前用户的数据权限
+//        Integer dataScope = SecurityUtils.getDataScope();
+//
+//        DataScopeEnum dataScopeEnum = IBaseEnum.getEnumByValue(dataScope, DataScopeEnum.class);
+//
+//        Long deptId, userId;
+//        String appendSqlStr;
+//        switch (dataScopeEnum) {
+//            case ALL:
+//                return where;
+//            case DEPT:
+//                deptId = SecurityUtils.getDeptId();
+//                appendSqlStr = deptColumnName + StringPool.EQUALS + deptId;
+//                break;
+//            case SELF:
+//                userId = SecurityUtils.getUserId();
+//                appendSqlStr = userColumnName + StringPool.EQUALS + userId;
+//                break;
+//            // 默认部门及子部门数据权限
+//            default:
+//                deptId = SecurityUtils.getDeptId();
+//                appendSqlStr = deptColumnName + " IN ( SELECT id FROM sys_dept WHERE id = " + deptId + " OR FIND_IN_SET( " + deptId + " , tree_path ) )";
+//                break;
+//        }
+//        if (StrUtil.isBlank(appendSqlStr)) {
+//            return where;
+//        }
+
+//        Expression appendExpression = CCJSqlParserUtil.parseCondExpression(appendSqlStr);
+        Expression appendExpression = CCJSqlParserUtil.parseCondExpression("");
+
+        if (where == null) {
+            return appendExpression;
+        }
+
+        return new AndExpression(where, appendExpression);
+    }
+
+
     @SneakyThrows
     public Expression getSqlSegment(Expression where, String mappedStatementId) {
 
 
-        Class<?> clazz = Class.forName(mappedStatementId.substring(0, mappedStatementId.lastIndexOf(StringPool.DOT)));
+       /* Class<?> clazz = Class.forName(mappedStatementId.substring(0, mappedStatementId.lastIndexOf(StringPool.DOT)));
         String methodName = mappedStatementId.substring(mappedStatementId.lastIndexOf(StringPool.DOT) + 1);
         Method[] methods = clazz.getDeclaredMethods();
         for (Method method : methods) {
@@ -65,14 +112,14 @@ public class RbacDataPermissionRHandler implements MultiDataPermissionHandler {
 //            if (method.getName().equals(methodName) || (method.getName() + "_COUNT").equals(methodName)) {
 //                return dataScopeFilter(annotation.deptAlias(), annotation.deptIdColumnName(), annotation.userAlias(), annotation.userIdColumnName(), where);
 //            }
-        }
+        }*/
         return where;
     }
 
-    @Override
+
     @SneakyThrows
     public Expression getSqlSegment(Table table, Expression where, String mappedStatementId) {
-        where = new HexValue("1 =1");
+        /*where = new HexValue("1 =1");
         if ("rbac_permission".equals(table.toString())) {
             // 获取角色集
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -107,7 +154,7 @@ public class RbacDataPermissionRHandler implements MultiDataPermissionHandler {
                 groupIdsAll.add(new LongValue(l));
             }
             StringBuilder appendSqlStr = new StringBuilder();
-            List<RbacRuleEntity> rbacRuleEntities = rbacRuleRepository.lambdaQuery()
+            List<RbacRuleEntity> rbacRuleEntities = rbacRuleService.lambdaQuery()
                     .in(Objects.nonNull(roleIds), RbacRuleEntity::getRbacRoleId, roleIds)
                     .list();
             Integer initDataScope = 99;
@@ -155,7 +202,7 @@ public class RbacDataPermissionRHandler implements MultiDataPermissionHandler {
                 log.error("Error parsing", e);
                 throw new RuntimeException(e);
             }
-        }
+        }*/
 //        // 拼接appId
 //        String appId = RbacContext.getAppId();
 //        if (StrUtil.isNotBlank(appId)) {
@@ -167,58 +214,6 @@ public class RbacDataPermissionRHandler implements MultiDataPermissionHandler {
 //        }
 
         return where;
-    }
-
-
-    /**
-     * 构建过滤条件
-     *
-     * @param where 当前查询条件
-     * @return 构建后查询条件
-     */
-    @SneakyThrows
-    public static Expression dataScopeFilter(String deptAlias, String deptIdColumnName, String userAlias, String userIdColumnName, Expression where) {
-
-
-        String deptColumnName = StrUtil.isNotBlank(deptAlias) ? (deptAlias + StringPool.DOT + deptIdColumnName) : deptIdColumnName;
-        String userColumnName = StrUtil.isNotBlank(userAlias) ? (userAlias + StringPool.DOT + userIdColumnName) : userIdColumnName;
-
-        // 获取当前用户的数据权限
-//        Integer dataScope = SecurityUtils.getDataScope();
-//
-//        DataScopeEnum dataScopeEnum = IBaseEnum.getEnumByValue(dataScope, DataScopeEnum.class);
-//
-//        Long deptId, userId;
-//        String appendSqlStr;
-//        switch (dataScopeEnum) {
-//            case ALL:
-//                return where;
-//            case DEPT:
-//                deptId = SecurityUtils.getDeptId();
-//                appendSqlStr = deptColumnName + StringPool.EQUALS + deptId;
-//                break;
-//            case SELF:
-//                userId = SecurityUtils.getUserId();
-//                appendSqlStr = userColumnName + StringPool.EQUALS + userId;
-//                break;
-//            // 默认部门及子部门数据权限
-//            default:
-//                deptId = SecurityUtils.getDeptId();
-//                appendSqlStr = deptColumnName + " IN ( SELECT id FROM sys_dept WHERE id = " + deptId + " OR FIND_IN_SET( " + deptId + " , tree_path ) )";
-//                break;
-//        }
-//        if (StrUtil.isBlank(appendSqlStr)) {
-//            return where;
-//        }
-
-//        Expression appendExpression = CCJSqlParserUtil.parseCondExpression(appendSqlStr);
-        Expression appendExpression = CCJSqlParserUtil.parseCondExpression("");
-
-        if (where == null) {
-            return appendExpression;
-        }
-
-        return new AndExpression(where, appendExpression);
     }
 
 

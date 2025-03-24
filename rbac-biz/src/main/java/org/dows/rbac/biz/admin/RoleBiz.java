@@ -1,13 +1,7 @@
 package org.dows.rbac.biz.admin;
 
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.framework.crud.api.model.PageRequest;
-import org.dows.framework.crud.api.model.PageResponse;
-import org.dows.framework.crud.mybatis.utils.BeanConvert;
 import org.dows.rbac.api.admin.request.FindRbacRoleRequest;
 import org.dows.rbac.api.admin.request.SaveRbacRoleRequest;
 import org.dows.rbac.api.admin.response.RbacRoleResponse;
@@ -15,10 +9,8 @@ import org.dows.rbac.api.annotation.RbacTrigger;
 import org.dows.rbac.entity.RbacRoleEntity;
 import org.dows.rbac.handler.RoleDeleteHandler;
 import org.dows.rbac.handler.RoleHandler;
-import org.dows.rbac.repository.RbacPermissionRepository;
-import org.dows.rbac.repository.RbacRoleRepository;
-import org.dows.uat.api.AccountApi;
-import org.dows.uat.api.admin.response.AccountRoleRelationResponse;
+import org.dows.rbac.service.RbacPermissionService;
+import org.dows.rbac.service.RbacRoleService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,13 +30,13 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Service
 public class RoleBiz {
-    private final RbacRoleRepository rbacRoleRepository;
+    private final RbacRoleService rbacRoleService;
 
     private final RoleHandler roleHandler;
 
-    private final RbacPermissionRepository rbacPermissionRepository;
+    private final RbacPermissionService rbacPermissionService;
 
-    private final AccountApi accountApi;
+//    private final AccountApi accountApi;
 
     private final Integer FIRST_LEVEL = 1;
 
@@ -62,15 +54,15 @@ public class RoleBiz {
      * @开始时间:
      * @创建时间: 2024年2月27日 上午11:52:56
      */
-    @RbacTrigger(handler = RoleHandler.class)
+//    @RbacTrigger(handler = RoleHandler.class)
     @Transactional
     public void save(List<SaveRbacRoleRequest> saveRbacRoles) {
         saveRbacRoles.forEach(saveRbacRoleRequest -> {
-            if(null == saveRbacRoleRequest.getRbacRoleId()){
-                if (roleHandler.hasRoleName(saveRbacRoleRequest.getRoleName(),saveRbacRoleRequest.getAppId())) {
+            if (null == saveRbacRoleRequest.getRbacRoleId()) {
+                if (roleHandler.hasRoleName(saveRbacRoleRequest.getRoleName(), saveRbacRoleRequest.getAppId())) {
                     throw new IllegalArgumentException("角色名称已存在");
                 }
-                long id = IdWorker.getId();
+                long id = 0L;//IdWorker.getId();
                 saveRbacRoleRequest.setRbacRoleId(id);
             }
             StringBuilder idPath = new StringBuilder();
@@ -90,7 +82,7 @@ public class RoleBiz {
                     if (Objects.isNull(saveRbacRoleRequest.getPid())) {
                         throw new IllegalArgumentException("父类id为空");
                     }
-                    RbacRoleEntity preRbacRoleEntity = rbacRoleRepository.getById(saveRbacRoleRequest.getPid());
+                    RbacRoleEntity preRbacRoleEntity = rbacRoleService.getById(saveRbacRoleRequest.getPid());
                     if (Objects.isNull(preRbacRoleEntity)) {
                         throw new IllegalArgumentException("未找到对应父类信息");
                     }
@@ -103,8 +95,8 @@ public class RoleBiz {
             saveRbacRoleRequest.setNamePath(namePath.toString());
             saveRbacRoleRequest.setCodePath(codePath.toString());
         });
-        List<RbacRoleEntity> rbacRoleEntities = BeanConvert.beanConvert(saveRbacRoles, RbacRoleEntity.class);
-        rbacRoleRepository.saveOrUpdateBatch(rbacRoleEntities);
+//        List<RbacRoleEntity> rbacRoleEntities = BeanConvert.beanConvert(saveRbacRoles, RbacRoleEntity.class);
+//        rbacRoleService.saveOrUpdateBatch(rbacRoleEntities);
     }
 
     /**
@@ -118,10 +110,11 @@ public class RoleBiz {
      * @创建时间: 2024年2月27日 上午11:52:56
      */
     public List<RbacRoleResponse> listByAppId(String appId) {
-        List<RbacRoleEntity> rbacRoleEntities = rbacRoleRepository.lambdaQuery()
+       /* List<RbacRoleEntity> rbacRoleEntities = rbacRoleService.lambdaQuery()
                 .eq(Objects.nonNull(appId), RbacRoleEntity::getAppId, appId)
                 .list();
-        return BeanConvert.beanConvert(rbacRoleEntities, RbacRoleResponse.class);
+        return BeanConvert.beanConvert(rbacRoleEntities, RbacRoleResponse.class);*/
+        return null;
     }
 
     /**
@@ -134,9 +127,9 @@ public class RoleBiz {
      * @开始时间:
      * @创建时间: 2024年2月27日 上午11:52:56
      */
-    public PageResponse<RbacRoleResponse> paging(PageRequest<FindRbacRoleRequest> findRbacRoleRqeust) {
+    /*public PageResponse<RbacRoleResponse> paging(PageRequest<FindRbacRoleRequest> findRbacRoleRqeust) {
         FindRbacRoleRequest findRbacRole = findRbacRoleRqeust.getQueryObject();
-        Page<RbacRoleEntity> page = rbacRoleRepository.lambdaQuery()
+        Page<RbacRoleEntity> page = rbacRoleService.lambdaQuery()
                 .eq(Objects.nonNull(findRbacRole.getRbacRoleId()), RbacRoleEntity::getRbacRoleId, findRbacRole.getRbacRoleId())
                 .eq(Objects.nonNull(findRbacRole.getPid()), RbacRoleEntity::getPid, findRbacRole.getPid())
                 .eq(Objects.nonNull(findRbacRole.getAppId()), RbacRoleEntity::getAppId, findRbacRole.getAppId())
@@ -149,7 +142,7 @@ public class RoleBiz {
         List<RbacRoleResponse> eqptModelResponses = BeanConvert.beanConvert(page.getRecords(), RbacRoleResponse.class);
         result.setRecords(eqptModelResponses);
         return new PageResponse<>(result);
-    }
+    }*/
 
     /**
      * @param
@@ -161,7 +154,7 @@ public class RoleBiz {
      * @开始时间:
      * @创建时间: 2024年2月27日 上午11:52:56
      */
-    @RbacTrigger(handler = RoleDeleteHandler.class)
+   /* @RbacTrigger(handler = RoleDeleteHandler.class)
     @Transactional
     public void deleteByIds(List<Long> rbacRoleIds) {
         // 判断角色是否绑定用户
@@ -170,8 +163,8 @@ public class RoleBiz {
             log.info("角色删除异常,当前角色存在绑定的用户: {},角色: {}", accountRoleRelationResponses.get(0).getPrincipalName(), accountRoleRelationResponses.get(0).getRoleName());
             throw new IllegalArgumentException("该角色已绑定用户");
         }
-        rbacRoleRepository.removeByIds(rbacRoleIds);
-    }
+        rbacRoleService.removeByIds(rbacRoleIds);
+    }*/
 
     /**
      * @param
@@ -183,12 +176,12 @@ public class RoleBiz {
      * @开始时间:
      * @创建时间: 2024年2月27日 上午11:52:56
      */
-    public RbacRoleResponse getById(Long rbacRoleId) {
-        RbacRoleEntity rbacRoleEntity = rbacRoleRepository.getById(rbacRoleId);
+    /*public RbacRoleResponse getById(Long rbacRoleId) {
+        RbacRoleEntity rbacRoleEntity = rbacRoleService.getById(rbacRoleId);
         return BeanConvert.beanConvert(rbacRoleEntity, RbacRoleResponse.class);
-    }
+    }*/
 
-    public List<RbacRoleResponse> getRolesByAccount(){
+    public List<RbacRoleResponse> getRolesByAccount() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<Long> roleIds = authorities.stream().map(GrantedAuthority::getAuthority).map(Long::parseLong).toList();

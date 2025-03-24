@@ -10,7 +10,7 @@
 //@Component
 //public class InitRbacResources {
 //
-////    private final RbacPermissionH
+/// /    private final RbacPermissionH
 //
 //    @PostConstruct
 //    public void initData() {

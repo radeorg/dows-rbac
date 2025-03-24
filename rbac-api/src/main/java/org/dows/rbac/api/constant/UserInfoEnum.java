@@ -18,14 +18,6 @@ public enum UserInfoEnum {
         this.description = description;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
     public static UserInfoEnum getByCode(String code) {
         for (UserInfoEnum type : UserInfoEnum.values()) {
             if (type.key.equals(code)) {
@@ -33,5 +25,13 @@ public enum UserInfoEnum {
             }
         }
         throw new IllegalArgumentException("Invalid Type code: " + code);
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

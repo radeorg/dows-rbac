@@ -1,12 +1,9 @@
 package org.dows.rbac.biz.admin;
 
 import lombok.RequiredArgsConstructor;
-import org.dows.framework.crud.mybatis.utils.BeanConvert;
 import org.dows.rbac.api.admin.request.FindRbacModuleRequest;
 import org.dows.rbac.api.admin.request.SaveRbacModuleRequest;
 import org.dows.rbac.api.admin.response.RbacMoudleQueryResponse;
-import org.dows.rbac.entity.RbacModuleEntity;
-import org.dows.rbac.repository.RbacModuleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +18,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Service
 public class ModuleBiz {
-    private final RbacModuleRepository rbacModuleRepository;
-
     /**
      * @param
      * @return
@@ -35,8 +30,8 @@ public class ModuleBiz {
      */
     @Transactional
     public void save(List<SaveRbacModuleRequest> saveRbacModule) {
-        List<RbacModuleEntity> rbacModuleEntities = BeanConvert.beanConvert(saveRbacModule, RbacModuleEntity.class);
-        rbacModuleRepository.saveOrUpdateBatch(rbacModuleEntities);
+       /* List<RbacModuleEntity> rbacModuleEntities = BeanConvert.beanConvert(saveRbacModule, RbacModuleEntity.class);
+        rbacModuleService.saveOrUpdateBatch(rbacModuleEntities);*/
     }
 
     /**
@@ -50,8 +45,9 @@ public class ModuleBiz {
      * @创建时间: 2024年2月27日 上午11:52:56
      */
     public RbacMoudleQueryResponse getById(Long rbacModuleId) {
-        RbacModuleEntity rbacModuleEntity = rbacModuleRepository.getById(rbacModuleId);
-        return BeanConvert.beanConvert(rbacModuleEntity, RbacMoudleQueryResponse.class);
+       /* RbacModuleEntity rbacModuleEntity = rbacModuleService.getById(rbacModuleId);
+        return BeanConvert.beanConvert(rbacModuleEntity, RbacMoudleQueryResponse.class);*/
+        return null;
     }
 
     /**
@@ -65,14 +61,15 @@ public class ModuleBiz {
      * @创建时间: 2024年2月27日 上午11:52:56
      */
     public List<RbacMoudleQueryResponse> listByQuery(FindRbacModuleRequest findRbacModule) {
-        List<RbacModuleEntity> rbacModuleEntities = rbacModuleRepository.lambdaQuery()
+        /*List<RbacModuleEntity> rbacModuleEntities = rbacModuleService.lambdaQuery()
                 .eq(Objects.nonNull(findRbacModule.getRbacModuleId()), RbacModuleEntity::getRbacModuleId, findRbacModule.getRbacModuleId())
                 .eq(Objects.nonNull(findRbacModule.getAppId()), RbacModuleEntity::getAppId, findRbacModule.getAppId())
                 .like(Objects.nonNull(findRbacModule.getModuleName()), RbacModuleEntity::getModuleName, findRbacModule.getModuleName())
                 .list();
 
         List<RbacMoudleQueryResponse> responseList = BeanConvert.beanConvert(rbacModuleEntities, RbacMoudleQueryResponse.class);
-        return responseList;
+        return responseList;*/
+        return null;
     }
 
     /**
@@ -87,6 +84,6 @@ public class ModuleBiz {
      */
     @Transactional
     public void deleteByIds(List<Long> rbacModuleIds) {
-        rbacModuleRepository.removeByIds(rbacModuleIds);
+        //rbacModuleService.removeByIds(rbacModuleIds);
     }
 }

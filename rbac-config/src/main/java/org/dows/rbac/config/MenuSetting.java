@@ -19,13 +19,12 @@ import java.util.List;
 //@ConfigurationProperties(prefix = "dows.menu")
 @Data
 public class MenuSetting {
+    @NestedConfigurationProperty
+    private final List<MenuItem> items = new ArrayList<>();
     /**
      * 启动时是否更新菜单
      */
     private Boolean update = false;
-
-    @NestedConfigurationProperty
-    private final List<MenuItem> items = new ArrayList<>();
 
 }
 
