@@ -21,8 +21,8 @@ public class MethodSignatureParser {
     private static final Pattern ARRAY_PATTERN = 
         Pattern.compile("^\\[+([^;]+).*");
     
-    public static MethodSignature parse(String signature) {
-        MethodSignature result = new MethodSignature();
+    public static UriSignature parse(String signature) {
+        UriSignature result = new UriSignature();
         
         Matcher methodMatcher = METHOD_SIGNATURE_PATTERN.matcher(signature);
         if (!methodMatcher.matches()) {

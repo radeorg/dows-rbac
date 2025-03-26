@@ -1,10 +1,12 @@
-package org.dows.rbac.config;
+package org.dows.rbac.config.a;
+
+import org.dows.rbac.config.UriSignature;
 
 import java.lang.reflect.*;
 
 public class GenericTypeParser {
 
-    public static void parseGenericReturnType(Method method,MethodSignature methodSignature) {
+    public static void parseGenericReturnType(Method method, UriSignature uriSignature) {
         Type returnType = method.getGenericReturnType();
 
         if (returnType instanceof ParameterizedType) {

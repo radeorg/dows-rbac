@@ -17,8 +17,8 @@ public class MethodSignatureResolver {
      * @param method
      * @return
      */
-    public static MethodSignature parse(Method method) {
-        MethodSignature result = new MethodSignature();
+    public static UriSignature parse(Method method) {
+        UriSignature result = new UriSignature();
 
         // 解析返回类型
         result.setReturnType(parseReturnType(method.getGenericReturnType()));
@@ -93,32 +93,4 @@ public class MethodSignatureResolver {
     private static boolean isCollectionType(Class<?> type) {
         return java.util.Collection.class.isAssignableFrom(type);
     }
-
-    // 内部类定义
-/*    public static class MethodSignature {
-        private ParameterMeta returnType;
-        private List<ParameterMeta> parameters = new ArrayList<>();
-        
-        // getters and setters
-        public ParameterMeta getReturnType() { return returnType; }
-        public void setReturnType(ParameterMeta returnType) { this.returnType = returnType; }
-        public List<ParameterMeta> getParameters() { return parameters; }
-    }
-    
-    public static class ParameterMeta {
-        private String name;
-        private String dataType;
-        private String collectionType;
-        private String genericType;
-        
-        // getters and setters
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
-        public String getDataType() { return dataType; }
-        public void setDataType(String dataType) { this.dataType = dataType; }
-        public String getCollectionType() { return collectionType; }
-        public void setCollectionType(String collectionType) { this.collectionType = collectionType; }
-        public String getGenericType() { return genericType; }
-        public void setGenericType(String genericType) { this.genericType = genericType; }
-    }*/
 }

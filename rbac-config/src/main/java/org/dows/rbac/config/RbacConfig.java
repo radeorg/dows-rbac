@@ -3,7 +3,6 @@ package org.dows.rbac.config;
 import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.rbac.config.a.RbacConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,9 +27,8 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
-public class RbacScanner {
+public class RbacConfig {
     private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
-    private final RbacConfig rbacConfig;
 
     @Value("${spring.application.appId}")
     private String appId;
@@ -43,9 +41,9 @@ public class RbacScanner {
      * 这里模拟扫描，借助 org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping
      */
     @Bean("uriResources")
-    public List<MethodSignature> getAuthResources() {
+    public List<UriSignature> getAuthResources() {
         // 接下来要添加到数据库的资源
-        List<MethodSignature> list = new LinkedList<>();
+        List<UriSignature> list = new LinkedList<>();
         // 拿到所有接口信息，并开始遍历
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
         handlerMethods.forEach((info, handlerMethod) -> {
@@ -64,7 +62,7 @@ public class RbacScanner {
         return list;
     }
 
-    private static MethodSignature extracted(RequestMappingInfo info, HandlerMethod handlerMethod) {
+    private UriSignature extracted(RequestMappingInfo info, HandlerMethod handlerMethod) {
         //{GET [/v1/admin/menus/listByAppId]}
         String key = info.toString();
         String[] restUri = key.replaceAll("[\\{\\}\\[\\]]", "").split(" ");
@@ -72,11 +70,12 @@ public class RbacScanner {
         String path1 = restUri[1];
         String javaMethodName = handlerMethod.toString().split("\\(")[0];
         Method method = handlerMethod.getMethod();
-        MethodSignature methodSignature = MethodSignatureResolver.parse(method);
-        methodSignature.setJavaMethodName(javaMethodName);
-        methodSignature.setHttpMethodName(httpMethod1);
-        methodSignature.setPath(path1);
-        log.info("方法签名 {}", JSONUtil.toJsonPrettyStr(methodSignature));
-        return methodSignature;
+        UriSignature uriSignature = MethodSignatureResolver.parse(method);
+        uriSignature.setJavaMethod(javaMethodName);
+        uriSignature.setHttpMethod(httpMethod1);
+        uriSignature.setUri(path1);
+        uriSignature.setAppId(appId);
+        log.debug("方法签名: {}", JSONUtil.toJsonPrettyStr(uriSignature));
+        return uriSignature;
     }
 }
