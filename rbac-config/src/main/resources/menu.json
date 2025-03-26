@@ -1,2 +1,21 @@
-{
-}
+[
+  {
+    "appId": "1",
+    "javaMethod": "org.dows.rbac.admin.MenusRest#save",
+    "httpMethod": "POST",
+    "uri": "/v1/admin/menus/save",
+    "summary": "批量更新和插入",
+    "description": "",
+    "parameters": [
+      {
+        "name": "saveRbacMenus",
+        "dataType": "java.util.List",
+        "collectionType": "java.util.List",
+        "genericType": "org.dows.rbac.api.admin.request.SaveRbacMenusRequest"
+      }
+    ],
+    "returnType": {
+      "dataType": "void"
+    }
+  }
+]

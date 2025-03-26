@@ -1,6 +1,7 @@
 package org.dows.rbac.config;
 
 import cn.hutool.json.JSONUtil;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +12,10 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +63,12 @@ public class RbacConfig {
                 }
             }
         });
+        // todo 保存数据库，生成 lock（如果初始话成功，不在初始化）
+        try {
+            Files.writeString(Path.of(System.getProperty("user.dir")).resolve("menu.json"),JSONUtil.toJsonPrettyStr(list));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return list;
     }
 
@@ -69,8 +79,14 @@ public class RbacConfig {
         String httpMethod1 = restUri[0];
         String path1 = restUri[1];
         String javaMethodName = handlerMethod.toString().split("\\(")[0];
+
         Method method = handlerMethod.getMethod();
+        Operation operation = method.getAnnotation(Operation.class);
+        String description = operation.description();
+        String summary = operation.summary();
         UriSignature uriSignature = MethodSignatureResolver.parse(method);
+        uriSignature.setDescription(description);
+        uriSignature.setSummary(summary);
         uriSignature.setJavaMethod(javaMethodName);
         uriSignature.setHttpMethod(httpMethod1);
         uriSignature.setUri(path1);

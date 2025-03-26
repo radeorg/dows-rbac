@@ -21,7 +21,7 @@ public class MethodSignatureResolver {
         UriSignature result = new UriSignature();
 
         // 解析返回类型
-        result.setReturnType(parseReturnType(method.getGenericReturnType()));
+        result.setOutput(parseReturnType(method.getGenericReturnType()));
 
         // 解析参数类型
         Type[] genericParameterTypes = method.getGenericParameterTypes();
@@ -30,7 +30,7 @@ public class MethodSignatureResolver {
         for (int i = 0; i < genericParameterTypes.length; i++) {
             ParameterMeta paramMeta = parseParameterType(genericParameterTypes[i]);
             paramMeta.setName(parameters[i].getName()); // 设置参数名
-            result.getParameters().add(paramMeta);
+            result.getInputs().add(paramMeta);
         }
 
         return result;

@@ -33,10 +33,10 @@ public class MethodSignatureParser {
         String returnPart = methodMatcher.group(2);
         
         // 解析参数类型
-        parseParameterDescriptors(paramsPart, result.getParameters());
+        parseParameterDescriptors(paramsPart, result.getInputs());
         
         // 解析返回类型
-        result.setReturnType(parseReturnTypeDescriptor(returnPart));
+        result.setOutput(parseReturnTypeDescriptor(returnPart));
         
         return result;
     }
