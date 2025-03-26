@@ -4,7 +4,7 @@ import java.lang.reflect.*;
 
 public class GenericTypeParser {
 
-    public static void parseGenericReturnType(Method method) {
+    public static void parseGenericReturnType(Method method,MethodSignature methodSignature) {
         Type returnType = method.getGenericReturnType();
 
         if (returnType instanceof ParameterizedType) {

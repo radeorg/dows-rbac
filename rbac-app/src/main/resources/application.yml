@@ -13,7 +13,10 @@ spring:
     name: dows-rbac
     appId: 1
   profiles:
-    include: mysql,apidoc,mybatis,rbac-root,rbac-caffeine,rbac-rbac
+    include: mysql,apidoc,mybatis,rbac
     active: dev
 
-
+dows:
+  rbac:
+    uris:
+      scanPackages: org.dows.rbac.admin,org.dows.rbac.tenant

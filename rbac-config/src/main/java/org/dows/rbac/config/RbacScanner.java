@@ -1,14 +1,10 @@
 package org.dows.rbac.config;
 
 import cn.hutool.json.JSONUtil;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.dows.rbac.api.InitResources;
-import org.dows.rbac.api.InitUriResources;
+import lombok.extern.slf4j.Slf4j;
 import org.dows.rbac.api.annotation.Menu;
-import org.dows.rbac.api.annotation.Uri;
 import org.dows.rbac.config.a.RbacConfig;
-import org.dows.rbac.config.a.UriItem;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
@@ -16,14 +12,11 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -34,6 +27,7 @@ import java.util.*;
  * <author>      <time>      <version>    <desc>
  * 修改人姓名      修改时间        版本号       描述
  */
+@Slf4j
 @RequiredArgsConstructor
 @Configuration
 public class RbacScanner {
@@ -42,6 +36,9 @@ public class RbacScanner {
 
     @Value("${spring.application.appId}")
     private String appId;
+
+    @Value("${dows.rbac.uris.scanPackages}")
+    private List<String> scanPackages;
 
     /**
      * 扫描菜单
@@ -71,78 +68,39 @@ public class RbacScanner {
      * 扫描并返回所有需要权限处理的接口资源
      * 这里模拟扫描，借助 org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping
      */
-    @Bean("resources")
-    public List<InitResources> getAuthResources() {
+    @Bean("uriResources")
+    public List<MethodSignature> getAuthResources() {
         // 接下来要添加到数据库的资源
-        List<InitResources> list = new LinkedList<>();
-        List<UriItem> uriPackages = rbacConfig.getUriPackages();
+        List<MethodSignature> list = new LinkedList<>();
         // 拿到所有接口信息，并开始遍历
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
         handlerMethods.forEach((info, handlerMethod) -> {
-
-            //{GET [/v1/admin/menus/listByAppId]}
-            String key = info.toString();
-            String[] restUri = key.replaceAll("[\\{\\}\\[\\]]", "").split(" ");
-            String httpMethod1 = restUri[0];
-            String path1 = restUri[1];
-            String javaMethodName = handlerMethod.toString().split("\\(")[0];
-            Method method1 = handlerMethod.getMethod();
-
-            // 2. 获取返回类型
-            Class<?> returnType = method1.getReturnType();
-            Type genericReturnType = method1.getGenericReturnType();
-            try {
-                Field signatureField = Method.class.getDeclaredField("signature");
-                signatureField.setAccessible(true);
-                Object o = signatureField.get(method1);
-                MethodSignature result = MethodSignatureParser.parse( o.toString());
-                result.setJavaMethodName(javaMethodName);
-                result.setHttpMethodName(httpMethod1);
-                result.setPath(path1);
-                System.out.println(JSONUtil.toJsonPrettyStr(result));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
-
-            //(Lorg/dows/rbac/api/admin/request/FindRbacGroupRequest;)Ljava/util/List<Lorg/dows/rbac/entity/RbacGroupEntity;>;
-            //public org.dows.rbac.entity.RbacGroupEntity org.dows.rbac.admin.GroupRest.getById(java.lang.Long,java.lang.String)
-            //public java.util.List org.dows.rbac.admin.GroupRest.listByQuery(org.dows.rbac.api.admin.request.FindRbacGroupRequest)
-            //public java.util.List org.dows.rbac.admin.GroupRest.listByQuery(org.dows.rbac.api.admin.request.FindRbacGroupRequest)
-            //(Lorg/dows/rbac/api/admin/request/FindRbacGroupRequest;)Ljava/util/List<Lorg/dows/rbac/entity/RbacGroupEntity;>;
-            //(Ljava/util/List<Ljava/lang/Long;>;)V
             // 如果未配置则进行全表扫描
-            if (!CollectionUtils.isEmpty(uriPackages)) {
-                boolean matched = false;
-                for (UriItem uriItem : uriPackages) {
-                    List<String> scanPackages = uriItem.getScanPackages();
+            if (!CollectionUtils.isEmpty(scanPackages)) {
+                String packageName = handlerMethod.getBeanType().getPackageName();
+                for (String pkg : scanPackages) {
                     // 以什么开头
-                    for (String scanPackage : scanPackages) {
-                        if (handlerMethod.getBeanType().getPackageName().startsWith(scanPackage)) {
-                            matched = true;
-                            break;
-                        }
+                    if (packageName.startsWith(pkg)) {
+                        list.add(extracted(info, handlerMethod));
+                        break;
                     }
                 }
-                if (!matched) {
-                    return;
-                }
             }
-            // 拿到类(模块)上的权限注解（可填可不填）
+            /*// 拿到类(模块)上的权限注解（可填可不填）
             Class<?> beanType = handlerMethod.getBeanType();
             Menu menu = beanType.getAnnotation(Menu.class);
             Uri moduleUri = beanType.getAnnotation(Uri.class);
             // 拿到接口方法上的权限注解
-            Method method = handlerMethod.getMethod();
-            Uri methodUri = method.getAnnotation(Uri.class);
-            Operation operation = method.getAnnotation(Operation.class);
+            Method method1 = handlerMethod.getMethod();
+            Uri methodUri = method1.getAnnotation(Uri.class);
+            Operation operation = method1.getAnnotation(Operation.class);
             String name;
             // package.class.method or classAuth.code.methodAuth.code
             String code;
             if (operation != null) {
                 name = operation.summary();
             } else {
-                name = method.getName();
+                name = method1.getName();
             }
             if (moduleUri != null) {
                 code = moduleUri.code();
@@ -153,7 +111,7 @@ public class RbacScanner {
             if (methodUri != null) {
                 code = code + "." + methodUri.code();
             } else {
-                code = code + "." + method.getName();
+                code = code + "." + method1.getName();
             }
 
             // 拿到该接口方法的请求方式(GET、POST等)
@@ -176,9 +134,27 @@ public class RbacScanner {
                     .menuName(menu != null ? menu.name() : "")
                     .packageName(handlerMethod.getBeanType().getPackageName())
                     //.id() // 用code 代替确保唯一性
-                    .build();
-            list.add(resource);
+                    .build();*/
+           // MethodSignature methodSignature = extracted(info, handlerMethod);
+            //list.add(resource);
+//            log.info("akjdlajd:{}",handlerMethod.getBeanType());
         });
         return list;
+    }
+
+    private static MethodSignature extracted(RequestMappingInfo info, HandlerMethod handlerMethod) {
+        //{GET [/v1/admin/menus/listByAppId]}
+        String key = info.toString();
+        String[] restUri = key.replaceAll("[\\{\\}\\[\\]]", "").split(" ");
+        String httpMethod1 = restUri[0];
+        String path1 = restUri[1];
+        String javaMethodName = handlerMethod.toString().split("\\(")[0];
+        Method method = handlerMethod.getMethod();
+        MethodSignature methodSignature = MethodSignatureResolver.parse(method);
+        methodSignature.setJavaMethodName(javaMethodName);
+        methodSignature.setHttpMethodName(httpMethod1);
+        methodSignature.setPath(path1);
+        log.info("方法签名 {}", JSONUtil.toJsonPrettyStr(methodSignature));
+        return methodSignature;
     }
 }
