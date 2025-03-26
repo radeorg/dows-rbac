@@ -1,22 +1,16 @@
 package org.dows.rbac.biz.admin;
 
-import cn.hutool.core.collection.CollectionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.rbac.api.admin.request.SaveUrisRequest;
 import org.dows.rbac.api.admin.response.RbacUriResponse;
-import org.dows.rbac.api.annotation.RbacTrigger;
-import org.dows.rbac.api.constant.ResourceEnum;
-import org.dows.rbac.entity.RbacPermissionEntity;
-import org.dows.rbac.entity.RbacUriEntity;
-import org.dows.rbac.handler.PermissionHandler;
-import org.dows.rbac.handler.UrisHandler;
+import org.dows.rbac.handler.a.PermissionHandler;
+import org.dows.rbac.handler.a.UrisHandler;
 import org.dows.rbac.service.RbacUriService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author lait.zhang

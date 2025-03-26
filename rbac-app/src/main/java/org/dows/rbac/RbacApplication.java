@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @description
  * @date 2024年2月26日 上午9:44:35
  */
-@SpringBootApplication(scanBasePackages = {"org.dows.framework", "org.dows.uat", "org.dows.rbac", "org.dows.aac", "com.shdy.admin"})
+@SpringBootApplication
 public class RbacApplication {
     public static void main(String[] args) {
         SpringApplication.run(RbacApplication.class, args);

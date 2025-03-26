@@ -1,6 +1,5 @@
 package org.dows.rbac.biz.admin;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.tree.TreeNode;
 import lombok.RequiredArgsConstructor;
@@ -9,13 +8,9 @@ import org.dows.rbac.api.*;
 import org.dows.rbac.api.admin.request.*;
 import org.dows.rbac.api.admin.response.*;
 import org.dows.rbac.api.annotation.RbacTrigger;
-import org.dows.rbac.api.constant.ResourceEnum;
-import org.dows.rbac.api.constant.StateEnum;
 import org.dows.rbac.entity.RbacMenuEntity;
-import org.dows.rbac.entity.RbacPermissionEntity;
 import org.dows.rbac.entity.RbacRoleEntity;
-import org.dows.rbac.entity.RbacUriEntity;
-import org.dows.rbac.handler.*;
+import org.dows.rbac.handler.a.*;
 import org.dows.rbac.service.RbacMenuService;
 import org.dows.rbac.service.RbacPermissionService;
 import org.dows.rbac.service.RbacRoleService;
@@ -27,10 +22,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author lait.zhang

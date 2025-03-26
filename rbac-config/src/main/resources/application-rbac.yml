@@ -1,0 +1,4 @@
+dows:
+  rbac:
+    uris:
+      scanPackages: org.dows.rbac.rest.admin

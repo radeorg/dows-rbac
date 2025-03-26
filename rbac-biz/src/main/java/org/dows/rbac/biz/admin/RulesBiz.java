@@ -2,16 +2,13 @@ package org.dows.rbac.biz.admin;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.rbac.api.admin.request.FindRbacRulesRequest;
 import org.dows.rbac.api.admin.request.SaveRbacRulesRequest;
 import org.dows.rbac.api.admin.response.RbacRulesResponse;
-import org.dows.rbac.entity.RbacRuleEntity;
-import org.dows.rbac.handler.RuleHandler;
+import org.dows.rbac.handler.a.RuleHandler;
 import org.dows.rbac.service.RbacRuleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor

@@ -29,6 +29,8 @@ public interface RbacApi {
      */
     List<RbacRoleResponse> getRole(List<Long> roleIds);
 
+
+    //List<RbacUriResponse> getAllUri();
     /**
      * 获取菜单
      *

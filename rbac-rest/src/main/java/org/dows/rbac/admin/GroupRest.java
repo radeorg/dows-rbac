@@ -46,7 +46,7 @@ public class GroupRest {
      */
     @Operation(summary = "根据群组Id查询")
     @GetMapping("v1/admin/group/getById")
-    public RbacGroupEntity getById(@RequestParam Long rbacGroupId) {
+    public RbacGroupEntity getById(@RequestParam Long rbacGroupId,String aa) {
         return groupBiz.getById(rbacGroupId);
     }
 

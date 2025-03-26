@@ -1,11 +1,15 @@
 package org.dows.rbac.config;
 
+import cn.hutool.json.JSONUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.dows.rbac.api.InitResources;
 import org.dows.rbac.api.InitUriResources;
 import org.dows.rbac.api.annotation.Menu;
 import org.dows.rbac.api.annotation.Uri;
+import org.dows.rbac.config.a.RbacConfig;
+import org.dows.rbac.config.a.UriItem;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
@@ -17,7 +21,9 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -34,6 +40,9 @@ public class RbacScanner {
     private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
     private final RbacConfig rbacConfig;
 
+    @Value("${spring.application.appId}")
+    private String appId;
+
     /**
      * 扫描菜单
      *
@@ -41,7 +50,8 @@ public class RbacScanner {
      * @return
      */
     public Set<Class<?>> scanMenu(String basePackage) {
-        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+        ClassPathScanningCandidateComponentProvider provider =
+                new ClassPathScanningCandidateComponentProvider(false);
         provider.addIncludeFilter(new AnnotationTypeFilter(Menu.class));
         Set<BeanDefinition> components = provider.findCandidateComponents(basePackage);
 
@@ -65,11 +75,42 @@ public class RbacScanner {
     public List<InitResources> getAuthResources() {
         // 接下来要添加到数据库的资源
         List<InitResources> list = new LinkedList<>();
+        List<UriItem> uriPackages = rbacConfig.getUriPackages();
         // 拿到所有接口信息，并开始遍历
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
-        List<UriItem> uriPackages = rbacConfig.getUriPackages();
         handlerMethods.forEach((info, handlerMethod) -> {
-            String appId = "";
+
+            //{GET [/v1/admin/menus/listByAppId]}
+            String key = info.toString();
+            String[] restUri = key.replaceAll("[\\{\\}\\[\\]]", "").split(" ");
+            String httpMethod1 = restUri[0];
+            String path1 = restUri[1];
+            String javaMethodName = handlerMethod.toString().split("\\(")[0];
+            Method method1 = handlerMethod.getMethod();
+
+            // 2. 获取返回类型
+            Class<?> returnType = method1.getReturnType();
+            Type genericReturnType = method1.getGenericReturnType();
+            try {
+                Field signatureField = Method.class.getDeclaredField("signature");
+                signatureField.setAccessible(true);
+                Object o = signatureField.get(method1);
+                MethodSignature result = MethodSignatureParser.parse( o.toString());
+                result.setJavaMethodName(javaMethodName);
+                result.setHttpMethodName(httpMethod1);
+                result.setPath(path1);
+                System.out.println(JSONUtil.toJsonPrettyStr(result));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+
+            //(Lorg/dows/rbac/api/admin/request/FindRbacGroupRequest;)Ljava/util/List<Lorg/dows/rbac/entity/RbacGroupEntity;>;
+            //public org.dows.rbac.entity.RbacGroupEntity org.dows.rbac.admin.GroupRest.getById(java.lang.Long,java.lang.String)
+            //public java.util.List org.dows.rbac.admin.GroupRest.listByQuery(org.dows.rbac.api.admin.request.FindRbacGroupRequest)
+            //public java.util.List org.dows.rbac.admin.GroupRest.listByQuery(org.dows.rbac.api.admin.request.FindRbacGroupRequest)
+            //(Lorg/dows/rbac/api/admin/request/FindRbacGroupRequest;)Ljava/util/List<Lorg/dows/rbac/entity/RbacGroupEntity;>;
+            //(Ljava/util/List<Ljava/lang/Long;>;)V
             // 如果未配置则进行全表扫描
             if (!CollectionUtils.isEmpty(uriPackages)) {
                 boolean matched = false;
@@ -79,7 +120,6 @@ public class RbacScanner {
                     for (String scanPackage : scanPackages) {
                         if (handlerMethod.getBeanType().getPackageName().startsWith(scanPackage)) {
                             matched = true;
-                            appId = uriItem.getAppId();
                             break;
                         }
                     }

@@ -5,20 +5,14 @@ import org.dows.rbac.api.admin.request.FindRbacResourcesRequest;
 import org.dows.rbac.api.admin.request.SaveRbacModuleResourcesRequest;
 import org.dows.rbac.api.admin.request.SaveRbacResourcesRequest;
 import org.dows.rbac.api.admin.response.RbacResourcesQueryResponse;
-import org.dows.rbac.api.constant.ResourceEnum;
-import org.dows.rbac.api.constant.StateEnum;
-import org.dows.rbac.entity.RbacMenuEntity;
-import org.dows.rbac.entity.RbacUriEntity;
-import org.dows.rbac.handler.ResourcesHandler;
+import org.dows.rbac.handler.a.ResourcesHandler;
 import org.dows.rbac.service.RbacMenuService;
 import org.dows.rbac.service.RbacUriService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author lait.zhang

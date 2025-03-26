@@ -11,6 +11,7 @@ server:
 spring:
   application:
     name: dows-rbac
+    appId: 1
   profiles:
     include: mysql,apidoc,mybatis,rbac-root,rbac-caffeine,rbac-rbac
     active: dev
