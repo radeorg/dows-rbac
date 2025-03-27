@@ -30,7 +30,9 @@ public interface RbacApi {
     List<RbacRoleResponse> getRole(List<Long> roleIds);
 
 
-    //List<RbacUriResponse> getAllUri();
+    default List<RbacUriResponse> getAllUri(String appId) {
+        throw new RuntimeException("暂未实现");
+    }
     /**
      * 获取菜单
      *
