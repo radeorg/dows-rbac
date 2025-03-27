@@ -4,10 +4,13 @@ import cn.hutool.json.JSONUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dows.rbac.RbacInitializable;
+import org.dows.rbac.UriSignature;
+import org.dows.rbac.properties.RbacProperties;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
@@ -19,6 +22,8 @@ import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @description: </br>
@@ -31,35 +36,66 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
+@EnableConfigurationProperties(RbacProperties.class)
 public class RbacConfig {
     private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
+
+    private final RbacProperties rbacProperties;
+
+    private final RbacInitializable rbacInitializable;
 
     @Value("${spring.application.appId}")
     private String appId;
 
-    @Value("${dows.rbac.uris.scanPackages}")
-    private List<String> scanPackages;
+
+    /*@Value("${dows.rbac.uris.scanPackages}")
+    private List<String> scanPackages;*/
 
     /**
      * 扫描并返回所有需要权限处理的接口资源
      * 这里模拟扫描，借助 org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping
      */
-    @Bean("uriResources")
-    public List<UriSignature> getAuthResources() {
+    @Bean
+    public List<UriSignature> initRbacUri() {
+        List<UriSignature> list = buildRbacUri();
+        String initModel = rbacProperties.getUris().getInitModel();
+        if (initModel.equals("always")) {
+            rbacInitializable.initRbacUri(list);
+        }
+        return list;
+    }
+
+    public List<UriSignature> buildRbacUri() {
         // 接下来要添加到数据库的资源
         List<UriSignature> list = new LinkedList<>();
-        // 拿到所有接口信息，并开始遍历
+        List<String> scanPackages = rbacProperties.getUris().getScanPackages();
+        // 校验 scanPackages 是否有效
+        if (scanPackages == null || scanPackages.isEmpty()) {
+            log.warn("scanPackages is empty or null, no resources will be scanned.");
+            return list;
+        }
+
+        // 获取所有接口信息，并开始遍历
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
+        if (handlerMethods.isEmpty()) {
+            log.warn("No handler methods found in requestMappingHandlerMapping.");
+            return list;
+        }
+
+        Set<String> validPackages = scanPackages.stream()
+                .filter(pkg -> pkg != null && !pkg.trim().isEmpty())
+                .collect(Collectors.toSet());
+
         handlerMethods.forEach((info, handlerMethod) -> {
-            // 如果未配置则进行全表扫描
-            if (!CollectionUtils.isEmpty(scanPackages)) {
-                String packageName = handlerMethod.getBeanType().getPackageName();
-                for (String pkg : scanPackages) {
-                    // 以什么开头
-                    if (packageName.startsWith(pkg)) {
-                        list.add(extracted(info, handlerMethod));
-                        break;
-                    }
+            String packageName = handlerMethod.getBeanType().getPackageName();
+            if (validPackages.isEmpty()) {
+                return;
+            }
+
+            for (String pkg : validPackages) {
+                if (packageName.startsWith(pkg)) {
+                    list.add(extracted(info, handlerMethod));
+                    break;
                 }
             }
         });

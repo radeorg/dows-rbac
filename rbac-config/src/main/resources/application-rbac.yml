@@ -1,4 +1,7 @@
 dows:
   rbac:
     uris:
+      initModel: always
+      #      - module: name
+      #        scanPackages: org.dows.rbac
       scanPackages: org.dows.rbac

@@ -1,5 +1,8 @@
 package org.dows.rbac.config;
 
+import org.dows.rbac.ParameterMeta;
+import org.dows.rbac.UriSignature;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

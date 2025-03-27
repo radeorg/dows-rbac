@@ -1,20 +1,19 @@
 package org.dows.rbac.entity;
 
-import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import io.swagger.v3.oas.annotations.media.Schema;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-
-import java.lang.Long;
-import java.util.Date;
-import java.lang.String;
-import java.lang.Integer;
-
+import com.mybatisflex.core.keygen.KeyGenerators;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import org.dows.rade.crud.BaseEntity;
+
+import java.util.Date;
 
 /**
  * 接口集表 实体类。
@@ -22,7 +21,9 @@ import org.dows.rade.crud.BaseEntity;
  * @author lait.zhang@gmail.com
  * @since 1.0
  */
+@Accessors(chain = true)
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(name = "接口集表")
@@ -33,7 +34,7 @@ public class RbacUriEntity extends BaseEntity<RbacUriEntity> {
      * 接口ID
      */
     @Schema(description = "接口ID")
-    @Id(keyType = KeyType.Auto)
+    @Id(keyType = KeyType.Generator,value= KeyGenerators.flexId)
     private Long rbacUriId;
 
     /**
@@ -44,18 +45,53 @@ public class RbacUriEntity extends BaseEntity<RbacUriEntity> {
     private Long rbacMenuId;
 
     /**
-     * 接口名称
+     * 类方法
      */
-    @Schema(description = "接口名称")
-    @Column(value = "uri_name")
-    private String uriName;
+    @Schema(description = "类方法")
+    @Column(value = "java_method")
+    private String javaMethod;
 
     /**
-     * 接口CODE
+     * 请求方法
      */
-    @Schema(description = "接口CODE")
-    @Column(value = "uri_code")
-    private String uriCode;
+    @Schema(description = "请求方法")
+    @Column(value = "http_method")
+    private String httpMethod;
+
+    /**
+     * 资源标识
+     */
+    @Schema(description = "资源标识")
+    @Column(value = "uri")
+    private String uri;
+
+    /**
+     * 概要
+     */
+    @Schema(description = "概要")
+    @Column(value = "summary")
+    private String summary;
+
+    /**
+     * 描述
+     */
+    @Schema(description = "描述")
+    @Column(value = "description")
+    private String description;
+
+    /**
+     * 入参
+     */
+    @Schema(description = "入参")
+    @Column(value = "inputs")
+    private String inputs;
+
+    /**
+     * 出参
+     */
+    @Schema(description = "出参")
+    @Column(value = "output")
+    private String output;
 
     /**
      * 页面功能标签[按钮、链接]
@@ -63,13 +99,6 @@ public class RbacUriEntity extends BaseEntity<RbacUriEntity> {
     @Schema(description = "页面功能标签[按钮、链接]")
     @Column(value = "label")
     private String label;
-
-    /**
-     * 接口链接
-     */
-    @Schema(description = "接口链接")
-    @Column(value = "uri")
-    private String uri;
 
     /**
      * JSON数据集
@@ -91,13 +120,6 @@ public class RbacUriEntity extends BaseEntity<RbacUriEntity> {
     @Schema(description = "自定义")
     @Column(value = "customed")
     private Integer customed;
-
-    /**
-     * 描述
-     */
-    @Schema(description = "描述")
-    @Column(value = "description")
-    private String description;
 
     /**
      * 乐观锁, 默认: 0

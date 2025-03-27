@@ -1,20 +1,19 @@
 package org.dows.rbac.entity;
 
-import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import io.swagger.v3.oas.annotations.media.Schema;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-
-import java.lang.Long;
-import java.util.Date;
-import java.lang.String;
-import java.lang.Integer;
-
+import com.mybatisflex.core.keygen.KeyGenerators;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import org.dows.rade.crud.BaseEntity;
+
+import java.util.Date;
 
 /**
  * 资源组表 实体类。
@@ -22,7 +21,9 @@ import org.dows.rade.crud.BaseEntity;
  * @author lait.zhang@gmail.com
  * @since 1.0
  */
+@Accessors(chain = true)
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(name = "资源组表")
@@ -33,7 +34,7 @@ public class RbacGroupEntity extends BaseEntity<RbacGroupEntity> {
      * 角色权限组ID
      */
     @Schema(description = "角色权限组ID")
-    @Id(keyType = KeyType.Auto)
+    @Id(keyType = KeyType.Generator,value= KeyGenerators.flexId)
     private Long rbacGroupId;
 
     /**

@@ -1,12 +1,10 @@
 package org.dows.rbac.service.impl;
 
-
 import org.dows.rade.crud.BaseServiceImpl;
-import org.springframework.stereotype.Service;
-import org.dows.rbac.service.RbacUriService;
 import org.dows.rbac.entity.RbacUriEntity;
 import org.dows.rbac.mapper.RbacUriMapper;
-import com.mybatisflex.spring.service.impl.ServiceImpl;
+import org.dows.rbac.service.RbacUriService;
+import org.springframework.stereotype.Service;
 
 /**
  * 接口集表 服务层实现。

@@ -1,20 +1,18 @@
 package org.dows.rbac.entity;
 
-import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import io.swagger.v3.oas.annotations.media.Schema;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-
-import java.lang.Long;
-import java.util.Date;
-import java.lang.String;
-import java.lang.Integer;
-
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import org.dows.rade.crud.BaseEntity;
+
+import java.util.Date;
 
 /**
  * 菜单集表 实体类。
@@ -22,7 +20,9 @@ import org.dows.rade.crud.BaseEntity;
  * @author lait.zhang@gmail.com
  * @since 1.0
  */
+@Accessors(chain = true)
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(name = "菜单集表")

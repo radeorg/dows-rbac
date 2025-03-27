@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.dows.rbac.mapper.RbacMenuMapper">
+    <resultMap id="BaseResultMap" type="org.dows.rbac.entity.RbacMenuEntity">
+        <id column="rbac_menu_id" jdbcType="BIGINT" property="rbacMenuId"/>
+        <result column="rbac_role_id" jdbcType="BIGINT" property="rbacRoleId"/>
+        <result column="pid" jdbcType="BIGINT" property="pid"/>
+        <result column="menu_name" jdbcType="VARCHAR" property="menuName"/>
+        <result column="menu_code" jdbcType="VARCHAR" property="menuCode"/>
+        <result column="id_path" jdbcType="VARCHAR" property="idPath"/>
+        <result column="name_path" jdbcType="VARCHAR" property="namePath"/>
+        <result column="code_path" jdbcType="VARCHAR" property="codePath"/>
+        <result column="config_json" jdbcType="VARCHAR" property="configJson"/>
+        <result column="menu_icon" jdbcType="VARCHAR" property="menuIcon"/>
+        <result column="menu_path" jdbcType="VARCHAR" property="menuPath"/>
+        <result column="redirect" jdbcType="VARCHAR" property="redirect"/>
+        <result column="app_id" jdbcType="VARCHAR" property="appId"/>
+        <result column="seq" jdbcType="INTEGER" property="seq"/>
+        <result column="open_type" jdbcType="INTEGER" property="openType"/>
+        <result column="ver" jdbcType="INTEGER" property="ver"/>
+        <result column="visible" jdbcType="TINYINT" property="visible"/>
+        <result column="isframe" jdbcType="TINYINT" property="isframe"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+        <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        `rbac_menu_id`
+        , `rbac_role_id`, `pid`, `menu_name`, `menu_code`, `id_path`, `name_path`, `code_path`,
+        `config_json`, `menu_icon`, `menu_path`, `redirect`, `app_id`, `seq`, `open_type`, `ver`, `visible`, `isframe`,
+        `state`, `deleted`, `ts`
+    </sql>
+
+</mapper>

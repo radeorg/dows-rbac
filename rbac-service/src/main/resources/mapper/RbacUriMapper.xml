@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.dows.rbac.mapper.RbacUriMapper">
+    <resultMap id="BaseResultMap" type="org.dows.rbac.entity.RbacUriEntity">
+        <id column="rbac_uri_id" jdbcType="BIGINT" property="rbacUriId"/>
+        <result column="rbac_menu_id" jdbcType="BIGINT" property="rbacMenuId"/>
+        <result column="java_method" jdbcType="VARCHAR" property="javaMethod"/>
+        <result column="http_method" jdbcType="VARCHAR" property="httpMethod"/>
+        <result column="uri" jdbcType="VARCHAR" property="uri"/>
+        <result column="summary" jdbcType="VARCHAR" property="summary"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="inputs" jdbcType="VARCHAR" property="inputs"/>
+        <result column="output" jdbcType="VARCHAR" property="output"/>
+        <result column="label" jdbcType="VARCHAR" property="label"/>
+        <result column="config_json" jdbcType="VARCHAR" property="configJson"/>
+        <result column="app_id" jdbcType="VARCHAR" property="appId"/>
+        <result column="customed" jdbcType="INTEGER" property="customed"/>
+        <result column="ver" jdbcType="INTEGER" property="ver"/>
+        <result column="shared" jdbcType="TINYINT" property="shared"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+        <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        `rbac_uri_id`
+        , `rbac_menu_id`, `java_method`, `http_method`, `uri`, `summary`, `description`, `inputs`,
+        `output`, `label`, `config_json`, `app_id`, `customed`, `ver`, `shared`, `state`, `deleted`, `ts`
+    </sql>
+
+</mapper>

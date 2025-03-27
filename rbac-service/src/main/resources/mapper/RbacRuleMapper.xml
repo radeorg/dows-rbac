@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.dows.rbac.mapper.RbacRuleMapper">
+    <resultMap id="BaseResultMap" type="org.dows.rbac.entity.RbacRuleEntity">
+        <id column="rbac_rule_id" jdbcType="BIGINT" property="rbacRuleId"/>
+        <result column="rbac_role_id" jdbcType="BIGINT" property="rbacRoleId"/>
+        <result column="role_code" jdbcType="VARCHAR" property="roleCode"/>
+        <result column="rule_description" jdbcType="VARCHAR" property="ruleDescription"/>
+        <result column="data_table" jdbcType="VARCHAR" property="dataTable"/>
+        <result column="app_id" jdbcType="VARCHAR" property="appId"/>
+        <result column="expression" jdbcType="CLOB" property="expression"/>
+        <result column="selects" jdbcType="VARCHAR" property="selects"/>
+        <result column="data_scope" jdbcType="INTEGER" property="dataScop"/>
+        <result column="sorted" jdbcType="INTEGER" property="sorted"/>
+        <result column="last_expression" jdbcType="VARCHAR" property="lastExpression"/>
+        <result column="ver" jdbcType="INTEGER" property="ver"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+        <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        `rbac_rule_id`
+        , `rbac_role_id`, `role_code`, `rule_description`, `data_table`, `app_id`, `expression`,
+        `selects`, `data_scop`, `sorted`, `last_expression`, `ver`, `deleted`, `ts`
+    </sql>
+
+</mapper>

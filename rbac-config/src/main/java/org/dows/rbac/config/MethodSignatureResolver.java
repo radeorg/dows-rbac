@@ -1,5 +1,8 @@
 package org.dows.rbac.config;
 
+import org.dows.rbac.ParameterMeta;
+import org.dows.rbac.UriSignature;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

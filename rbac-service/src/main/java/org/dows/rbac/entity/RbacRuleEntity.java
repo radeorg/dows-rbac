@@ -1,20 +1,18 @@
 package org.dows.rbac.entity;
 
-import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import io.swagger.v3.oas.annotations.media.Schema;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-
-import java.lang.Long;
-import java.util.Date;
-import java.lang.String;
-import java.lang.Integer;
-
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import org.dows.rade.crud.BaseEntity;
+
+import java.util.Date;
 
 /**
  * 数据规则表 实体类。
@@ -22,7 +20,9 @@ import org.dows.rade.crud.BaseEntity;
  * @author lait.zhang@gmail.com
  * @since 1.0
  */
+@Accessors(chain = true)
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(name = "数据规则表")
@@ -86,11 +86,11 @@ public class RbacRuleEntity extends BaseEntity<RbacRuleEntity> {
     private String selects;
 
     /**
-     * 数据范围[0:所有数据,1:所在组及子组数据,2:所在组数据,3:本人数据
+     * 数据范围[0:所有数据,1:所在组及子组数据,2:所在组数据,3:本人数据]
      */
-    @Schema(description = "数据范围[0:所有数据,1:所在组及子组数据,2:所在组数据,3:本人数据")
-    @Column(value = "data_scop")
-    private Integer dataScop;
+    @Schema(description = "数据范围[0:所有数据,1:所在组及子组数据,2:所在组数据,3:本人数据]")
+    @Column(value = "data_scope")
+    private Integer dataScope;
 
     /**
      * 排序

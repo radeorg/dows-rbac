@@ -1,4 +1,4 @@
-package org.dows.rbac.config;
+package org.dows.rbac;
 
 import lombok.Data;
 

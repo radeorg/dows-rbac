@@ -2,11 +2,10 @@ package org.dows.rbac.service.impl;
 
 
 import org.dows.rade.crud.BaseServiceImpl;
-import org.springframework.stereotype.Service;
-import org.dows.rbac.service.RbacMenuService;
 import org.dows.rbac.entity.RbacMenuEntity;
 import org.dows.rbac.mapper.RbacMenuMapper;
-import com.mybatisflex.spring.service.impl.ServiceImpl;
+import org.dows.rbac.service.RbacMenuService;
+import org.springframework.stereotype.Service;
 
 /**
  * 菜单集表 服务层实现。

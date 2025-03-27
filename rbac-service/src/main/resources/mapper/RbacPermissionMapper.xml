@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.dows.rbac.mapper.RbacPermissionMapper">
+    <resultMap id="BaseResultMap" type="org.dows.rbac.entity.RbacPermissionEntity">
+        <id column="rbac_permission_id" jdbcType="BIGINT" property="rbacPermissionId"/>
+        <result column="rbac_role_id" jdbcType="BIGINT" property="rbacRoleId"/>
+        <result column="role_pid" jdbcType="BIGINT" property="rolePid"/>
+        <result column="resource_id" jdbcType="BIGINT" property="resourceId"/>
+        <result column="app_id" jdbcType="VARCHAR" property="appId"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="resource_table" jdbcType="VARCHAR" property="resourceTable"/>
+        <result column="resource_type" jdbcType="INTEGER" property="resourceType"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="ver" jdbcType="INTEGER" property="ver"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+        <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        `rbac_permission_id`
+        , `rbac_role_id`, `role_pid`, `resource_id`, `app_id`, `description`, `resource_table`,
+        `resource_type`, `state`, `ver`, `deleted`, `ts`
+    </sql>
+
+</mapper>
