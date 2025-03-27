@@ -47,10 +47,6 @@ public class RbacConfig {
     @Value("${spring.application.appId}")
     private String appId;
 
-
-    /*@Value("${dows.rbac.uris.scanPackages}")
-    private List<String> scanPackages;*/
-
     /**
      * 扫描并返回所有需要权限处理的接口资源
      * 这里模拟扫描，借助 org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping
