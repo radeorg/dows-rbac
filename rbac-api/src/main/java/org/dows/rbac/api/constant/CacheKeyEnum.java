@@ -1,9 +1,9 @@
 package org.dows.rbac.api.constant;
 
-public enum UserInfoEnum {
+public enum CacheKeyEnum {
     USER_INFO("aac:user:info", "用户信息"),
     ROLE_ID("aac:role:id", "角色ID"),
-    SECURITY_CONTEXT("aac:security:context", "上下文"),
+    SECURITY_CONTEXT("aac:token:context", "JwtToken对应的SecurityContext"),
     ROLE_MENU("rbac:role:menu", "菜单"),
     ROLE_URI("rbac:role:uri", "接口"),
     RBAC_ALL_ROLE_ID("rbac:all:role:id", "所有角色ids"),
@@ -13,13 +13,13 @@ public enum UserInfoEnum {
     private final String key;
     private final String description;
 
-    UserInfoEnum(String key, String description) {
+    CacheKeyEnum(String key, String description) {
         this.key = key;
         this.description = description;
     }
 
-    public static UserInfoEnum getByCode(String code) {
-        for (UserInfoEnum type : UserInfoEnum.values()) {
+    public static CacheKeyEnum getByCode(String code) {
+        for (CacheKeyEnum type : CacheKeyEnum.values()) {
             if (type.key.equals(code)) {
                 return type;
             }
@@ -29,6 +29,10 @@ public enum UserInfoEnum {
 
     public String getKey() {
         return key;
+    }
+
+    public String getCacheKey(String value) {
+        return String.format("%s:%s", key, value);
     }
 
     public String getDescription() {
