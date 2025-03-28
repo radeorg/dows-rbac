@@ -1,5 +1,6 @@
-package com.shdy.user;
+package org.dows.rbac.user;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,9 +12,10 @@ import org.springframework.context.annotation.Configuration;
  * <author>      <time>      <version>    <desc>
  * 修改人姓名      修改时间        版本号       描述
  */
+@MapperScan("org.dows.rbac.mapper")
 @Configuration
-@ComponentScan(basePackages = {"org.dows.rbac.mapper", "org.dows.rbac.repository",
-        "org.dows.rbac.config", "org.dows.rbac.biz", "org.dows.rbac.handler", "org.dows.rbac.rest.user"})
+@ComponentScan(basePackages = {"org.dows.rbac.mapper", "org.dows.rbac.service",
+        "org.dows.rbac.config", "org.dows.rbac.biz", "org.dows.rbac.handler", "org.dows.rbac.user"})
 public class RbacUserAutoConfig {
 }
 
