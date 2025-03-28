@@ -1,6 +1,6 @@
-package org.dows.rbac.config.a;
+package org.dows.rbac.a;
 
-import org.dows.rbac.UriSignature;
+import org.dows.rade.model.UriSignature;
 
 import java.lang.reflect.*;
 

@@ -1,30 +1,29 @@
-package org.dows.rbac.config.a;
+package org.dows.rbac.a;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @description: name: '系统管理'
- * code:  'system'
- * scanPackage:</br>
+ * @description: </br>
  * @author: lait.zhang@gmail.com
- * @date: 3/20/2024 9:12 AM
+ * @date: 3/20/2024 5:17 PM
  * @history: </br>
  * <author>      <time>      <version>    <desc>
  * 修改人姓名      修改时间        版本号       描述
  */
-@ConfigurationProperties(prefix = "dows.app")
+@ConfigurationProperties(prefix = "dows.uri")
 @Data
-public class AppSetting {
-    /**
-     * 启动时是否更新菜单
-     */
+public class UriSetting {
 
     @NestedConfigurationProperty
-    private List<AppItem> items;
-
+    private final List<UriItem> items = new ArrayList<>();
+    /**
+     * 启动时是否更新角色
+     */
+    private Boolean update = false;
 }
 

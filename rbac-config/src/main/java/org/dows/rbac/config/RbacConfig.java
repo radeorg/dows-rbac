@@ -1,15 +1,19 @@
 package org.dows.rbac.config;
 
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.json.JSONUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.rbac.RbacInitializable;
-import org.dows.rbac.UriSignature;
-import org.dows.rbac.properties.RbacProperties;
+import org.dows.rade.config.InitializeProperties;
+import org.dows.rade.init.InitializableResource;
+import org.dows.rade.init.ResourceInitializer;
+import org.dows.rade.model.UriSignature;
+import org.dows.rade.util.MethodSignatureResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
@@ -19,10 +23,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -36,35 +37,59 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
-@EnableConfigurationProperties(RbacProperties.class)
+@EnableConfigurationProperties(InitializeProperties.class)
 public class RbacConfig {
     private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
-    private final RbacProperties rbacProperties;
-
-    private final RbacInitializable rbacInitializable;
+    private final InitializeProperties initializeProperties;
+//    private final RbacInitializable rbacInitializable;
+//    private final ResourceInitializer rbacUriInitializer;
 
     @Value("${spring.application.appId}")
     private String appId;
 
+    @PostConstruct
+    public void init() {
+        Map<Class<? extends ResourceInitializer>, List<InitializableResource>> classListMap = buildResources();
+        List<Class<? extends ResourceInitializer>> initializers = initializeProperties.getInitializers();
+        for (Class<? extends ResourceInitializer> initializer : initializers) {
+            List<InitializableResource> initializedResources = classListMap.get(initializer);
+            ResourceInitializer bean = SpringUtil.getBean(initializer);
+            if (bean != null) {
+                bean.init(initializedResources);
+            }
+        }
+    }
     /**
      * 扫描并返回所有需要权限处理的接口资源
      * 这里模拟扫描，借助 org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping
      */
-    @Bean
-    public List<UriSignature> initRbacUri() {
-        List<UriSignature> list = buildRbacUri();
-        String initModel = rbacProperties.getUris().getInitModel();
-        if (initModel.equals("always")) {
-            rbacInitializable.initRbacUri(list);
+    //@Bean
+    public Map<Class<? extends ResourceInitializer>, List<InitializableResource>> buildResources() {
+        List<InitializeProperties.Resource> resources = initializeProperties.getResources();
+        Map<Class<? extends ResourceInitializer>, List<InitializableResource>> map = new HashMap<>();
+        for (InitializeProperties.Resource resource : resources) {
+            String beanName = StrUtil.lowerFirst(resource.getInitializer().getSimpleName());
+            try {
+                ResourceInitializer initializer = SpringUtil.getBean(beanName, ResourceInitializer.class);
+                if (initializer != null) {
+                    List<InitializableResource> uriSignatures =
+                            map.computeIfAbsent(resource.getInitializer(), k -> new LinkedList<>());
+                    uriSignatures.addAll(buildRbacUri(resource.getScanPackages()));
+                }
+            } catch (Exception e) {
+                log.error("", e);
+            }
         }
-        return list;
+        return map;
+        //resourceInitializer.init(list);
+        //return list;
     }
 
-    public List<UriSignature> buildRbacUri() {
+    public List<UriSignature> buildRbacUri(List<String> scanPackages) {
         // 接下来要添加到数据库的资源
         List<UriSignature> list = new LinkedList<>();
-        List<String> scanPackages = rbacProperties.getUris().getScanPackages();
+        //List<String> scanPackages = resource.getScanPackages();
         // 校验 scanPackages 是否有效
         if (scanPackages == null || scanPackages.isEmpty()) {
             log.warn("scanPackages is empty or null, no resources will be scanned.");
@@ -95,6 +120,8 @@ public class RbacConfig {
                 }
             }
         });
+
+
         // todo 保存数据库，生成 lock（如果初始话成功，不在初始化）
         try {
             Files.writeString(Path.of(System.getProperty("user.dir")).resolve("menu.json"),JSONUtil.toJsonPrettyStr(list));

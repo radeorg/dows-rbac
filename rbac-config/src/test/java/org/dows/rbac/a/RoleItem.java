@@ -1,4 +1,4 @@
-package org.dows.rbac.config.a;
+package org.dows.rbac.a;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

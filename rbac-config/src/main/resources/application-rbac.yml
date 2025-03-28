@@ -1,7 +1,17 @@
-dows:
-  rbac:
-    uris:
-      initModel: always
-      #      - module: name
-      #        scanPackages: org.dows.rbac
-      scanPackages: org.dows.rbac
+#dows:
+#  rbac:
+#    uris:
+#      initModel: always
+#      #      - module: name
+#      #        scanPackages: org.dows.rbac
+#      scanPackages: org.dows.rbac
+rade:
+  initialize:
+    enabled: false
+    initializers:
+      - org.dows.rbac.handler.RbacUriInitializer
+    resources:
+      - initModel: always
+        dataDir: /opt/rade/data
+        initializer: org.dows.rbac.handler.RbacUriInitializer
+        scanPackages: org.dows.rbac,org.dows.aac
