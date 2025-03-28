@@ -14,4 +14,4 @@ rade:
       - initModel: always
         dataDir: /opt/rade/data
         initializer: org.dows.rbac.handler.RbacUriInitializer
-        scanPackages: org.dows.rbac,org.dows.aac
+        scanPackages: org.dows.rbac,org.dows.aac,org.dows.hrm,org.dows.uim
