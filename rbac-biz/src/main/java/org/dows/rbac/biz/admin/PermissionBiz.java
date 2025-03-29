@@ -333,7 +333,6 @@ public class PermissionBiz implements RbacApi {
         return permissionHandler.listUrisByMenuId(rbacMenuId);
     }
 
-    @Override
     public List<RbacRoleResponse> getRole(List<Long> roleIds) {
 
        /* List<RbacRoleResponse> rbacRoleResponses = new ArrayList<>();

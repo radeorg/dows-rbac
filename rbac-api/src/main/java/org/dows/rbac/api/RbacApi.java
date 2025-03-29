@@ -5,7 +5,6 @@ import org.dows.rbac.api.admin.request.SaveRbacRoleRequest;
 import org.dows.rbac.api.admin.response.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @description: </br>
@@ -27,12 +26,22 @@ public interface RbacApi {
      *
      * @return
      */
-    List<RbacRoleResponse> getRole(List<Long> roleIds);
-
-
-    default List<RbacUriResponse> getAllUri(String appId) {
+    default List<RbacRoleResponse> getRoleInstanceByRoleIds(String appId, List<Long> roleIds) {
         throw new RuntimeException("暂未实现");
     }
+
+
+    default List<RbacUriResponse> getAllUrisByAppId(String appId) {
+        throw new RuntimeException("暂未实现");
+    }
+
+
+    default List<RoleResourceResponse> getUrisByRoleIds(String appId, List<Long> roleIds) {
+        throw new RuntimeException("暂未实现");
+    }
+
+
+
     /**
      * 获取菜单
      *
@@ -83,6 +92,6 @@ public interface RbacApi {
 
     void saveUri(List<InitUriResources> initUriResources);
 
-    Map<String, List<RbacUriRoleResponse>> getRoleUri();
+   // Map<String, List<RbacUriRoleResponse>> getRoleUri();
 
 }
