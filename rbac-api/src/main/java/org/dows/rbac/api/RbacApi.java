@@ -5,6 +5,7 @@ import org.dows.rbac.api.admin.request.SaveRbacRoleRequest;
 import org.dows.rbac.api.admin.response.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description: </br>
@@ -92,6 +93,6 @@ public interface RbacApi {
 
     void saveUri(List<InitUriResources> initUriResources);
 
-   // Map<String, List<RbacUriRoleResponse>> getRoleUri();
+    Map<String, List<RbacUriRoleResponse>> getRoleUri();
 
 }
