@@ -382,7 +382,6 @@ public class PermissionBiz implements RbacApi {
         urisHandler.saveOrUpdate(initUriResources);
     }
 
-    @Override
     public Map<String, List<RbacUriRoleResponse>> getRoleUri() {
         /*Map<String, List<RbacUriRoleResponse>> result = rbacContext.getRbacRoleUris();
         if (CollectionUtil.isNotEmpty(result)) {
