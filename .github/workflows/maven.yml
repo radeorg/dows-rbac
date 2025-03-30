@@ -1,4 +1,4 @@
-name: dows-hrm
+name: dows-rbac
 
 on:
   push:
