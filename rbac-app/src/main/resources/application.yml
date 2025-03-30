@@ -13,7 +13,7 @@ spring:
     name: dows-rbac
     appId: 1
   profiles:
-    include: mysql,apidoc,mybatis,rbac
+    include: mysql,apidoc,mybatis,rbac,rade
     active: dev
 
 dows:
