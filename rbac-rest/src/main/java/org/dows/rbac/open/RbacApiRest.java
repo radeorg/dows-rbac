@@ -13,6 +13,7 @@ import org.dows.rbac.api.admin.response.*;
 import org.dows.rbac.biz.RbacApiBiz;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,19 +28,19 @@ public class RbacApiRest implements RbacApi {
 
     @GetMapping("/get/RoleInstance")
     @Operation(summary = "通过RoleId获取RbacRole实例")
-    public List<RbacRoleResponse> getRoleInstanceByRoleIds(String appId, List<Long> roleIds) {
+    public List<RbacRoleResponse> getRoleInstanceByRoleIds(@RequestParam String appId, @RequestParam List<Long> roleIds) {
         return rbacApiBiz.getRoleInstanceByRoleIds(appId, roleIds);
     }
 
     @GetMapping("/get/AllUris")
     @Operation(summary = "通过AppId获取RbacUri资源")
-    public List<RbacUriResponse> getAllUrisByAppId(String appId) {
+    public List<RbacUriResponse> getAllUrisByAppId(@RequestParam String appId) {
         return rbacApiBiz.getAllUrisByAppId(appId);
     }
 
     @GetMapping("/get/RoleUris")
     @Operation(summary = "通过RoleIds获取RbacUri资源")
-    public List<RoleResourceResponse> getUrisByRoleIds(String appId, List<Long> roleIds) {
+    public List<RoleResourceResponse> getUrisByRoleIds(@RequestParam String appId, @RequestParam List<Long> roleIds) {
         return rbacApiBiz.getUrisByRoleIds(appId, roleIds);
     }
 

@@ -1,44 +1,6 @@
 [
     {
         "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.ModuleRest#deleteByIds",
-        "httpMethod": "DELETE",
-        "uri": "/v1/admin/module/deleteById",
-        "summary": "根据Id删除",
-        "description": "",
-        "inputs": [
-            {
-                "name": "rbacModuleIds",
-                "dataType": "java.util.List",
-                "collectionType": "java.util.List",
-                "genericType": "java.lang.Long"
-            }
-        ],
-        "output": {
-            "dataType": "void"
-        }
-    },
-    {
-        "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.MenusRest#deleteByIds",
-        "httpMethod": "DELETE",
-        "uri": "/v1/admin/menus/deleteById",
-        "summary": "根据ID删除菜单集",
-        "description": "",
-        "inputs": [
-            {
-                "name": "rbacMenusIds",
-                "dataType": "java.util.List",
-                "collectionType": "java.util.List",
-                "genericType": "java.lang.Long"
-            }
-        ],
-        "output": {
-            "dataType": "void"
-        }
-    },
-    {
-        "appId": "1",
         "javaMethod": "org.dows.rbac.admin.RulesRest#deleteByIds",
         "httpMethod": "DELETE",
         "uri": "/v1/admin/rules/deleteById",
@@ -47,44 +9,6 @@
         "inputs": [
             {
                 "name": "rbacRulesIds",
-                "dataType": "java.util.List",
-                "collectionType": "java.util.List",
-                "genericType": "java.lang.Long"
-            }
-        ],
-        "output": {
-            "dataType": "void"
-        }
-    },
-    {
-        "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.RulesRest#save",
-        "httpMethod": "POST",
-        "uri": "/v1/admin/rules/save",
-        "summary": "批量更新和插入",
-        "description": "",
-        "inputs": [
-            {
-                "name": "saveRbacRules",
-                "dataType": "java.util.List",
-                "collectionType": "java.util.List",
-                "genericType": "org.dows.rbac.api.admin.request.SaveRbacRulesRequest"
-            }
-        ],
-        "output": {
-            "dataType": "void"
-        }
-    },
-    {
-        "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.UrisRest#deleteByIds",
-        "httpMethod": "DELETE",
-        "uri": "/v1/admin/uris/deleteById",
-        "summary": "删除",
-        "description": "",
-        "inputs": [
-            {
-                "name": "uriIds",
                 "dataType": "java.util.List",
                 "collectionType": "java.util.List",
                 "genericType": "java.lang.Long"
@@ -111,85 +35,17 @@
     },
     {
         "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.PermissionRest#listMenusTree",
-        "httpMethod": "GET",
-        "uri": "/v1/admin/permission/listMenusTree",
-        "summary": "查询权限树",
-        "description": "",
-        "inputs": [
-        ],
-        "output": {
-            "dataType": "java.util.List",
-            "collectionType": "java.util.List",
-            "genericType": "org.dows.rbac.api.admin.response.RbacMenusResponse"
-        }
-    },
-    {
-        "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.MenusRest#listByAppId",
-        "httpMethod": "GET",
-        "uri": "/v1/admin/menus/listByAppId",
-        "summary": "根据appid查询应用的菜单集",
-        "description": "",
-        "inputs": [
-            {
-                "name": "appId",
-                "dataType": "java.lang.String"
-            }
-        ],
-        "output": {
-            "dataType": "java.util.List",
-            "collectionType": "java.util.List",
-            "genericType": "org.dows.rbac.api.admin.response.RbacMenusResponse"
-        }
-    },
-    {
-        "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.RoleRest#listByAppId",
-        "httpMethod": "GET",
-        "uri": "/v1/admin/role/listByAppId",
-        "summary": "通过appid查询角色",
-        "description": "",
-        "inputs": [
-            {
-                "name": "appId",
-                "dataType": "java.lang.String"
-            }
-        ],
-        "output": {
-            "dataType": "java.util.List",
-            "collectionType": "java.util.List",
-            "genericType": "org.dows.rbac.api.admin.response.RbacRoleResponse"
-        }
-    },
-    {
-        "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.UrisRest#listByAppId",
-        "httpMethod": "GET",
-        "uri": "/v1/admin/uris/listByAppId",
-        "summary": "根据appid查询应用的接口集",
-        "description": "",
-        "inputs": [
-        ],
-        "output": {
-            "dataType": "java.util.List",
-            "collectionType": "java.util.List",
-            "genericType": "org.dows.rbac.api.admin.response.RbacUriResponse"
-        }
-    },
-    {
-        "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.PermissionRest#save",
+        "javaMethod": "org.dows.rbac.admin.RulesRest#save",
         "httpMethod": "POST",
-        "uri": "/v1/admin/permission/save",
-        "summary": "保存权限",
+        "uri": "/v1/admin/rules/save",
+        "summary": "批量更新和插入",
         "description": "",
         "inputs": [
             {
-                "name": "saveRbacPermission",
+                "name": "saveRbacRules",
                 "dataType": "java.util.List",
                 "collectionType": "java.util.List",
-                "genericType": "org.dows.rbac.api.admin.request.SaveRbacPermissionRequest"
+                "genericType": "org.dows.rbac.api.admin.request.SaveRbacRulesRequest"
             }
         ],
         "output": {
@@ -198,17 +54,53 @@
     },
     {
         "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.GroupRest#deleteByIds",
-        "httpMethod": "DELETE",
-        "uri": "/v1/admin/group/deleteById",
-        "summary": "根据Id删除",
+        "javaMethod": "org.dows.rbac.admin.ModuleRest#listByQuery",
+        "httpMethod": "POST",
+        "uri": "/v1/admin/module/listByQuery",
+        "summary": "根据条件查询",
         "description": "",
         "inputs": [
             {
-                "name": "rbacGroupIds",
+                "name": "findRbacModule",
+                "dataType": "org.dows.rbac.api.admin.request.FindRbacModuleRequest"
+            }
+        ],
+        "output": {
+            "dataType": "java.util.List",
+            "collectionType": "java.util.List",
+            "genericType": "org.dows.rbac.api.admin.response.RbacMoudleQueryResponse"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.admin.ModuleRest#getById",
+        "httpMethod": "GET",
+        "uri": "/v1/admin/module/getById",
+        "summary": "根据模块Id查询",
+        "description": "",
+        "inputs": [
+            {
+                "name": "rbacModuleId",
+                "dataType": "java.lang.Long"
+            }
+        ],
+        "output": {
+            "dataType": "org.dows.rbac.api.admin.response.RbacMoudleQueryResponse"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.admin.ModuleRest#save",
+        "httpMethod": "POST",
+        "uri": "/v1/admin/module/save",
+        "summary": "保存权限模块",
+        "description": "",
+        "inputs": [
+            {
+                "name": "saveRbacModule",
                 "dataType": "java.util.List",
                 "collectionType": "java.util.List",
-                "genericType": "java.lang.Long"
+                "genericType": "org.dows.rbac.api.admin.request.SaveRbacModuleRequest"
             }
         ],
         "output": {
@@ -238,38 +130,321 @@
     },
     {
         "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.ModuleRest#getById",
+        "javaMethod": "org.dows.rbac.admin.RoleRest#listByAppId",
         "httpMethod": "GET",
-        "uri": "/v1/admin/module/getById",
-        "summary": "根据模块Id查询",
+        "uri": "/v1/admin/role/listByAppId",
+        "summary": "通过appid查询角色",
         "description": "",
         "inputs": [
             {
-                "name": "rbacModuleId",
-                "dataType": "java.lang.Long"
-            }
-        ],
-        "output": {
-            "dataType": "org.dows.rbac.api.admin.response.RbacMoudleQueryResponse"
-        }
-    },
-    {
-        "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.ModuleRest#listByQuery",
-        "httpMethod": "POST",
-        "uri": "/v1/admin/module/listByQuery",
-        "summary": "根据条件查询",
-        "description": "",
-        "inputs": [
-            {
-                "name": "findRbacModule",
-                "dataType": "org.dows.rbac.api.admin.request.FindRbacModuleRequest"
+                "name": "appId",
+                "dataType": "java.lang.String"
             }
         ],
         "output": {
             "dataType": "java.util.List",
             "collectionType": "java.util.List",
-            "genericType": "org.dows.rbac.api.admin.response.RbacMoudleQueryResponse"
+            "genericType": "org.dows.rbac.api.admin.response.RbacRoleResponse"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.open.RbacApiRest#getRoleInstanceByRoleIds",
+        "httpMethod": "GET",
+        "uri": "/open/rbac/get/RoleInstance",
+        "summary": "通过RoleId获取RbacRole实例",
+        "description": "",
+        "inputs": [
+            {
+                "name": "appId",
+                "dataType": "java.lang.String"
+            },
+            {
+                "name": "roleIds",
+                "dataType": "java.util.List",
+                "collectionType": "java.util.List",
+                "genericType": "java.lang.Long"
+            }
+        ],
+        "output": {
+            "dataType": "java.util.List",
+            "collectionType": "java.util.List",
+            "genericType": "org.dows.rbac.api.admin.response.RbacRoleResponse"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.admin.RoleRest#save",
+        "httpMethod": "POST",
+        "uri": "/v1/admin/role/save",
+        "summary": "创建或更新角色",
+        "description": "",
+        "inputs": [
+            {
+                "name": "saveRbacRole",
+                "dataType": "java.util.List",
+                "collectionType": "java.util.List",
+                "genericType": "org.dows.rbac.api.admin.request.SaveRbacRoleRequest"
+            }
+        ],
+        "output": {
+            "dataType": "void"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.open.RbacApiRest#getAllUrisByAppId",
+        "httpMethod": "GET",
+        "uri": "/open/rbac/get/AllUris",
+        "summary": "通过AppId获取RbacUri资源",
+        "description": "",
+        "inputs": [
+            {
+                "name": "appId",
+                "dataType": "java.lang.String"
+            }
+        ],
+        "output": {
+            "dataType": "java.util.List",
+            "collectionType": "java.util.List",
+            "genericType": "org.dows.rbac.api.admin.response.RbacUriResponse"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.admin.PermissionRest#listMenusByRoleId",
+        "httpMethod": "GET",
+        "uri": "/v1/admin/permission/listMenusByRoleId",
+        "summary": "根据角色id查询应用的菜单集",
+        "description": "",
+        "inputs": [
+            {
+                "name": "rbacRoleId",
+                "dataType": "java.lang.Long"
+            }
+        ],
+        "output": {
+            "dataType": "java.util.List",
+            "collectionType": "java.util.List",
+            "genericType": "org.dows.rbac.api.admin.response.RbacMenusResponse"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.tenant.TenantGroupRest#save",
+        "httpMethod": "POST",
+        "uri": "/v1/tenant/group/save",
+        "summary": "批量更新和插入",
+        "description": "",
+        "inputs": [
+            {
+                "name": "saveRbacGroup",
+                "dataType": "java.util.List",
+                "collectionType": "java.util.List",
+                "genericType": "org.dows.rbac.api.admin.request.SaveRbacGroupRequest"
+            }
+        ],
+        "output": {
+            "dataType": "void"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.admin.MenusRest#listByAppId",
+        "httpMethod": "GET",
+        "uri": "/v1/admin/menus/listByAppId",
+        "summary": "根据appid查询应用的菜单集",
+        "description": "",
+        "inputs": [
+            {
+                "name": "appId",
+                "dataType": "java.lang.String"
+            }
+        ],
+        "output": {
+            "dataType": "java.util.List",
+            "collectionType": "java.util.List",
+            "genericType": "org.dows.rbac.api.admin.response.RbacMenusResponse"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.admin.PermissionRest#listUrisByMenuId",
+        "httpMethod": "GET",
+        "uri": "/v1/admin/permission/listUrisByMenuId",
+        "summary": "根据菜单查询接口集",
+        "description": "",
+        "inputs": [
+            {
+                "name": "rbacMenuId",
+                "dataType": "java.lang.Long"
+            }
+        ],
+        "output": {
+            "dataType": "java.util.List",
+            "collectionType": "java.util.List",
+            "genericType": "org.dows.rbac.api.admin.response.RbacUriResponse"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.admin.MenusRest#deleteByIds",
+        "httpMethod": "DELETE",
+        "uri": "/v1/admin/menus/deleteById",
+        "summary": "根据ID删除菜单集",
+        "description": "",
+        "inputs": [
+            {
+                "name": "rbacMenusIds",
+                "dataType": "java.util.List",
+                "collectionType": "java.util.List",
+                "genericType": "java.lang.Long"
+            }
+        ],
+        "output": {
+            "dataType": "void"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.admin.PermissionRest#save",
+        "httpMethod": "POST",
+        "uri": "/v1/admin/permission/save",
+        "summary": "保存权限",
+        "description": "",
+        "inputs": [
+            {
+                "name": "saveRbacPermission",
+                "dataType": "java.util.List",
+                "collectionType": "java.util.List",
+                "genericType": "org.dows.rbac.api.admin.request.SaveRbacPermissionRequest"
+            }
+        ],
+        "output": {
+            "dataType": "void"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.admin.UrisRest#listByAppId",
+        "httpMethod": "GET",
+        "uri": "/v1/admin/uris/listByAppId",
+        "summary": "根据appid查询应用的接口集",
+        "description": "",
+        "inputs": [
+        ],
+        "output": {
+            "dataType": "java.util.List",
+            "collectionType": "java.util.List",
+            "genericType": "org.dows.rbac.api.admin.response.RbacUriResponse"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.admin.RulesRest#listByAppId",
+        "httpMethod": "GET",
+        "uri": "/v1/admin/rules/listByAppId",
+        "summary": "根据appid查询应用的数据规则集",
+        "description": "",
+        "inputs": [
+            {
+                "name": "appId",
+                "dataType": "java.lang.String"
+            }
+        ],
+        "output": {
+            "dataType": "java.util.List",
+            "collectionType": "java.util.List",
+            "genericType": "org.dows.rbac.api.admin.response.RbacRulesResponse"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.admin.ModuleRest#deleteByIds",
+        "httpMethod": "DELETE",
+        "uri": "/v1/admin/module/deleteById",
+        "summary": "根据Id删除",
+        "description": "",
+        "inputs": [
+            {
+                "name": "rbacModuleIds",
+                "dataType": "java.util.List",
+                "collectionType": "java.util.List",
+                "genericType": "java.lang.Long"
+            }
+        ],
+        "output": {
+            "dataType": "void"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.admin.PermissionRest#listAccountMenusTree",
+        "httpMethod": "GET",
+        "uri": "/v1/admin/permission/listAccountMenusTree",
+        "summary": "查询账号菜单树",
+        "description": "",
+        "inputs": [
+        ],
+        "output": {
+            "dataType": "java.util.List",
+            "collectionType": "java.util.List",
+            "genericType": "org.dows.rbac.api.admin.response.RbacMenusResponse"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.admin.GroupRest#listByQuery",
+        "httpMethod": "POST",
+        "uri": "/v1/admin/group/listByQuery",
+        "summary": "根据条件查询",
+        "description": "",
+        "inputs": [
+            {
+                "name": "findRbacGroup",
+                "dataType": "org.dows.rbac.api.admin.request.FindRbacGroupRequest"
+            }
+        ],
+        "output": {
+            "dataType": "java.util.List",
+            "collectionType": "java.util.List",
+            "genericType": "org.dows.rbac.entity.RbacGroupEntity"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.admin.GroupRest#deleteByIds",
+        "httpMethod": "DELETE",
+        "uri": "/v1/admin/group/deleteById",
+        "summary": "根据Id删除",
+        "description": "",
+        "inputs": [
+            {
+                "name": "rbacGroupIds",
+                "dataType": "java.util.List",
+                "collectionType": "java.util.List",
+                "genericType": "java.lang.Long"
+            }
+        ],
+        "output": {
+            "dataType": "void"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.admin.PermissionRest#savePermissionModule",
+        "httpMethod": "POST",
+        "uri": "/v1/admin/permission/savePermissionModule",
+        "summary": "角色通过权限模块添加权限",
+        "description": "",
+        "inputs": [
+            {
+                "name": "saveRbacPermissionModuleRequest",
+                "dataType": "org.dows.rbac.api.admin.request.SaveRbacPermissionModuleRequest"
+            }
+        ],
+        "output": {
+            "dataType": "void"
         }
     },
     {
@@ -312,25 +487,48 @@
     },
     {
         "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.PermissionRest#listAccountMenusTree",
-        "httpMethod": "GET",
-        "uri": "/v1/admin/permission/listAccountMenusTree",
-        "summary": "查询账号菜单树",
+        "javaMethod": "org.dows.rbac.admin.GroupRest#save",
+        "httpMethod": "POST",
+        "uri": "/v1/admin/group/save",
+        "summary": "批量更新和插入",
         "description": "",
         "inputs": [
+            {
+                "name": "saveRbacGroup",
+                "dataType": "java.util.List",
+                "collectionType": "java.util.List",
+                "genericType": "org.dows.rbac.api.admin.request.SaveRbacGroupRequest"
+            }
         ],
         "output": {
-            "dataType": "java.util.List",
-            "collectionType": "java.util.List",
-            "genericType": "org.dows.rbac.api.admin.response.RbacMenusResponse"
+            "dataType": "void"
         }
     },
     {
         "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.PermissionRest#listMenusByRoleId",
+        "javaMethod": "org.dows.rbac.admin.UrisRest#deleteByIds",
+        "httpMethod": "DELETE",
+        "uri": "/v1/admin/uris/deleteById",
+        "summary": "删除",
+        "description": "",
+        "inputs": [
+            {
+                "name": "uriIds",
+                "dataType": "java.util.List",
+                "collectionType": "java.util.List",
+                "genericType": "java.lang.Long"
+            }
+        ],
+        "output": {
+            "dataType": "void"
+        }
+    },
+    {
+        "appId": "1",
+        "javaMethod": "org.dows.rbac.admin.PermissionRest#listUrisByRoleId",
         "httpMethod": "GET",
-        "uri": "/v1/admin/permission/listMenusByRoleId",
-        "summary": "根据角色id查询应用的菜单集",
+        "uri": "/v1/admin/permission/listUrisByRoleId",
+        "summary": "根据角色id查询应用的接口集",
         "description": "",
         "inputs": [
             {
@@ -341,62 +539,24 @@
         "output": {
             "dataType": "java.util.List",
             "collectionType": "java.util.List",
-            "genericType": "org.dows.rbac.api.admin.response.RbacMenusResponse"
+            "genericType": "org.dows.rbac.api.admin.response.RbacUriResponse"
         }
     },
     {
         "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.RoleRest#save",
+        "javaMethod": "org.dows.rbac.admin.PermissionRest#savePermissionMenu",
         "httpMethod": "POST",
-        "uri": "/v1/admin/role/save",
-        "summary": "创建或更新角色",
+        "uri": "/v1/admin/permission/savePermissionMenu",
+        "summary": "角色通过菜单来添加权限",
         "description": "",
         "inputs": [
             {
-                "name": "saveRbacRole",
-                "dataType": "java.util.List",
-                "collectionType": "java.util.List",
-                "genericType": "org.dows.rbac.api.admin.request.SaveRbacRoleRequest"
+                "name": "saveRbacPermissionMenuRequest",
+                "dataType": "org.dows.rbac.api.admin.request.SaveRbacPermissionMenuRequest"
             }
         ],
         "output": {
             "dataType": "void"
-        }
-    },
-    {
-        "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.PermissionRest#savePermissionModule",
-        "httpMethod": "POST",
-        "uri": "/v1/admin/permission/savePermissionModule",
-        "summary": "角色通过权限模块添加权限",
-        "description": "",
-        "inputs": [
-            {
-                "name": "saveRbacPermissionModuleRequest",
-                "dataType": "org.dows.rbac.api.admin.request.SaveRbacPermissionModuleRequest"
-            }
-        ],
-        "output": {
-            "dataType": "void"
-        }
-    },
-    {
-        "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.RulesRest#listByAppId",
-        "httpMethod": "GET",
-        "uri": "/v1/admin/rules/listByAppId",
-        "summary": "根据appid查询应用的数据规则集",
-        "description": "",
-        "inputs": [
-            {
-                "name": "appId",
-                "dataType": "java.lang.String"
-            }
-        ],
-        "output": {
-            "dataType": "java.util.List",
-            "collectionType": "java.util.List",
-            "genericType": "org.dows.rbac.api.admin.response.RbacRulesResponse"
         }
     },
     {
@@ -422,133 +582,42 @@
     },
     {
         "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.GroupRest#listByQuery",
-        "httpMethod": "POST",
-        "uri": "/v1/admin/group/listByQuery",
-        "summary": "根据条件查询",
-        "description": "",
-        "inputs": [
-            {
-                "name": "findRbacGroup",
-                "dataType": "org.dows.rbac.api.admin.request.FindRbacGroupRequest"
-            }
-        ],
-        "output": {
-            "dataType": "java.util.List",
-            "collectionType": "java.util.List",
-            "genericType": "org.dows.rbac.entity.RbacGroupEntity"
-        }
-    },
-    {
-        "appId": "1",
-        "javaMethod": "org.dows.rbac.tenant.TenantGroupRest#save",
-        "httpMethod": "POST",
-        "uri": "/v1/tenant/group/save",
-        "summary": "批量更新和插入",
-        "description": "",
-        "inputs": [
-            {
-                "name": "saveRbacGroup",
-                "dataType": "java.util.List",
-                "collectionType": "java.util.List",
-                "genericType": "org.dows.rbac.api.admin.request.SaveRbacGroupRequest"
-            }
-        ],
-        "output": {
-            "dataType": "void"
-        }
-    },
-    {
-        "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.ModuleRest#save",
-        "httpMethod": "POST",
-        "uri": "/v1/admin/module/save",
-        "summary": "保存权限模块",
-        "description": "",
-        "inputs": [
-            {
-                "name": "saveRbacModule",
-                "dataType": "java.util.List",
-                "collectionType": "java.util.List",
-                "genericType": "org.dows.rbac.api.admin.request.SaveRbacModuleRequest"
-            }
-        ],
-        "output": {
-            "dataType": "void"
-        }
-    },
-    {
-        "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.GroupRest#save",
-        "httpMethod": "POST",
-        "uri": "/v1/admin/group/save",
-        "summary": "批量更新和插入",
-        "description": "",
-        "inputs": [
-            {
-                "name": "saveRbacGroup",
-                "dataType": "java.util.List",
-                "collectionType": "java.util.List",
-                "genericType": "org.dows.rbac.api.admin.request.SaveRbacGroupRequest"
-            }
-        ],
-        "output": {
-            "dataType": "void"
-        }
-    },
-    {
-        "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.PermissionRest#savePermissionMenu",
-        "httpMethod": "POST",
-        "uri": "/v1/admin/permission/savePermissionMenu",
-        "summary": "角色通过菜单来添加权限",
-        "description": "",
-        "inputs": [
-            {
-                "name": "saveRbacPermissionMenuRequest",
-                "dataType": "org.dows.rbac.api.admin.request.SaveRbacPermissionMenuRequest"
-            }
-        ],
-        "output": {
-            "dataType": "void"
-        }
-    },
-    {
-        "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.PermissionRest#listUrisByMenuId",
+        "javaMethod": "org.dows.rbac.admin.PermissionRest#listMenusTree",
         "httpMethod": "GET",
-        "uri": "/v1/admin/permission/listUrisByMenuId",
-        "summary": "根据菜单查询接口集",
+        "uri": "/v1/admin/permission/listMenusTree",
+        "summary": "查询权限树",
         "description": "",
         "inputs": [
-            {
-                "name": "rbacMenuId",
-                "dataType": "java.lang.Long"
-            }
         ],
         "output": {
             "dataType": "java.util.List",
             "collectionType": "java.util.List",
-            "genericType": "org.dows.rbac.api.admin.response.RbacUriResponse"
+            "genericType": "org.dows.rbac.api.admin.response.RbacMenusResponse"
         }
     },
     {
         "appId": "1",
-        "javaMethod": "org.dows.rbac.admin.PermissionRest#listUrisByRoleId",
+        "javaMethod": "org.dows.rbac.open.RbacApiRest#getUrisByRoleIds",
         "httpMethod": "GET",
-        "uri": "/v1/admin/permission/listUrisByRoleId",
-        "summary": "根据角色id查询应用的接口集",
+        "uri": "/open/rbac/get/RoleUris",
+        "summary": "通过RoleIds获取RbacUri资源",
         "description": "",
         "inputs": [
             {
-                "name": "rbacRoleId",
-                "dataType": "java.lang.Long"
+                "name": "appId",
+                "dataType": "java.lang.String"
+            },
+            {
+                "name": "roleIds",
+                "dataType": "java.util.List",
+                "collectionType": "java.util.List",
+                "genericType": "java.lang.Long"
             }
         ],
         "output": {
             "dataType": "java.util.List",
             "collectionType": "java.util.List",
-            "genericType": "org.dows.rbac.api.admin.response.RbacUriResponse"
+            "genericType": "org.dows.rbac.api.RoleResourceResponse"
         }
     }
 ]

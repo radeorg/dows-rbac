@@ -55,7 +55,11 @@ public class RbacApiBiz implements RbacApi {
         }
         List<RbacUriEntity> rbacRoleEntities = QueryChain.of(RbacUriEntity.class)
                 .eq(RbacUriEntity::getAppId, appId, Objects.nonNull(appId)).list();
-        BeanUtils.copyProperties(rbacRoleEntities, response);
+        for(RbacUriEntity item : rbacRoleEntities) {
+            RbacUriResponse itemResp = new RbacUriResponse();
+            BeanUtils.copyProperties(item, itemResp);
+            response.add(itemResp);
+        }
 
         return response;
     }
