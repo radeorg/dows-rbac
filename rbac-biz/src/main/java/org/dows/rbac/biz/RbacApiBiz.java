@@ -25,8 +25,7 @@ import java.util.Objects;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class RbacApiBiz implements RbacApi {
-    @Override
+public class RbacApiBiz /*implements RbacApi */{
     public List<RbacRoleResponse> getRoleInstanceByRoleIds(String appId, List<Long> roleIds) {
         List<RbacRoleResponse> responseList = new ArrayList<>();
         for(Long roleId : roleIds){
@@ -47,7 +46,6 @@ public class RbacApiBiz implements RbacApi {
         return responseList;
     }
 
-    @Override
     public List<RbacUriResponse> getAllUrisByAppId(String appId) {
         List<RbacUriResponse> response = new ArrayList<>();
         if(Objects.isNull(appId)){
@@ -64,7 +62,6 @@ public class RbacApiBiz implements RbacApi {
         return response;
     }
 
-    @Override
     public List<RoleResourceResponse> getUrisByRoleIds(String appId, List<Long> roleIds) {
         List<RoleResourceResponse> responseList = new ArrayList<>();
         for(Long roleId : roleIds){
@@ -107,52 +104,42 @@ public class RbacApiBiz implements RbacApi {
         return responseList;
     }
 
-    @Override
     public String getMenu() {
         return "";
     }
 
-    @Override
     public List<RbacResourcesQueryResponse> getResource(FindRbacResourcesRequest findRbacResources) {
         return List.of();
     }
 
-    @Override
     public List<RbacPermissionResponse> getPermission(List<Long> roleIds) {
         return List.of();
     }
 
-    @Override
     public List<String> getUriCode(List<Long> roleIds) {
         return List.of();
     }
 
-    @Override
     public void saveResource(List<InitResources> resources) {
 
     }
 
-    @Override
     public void initRoleUri(List<InitResources> resources, String roleCode, String appId) {
 
     }
 
-    @Override
     public void initAppRole(List<SaveRbacRoleRequest> roleItems) {
 
     }
 
-    @Override
     public List<RbacMenusResponse> listRoleMenusTree(List<Long> rbacRoleIds) {
         return List.of();
     }
 
-    @Override
     public void saveUri(List<InitUriResources> initUriResources) {
 
     }
 
-    @Override
     public Map<String, List<RbacUriRoleResponse>> getRoleUri() {
         return Map.of();
     }

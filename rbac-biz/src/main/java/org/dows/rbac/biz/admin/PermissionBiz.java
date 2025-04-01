@@ -33,7 +33,7 @@ import java.util.*;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class PermissionBiz implements RbacApi {
+public class PermissionBiz /*implements RbacApi */{
     private final RbacPermissionService rbacPermissionService;
 
     private final RbacUriService rbacUriService;
@@ -250,7 +250,6 @@ public class PermissionBiz implements RbacApi {
         return null;
     }
 
-    @Override
     public List<RbacMenusResponse> listRoleMenusTree(List<Long> rbacRoleIds) {
         /*List<RbacMenuEntity> rbacMenuEntityList = new ArrayList<>();
         if (CollectionUtil.isEmpty(rbacRoleIds)) {
@@ -366,18 +365,15 @@ public class PermissionBiz implements RbacApi {
         return getRole(roleIds);
     }
 
-    @Override
     public String getMenu() {
         return null;
     }
 
-    @Override
     public List<RbacResourcesQueryResponse> getResource(FindRbacResourcesRequest findRbacResources) {
         //return resourcesHandler.listByQuery(findRbacResources);
         return null;
     }
 
-    @Override
     public void saveUri(List<InitUriResources> initUriResources) {
         urisHandler.saveOrUpdate(initUriResources);
     }
@@ -406,7 +402,6 @@ public class PermissionBiz implements RbacApi {
         return null;
     }
 
-    @Override
     public List<RbacPermissionResponse> getPermission(List<Long> roleIds) {
         return listPermissionByRoleIds(roleIds);
     }
@@ -426,7 +421,6 @@ public class PermissionBiz implements RbacApi {
          return false;
     }
 
-    @Override
     public List<String> getUriCode(List<Long> roleIds) {
        /* List<RbacUriEntity> rbacURiEntityList = new ArrayList<>();
         if (CollectionUtil.isNotEmpty(roleIds)) {
@@ -465,7 +459,6 @@ public class PermissionBiz implements RbacApi {
     }
 
 
-    @Override
     public void saveResource(List<InitResources> resources) {
         List<InitResources> uriResources = resources.stream()
                 .filter(r -> r.getType() == 1)
@@ -612,7 +605,6 @@ public class PermissionBiz implements RbacApi {
 
     }
 
-    @Override
     public void initRoleUri(List<InitResources> resources, String roleCode, String appId) {
         /*List<RbacPermissionEntity> newPermissionsList = new ArrayList<>();
         List<RbacPermissionEntity> updatePermissionsList = new ArrayList<>();
@@ -668,7 +660,6 @@ public class PermissionBiz implements RbacApi {
         return rolesList;
     }
 
-    @Override
     public void initAppRole(List<SaveRbacRoleRequest> roleItems) {
         /*List<RbacRoleEntity> newRoles = new ArrayList<>();
         List<RbacRoleEntity> updateRoles = new ArrayList<>();
