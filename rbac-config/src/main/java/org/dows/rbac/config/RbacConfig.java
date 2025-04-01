@@ -140,12 +140,14 @@ public class RbacConfig {
         String javaMethodName = handlerMethod.toString().split("\\(")[0];
 
         Method method = handlerMethod.getMethod();
-        Operation operation = method.getAnnotation(Operation.class);
-        String description = operation.description();
-        String summary = operation.summary();
         UriSignature uriSignature = MethodSignatureResolver.parse(method);
-        uriSignature.setDescription(description);
-        uriSignature.setSummary(summary);
+        Operation operation = method.getAnnotation(Operation.class);
+        if(operation != null){
+            String description = operation.description();
+            String summary = operation.summary();
+            uriSignature.setDescription(description);
+            uriSignature.setSummary(summary);
+        }
         uriSignature.setJavaMethod(javaMethodName);
         uriSignature.setHttpMethod(httpMethod1);
         uriSignature.setUri(path1);

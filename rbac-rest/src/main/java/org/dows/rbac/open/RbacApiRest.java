@@ -44,6 +44,7 @@ public class RbacApiRest implements RbacApi {
         return rbacApiBiz.getUrisByRoleIds(appId, roleIds);
     }
 
+
     @Override
     public String getMenu() {
         return "";
