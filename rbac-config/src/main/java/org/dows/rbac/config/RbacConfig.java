@@ -39,24 +39,24 @@ import java.util.stream.Collectors;
 @Configuration
 @EnableConfigurationProperties(InitializeProperties.class)
 public class RbacConfig {
+    private final static Path lock = Path.of(System.getProperty("user.dir")).resolve("menu.json");
     private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
-
     private final InitializeProperties initializeProperties;
-//    private final RbacInitializable rbacInitializable;
-//    private final ResourceInitializer rbacUriInitializer;
-
     @Value("${spring.application.appId}")
     private String appId;
 
+
     @PostConstruct
     public void init() {
-        Map<Class<? extends ResourceInitializer>, List<InitializableResource>> classListMap = buildResources();
-        List<Class<? extends ResourceInitializer>> initializers = initializeProperties.getInitializers();
-        for (Class<? extends ResourceInitializer> initializer : initializers) {
-            List<InitializableResource> initializedResources = classListMap.get(initializer);
-            ResourceInitializer bean = SpringUtil.getBean(initializer);
-            if (bean != null) {
-                bean.init(initializedResources);
+        if(!Files.exists(lock)) {
+            Map<Class<? extends ResourceInitializer>, List<InitializableResource>> classListMap = buildResources();
+            List<Class<? extends ResourceInitializer>> initializers = initializeProperties.getInitializers();
+            for (Class<? extends ResourceInitializer> initializer : initializers) {
+                List<InitializableResource> initializedResources = classListMap.get(initializer);
+                ResourceInitializer bean = SpringUtil.getBean(initializer);
+                if (bean != null) {
+                    bean.init(initializedResources);
+                }
             }
         }
     }
@@ -126,7 +126,7 @@ public class RbacConfig {
 
         // todo 保存数据库，生成 lock（如果初始话成功，不在初始化）
         try {
-            Files.writeString(Path.of(System.getProperty("user.dir")).resolve("menu.json"),JSONUtil.toJsonPrettyStr(list));
+            Files.writeString(lock, JSONUtil.toJsonPrettyStr(list));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
