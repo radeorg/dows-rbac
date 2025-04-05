@@ -23,6 +23,9 @@ public class RbacUriInitializer implements ResourceInitializer<UriSignature> {
     private String appId;
 
     public void init(List<UriSignature> uriSignatures) {
+        if(uriSignatures == null || uriSignatures.isEmpty()){
+            return;
+        }
         //List<RbacUriEntity> rbacUriEntities = rbacUriService.list();
         List<RbacUriEntity> rbacUriEntities = new ArrayList<>();
         uriSignatures.forEach(uriSignature -> {
