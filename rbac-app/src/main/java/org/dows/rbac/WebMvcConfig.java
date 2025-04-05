@@ -1,5 +1,9 @@
 package org.dows.rbac;
 
+import lombok.RequiredArgsConstructor;
+import org.dows.rade.web.ResponseWrapperHandler;
+import org.dows.rade.web.UnifiedMessageSource;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -10,10 +14,24 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@RequiredArgsConstructor
 //
 @EnableWebMvc
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+    private final MessageSource messageSource;
+
+
+    @Bean
+    UnifiedMessageSource unifiedMessageSource() {
+        return new UnifiedMessageSource(messageSource);
+    }
+
+    @Bean
+    ResponseWrapperHandler responseWrapperHandler() {
+        return new ResponseWrapperHandler();
+    }
+
 
 
     @Override

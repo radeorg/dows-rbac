@@ -1,3 +1,7 @@
 rade:
   jackson:
     timestamp: true
+  encryptor:
+    enable: true
+    algorithm: AES
+    secretKey: 3fb2uPksjNOnxZI3

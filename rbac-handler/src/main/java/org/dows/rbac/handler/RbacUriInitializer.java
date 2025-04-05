@@ -11,6 +11,7 @@ import org.dows.rbac.service.RbacUriService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -22,7 +23,8 @@ public class RbacUriInitializer implements ResourceInitializer<UriSignature> {
     private String appId;
 
     public void init(List<UriSignature> uriSignatures) {
-        List<RbacUriEntity> rbacUriEntities = rbacUriService.list();
+        //List<RbacUriEntity> rbacUriEntities = rbacUriService.list();
+        List<RbacUriEntity> rbacUriEntities = new ArrayList<>();
         uriSignatures.forEach(uriSignature -> {
             // todo 保存数据库
             RbacUriEntity rbacUriEntity = RbacUriEntity.builder()

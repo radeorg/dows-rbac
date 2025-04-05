@@ -67,23 +67,25 @@ public class RbacConfig {
     //@Bean
     public Map<Class<? extends ResourceInitializer>, List<InitializableResource>> buildResources() {
         List<InitializeProperties.Resource> resources = initializeProperties.getResources();
+
         Map<Class<? extends ResourceInitializer>, List<InitializableResource>> map = new HashMap<>();
         for (InitializeProperties.Resource resource : resources) {
-            String beanName = StrUtil.lowerFirst(resource.getInitializer().getSimpleName());
-            try {
-                ResourceInitializer initializer = SpringUtil.getBean(beanName, ResourceInitializer.class);
-                if (initializer != null) {
-                    List<InitializableResource> uriSignatures =
-                            map.computeIfAbsent(resource.getInitializer(), k -> new LinkedList<>());
-                    uriSignatures.addAll(buildRbacUri(resource.getScanPackages()));
+            String initModel = resource.getInitModel();
+            if(StrUtil.equals(initModel, "always")) {
+                String beanName = StrUtil.lowerFirst(resource.getInitializer().getSimpleName());
+                try {
+                    ResourceInitializer initializer = SpringUtil.getBean(beanName, ResourceInitializer.class);
+                    if (initializer != null) {
+                        List<InitializableResource> uriSignatures =
+                                map.computeIfAbsent(resource.getInitializer(), k -> new LinkedList<>());
+                        uriSignatures.addAll(buildRbacUri(resource.getScanPackages()));
+                    }
+                } catch (Exception e) {
+                    log.error("", e);
                 }
-            } catch (Exception e) {
-                log.error("", e);
             }
         }
         return map;
-        //resourceInitializer.init(list);
-        //return list;
     }
 
     public List<UriSignature> buildRbacUri(List<String> scanPackages) {
