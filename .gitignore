@@ -3,7 +3,7 @@
 
 # Log file
 *.log
-
+rebel.xml
 # BlueJ files
 *.ctxt
 
