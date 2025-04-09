@@ -22,6 +22,10 @@ import java.util.Map;
 
 public interface RbacApi {
 
+
+
+
+
     /**
      * 获取角色
      *

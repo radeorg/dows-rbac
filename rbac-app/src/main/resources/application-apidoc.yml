@@ -8,11 +8,13 @@ springdoc:
     packages-to-scan: org.dows.rbac.api
   group-configs:
     - group: rbac-admin
-      packagesToScan: org.dows.rbac.rest.admin
-    - group: rbac-tenant
-      packagesToScan: org.dows.rbac.rest.tenant
-    - group: rbac-user
-      packagesToScan: org.dows.rbac.rest.user
+      packagesToScan: org.dows.rbac
+#    - group: rbac-admin
+#      packagesToScan: org.dows.rbac.open
+#    - group: rbac-tenant
+#      packagesToScan: org.dows.rbac.tenant
+#    - group: rbac-user
+#      packagesToScan: org.dows.rbac.user
 
 ---
 #开发环境

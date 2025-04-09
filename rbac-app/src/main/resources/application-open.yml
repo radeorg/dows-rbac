@@ -1,0 +1,7 @@
+dows:
+  channel:
+    opens:
+      - appId: 1
+        channel: weixin
+        thirdAppId: wx33a03e8c98247aef
+        secret: 86c6398c40668010d53ec8e9130c3ec1

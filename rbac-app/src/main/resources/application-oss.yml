@@ -1,0 +1,7 @@
+dows:
+  oss:
+    local:
+      baseDir: radeorg/html/pdf
+
+    aliyun:
+

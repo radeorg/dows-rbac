@@ -1,0 +1,58 @@
+#String host = "outlook.office365.com"; // IMAP服务器
+#String username = "your-email@outlook.com";
+#String password = "your-password";
+#
+#Properties props = new Properties();
+#props.put("mail.imap.ssl.enable", "true");
+#props.put("mail.imap.port", "993");
+
+dows:
+  mail:
+    - channel: outlook
+      analyzer: deepseek
+      appId: 1
+      host: outlook.office365.com
+      username:
+      password:
+      properties:
+        - key: mail.imap.ssl.enable
+          value: true
+        - key: mail.imap.port
+          value: 993
+        - key: mail.store.protocol
+          value: imap
+        - key: mail.pop3.connectiontimeout
+          value: 50000
+        - key: mail.pop3.timeout
+          value: 100000
+        - key: mail.mime.charset
+          value: UTF-8
+
+    - channel: mail163
+      appId: 1
+      enabled: true
+      analyzer: deepseek
+      host: pop.163.com
+      username: radeorg2025@163.com
+      password: DYQiLe8hY7TmZQfB
+      protocol: pop3
+      properties:
+        #        - key: mail.imap.ssl.enable
+        #          value: true
+        #        - key: mail.imap.host
+        #          value: imap.163.com
+        #        - key: mail.imap.port
+        #          value: 993
+        - key: mail.pop3.ssl.enable
+          value: true
+        - key: mail.pop3.host
+          value: pop.163.com
+        - key: mail.pop3.port
+          value: 995
+        - key: mail.pop3.connectiontimeout
+          value: 50000
+        - key: mail.pop3.timeout
+          value: 100000
+        - key: mail.mime.charset
+          value: UTF-8
+

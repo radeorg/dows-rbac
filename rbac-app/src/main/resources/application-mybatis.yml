@@ -3,11 +3,24 @@ mybatis-flex:
   #  datasource:
   #MyBatis 配置文件位置，如果有单独的 MyBatis 配置，需要将其路径配置到 configLocation 中
   #  configuration:
+#  - "classpath*:hrm-service-1.0.0-SNAPSHOT.jar/mapper/*.xml"
   #MyBatis Mapper 所对应的 XML 文件位置，如果在 Mapper 中有自定义的方法（XML 中有自定义的实现），需要进行该配置，指定 Mapper 所对应的 XML 文件位置
-  mapper-locations: [ "classpath:mapper/*.xml" ]
-  type-aliases-package: org.dows.rbac.entity.*
+  mapper-locations:
+    - classpath*:mapper/*.xml
+  type-aliases-package: org.dows.*.entity.*
   global-config:
     print-banner: false
+
+#auto-table:
+#  show-banner: false
+#  # 启用自动维护表功能
+#  enable: true
+#  # 自动删除名称不匹配的索引
+#  autoDropIndex: true
+#  # 建表的时候，父类的字段排序是在子类后面还是前面
+#  superInsertPosition: before
+#  # 模型包路径
+#  model-package: org.dows.*.entity.*
 
 ---
 #开发环境
@@ -25,13 +38,21 @@ auto-table:
   # 建表的时候，父类的字段排序是在子类后面还是前面
   superInsertPosition: before
   # 模型包路径
-  model-package: org.dows.hrm.entity.*
+  model-package: org.dows.*.entity.*
 
 # Rade相关配置
 rade:
   # 初始化数据
   initData: true
 
+
+
+---
+#开发环境
+spring:
+  config:
+    activate:
+      on-profile: sit
 ---
 #开发环境
 spring:
@@ -39,13 +60,3 @@ spring:
     activate:
       on-profile: prd
 
-auto-table:
-  show-banner: false
-  # 启用自动维护表功能
-  enable: true
-  # 自动删除名称不匹配的索引
-  autoDropIndex: true
-  # 建表的时候，父类的字段排序是在子类后面还是前面
-  superInsertPosition: before
-  # 模型包路径
-  model-package: org.dows.hrm.entity.*

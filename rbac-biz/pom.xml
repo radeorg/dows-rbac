@@ -14,5 +14,9 @@
             <groupId>org.dows.cloud</groupId>
             <artifactId>rbac-handler</artifactId>
         </dependency>
+<!--        <dependency>
+            <groupId>org.dows.framework</groupId>
+            <artifactId>rade-core</artifactId>
+        </dependency>-->
     </dependencies>
 </project>

@@ -1,0 +1,95 @@
+logging:
+  logHome: /logs
+  timeTriggeringPolicy: 30
+  level:
+    org.dows.framework: OFF
+    io.debezium: OFF
+
+#
+#  pattern:
+#    console: "%red{%d{yyyy-MM-dd HH:mm:ss}} [%traceId] %green{[%thread]} %magenta{[%-5level]} %cyan{%msg} %l%n"
+#  charset: "utf-8"
+#  file:
+#    max-size: "5MB"
+#  level:
+#    root: "INFO"
+#    org.dows: "INFO"
+#    com.zaxxer.hikari.pool.ProxyStatement: "INFO"
+#    org.springframework: "INFO"
+#    com.baomidou: "ERROR"
+#  logback:
+#    rollingpolicy:
+#      max-history: 15
+#      error-max-history: 30
+#  appenders:
+#    console:
+#      name: "CONSOLE"
+#      target: "SYSTEM_OUT"
+#      pattern: "${logging.pattern.console}"
+#      charset: "${logging.charset}"
+#    file-info:
+#      name: "FILE-INFO"
+#      fileName: "${LOG_HOME}/${APP_NAME}/${APP_ENV}-info.log"
+#      filePattern: "${LOG_HOME}/${APP_NAME}/${APP_ENV}-info.%d{yyyyMMdd-HHmm}-%i.log.gz"
+#      pattern: "${logging.pattern.console}"
+#      charset: "${logging.charset}"
+#      policies:
+#        time-based:
+#          interval: "${TIME_TRIGGERING_POLICY}"
+#        size-based:
+#          size: "${logging.file.max-size}"
+#      default-rollover-strategy:
+#        delete:
+#          base-path: "${LOG_HOME}"
+#          max-depth: 2
+#          if-file-name: "info.*.log.gz"
+#          if-last-modified: "${logging.logback.rollingpolicy.max-history}"
+#    file-error:
+#      name: "FILE-ERROR"
+#      fileName: "${LOG_HOME}/${APP_NAME}/${APP_ENV}-error.log"
+#      filePattern: "${LOG_HOME}/${APP_NAME}/${APP_ENV}-error.%d{yyyy-MM-dd}-%i.log.gz"
+#      pattern: "${logging.pattern.console}"
+#      charset: "${logging.charset}"
+#      policies:
+#        time-based:
+#          interval: "${TIME_TRIGGERING_POLICY}"
+#        size-based:
+#          size: "${logging.file.max-size}"
+#      default-rollover-strategy:
+#        delete:
+#          base-path: "${LOG_HOME}"
+#          max-depth: 2
+#          if-file-name: "error.*.log.gz"
+#          if-last-modified: "${logging.logback.rollingpolicy.error-max-history}"
+#  loggers:
+#    root:
+#      level: "${logging.level.root}"
+#      appender-refs:
+#        - "CONSOLE"
+#        - "FILE-INFO"
+#    org.dows:
+#      level: "${logging.level.org.dows}"
+#      additivity: false
+#      appender-refs:
+#        - "SKYWALKING"
+#        - "CONSOLE"
+#        - "FILE-INFO"
+#    com.zaxxer.hikari.pool.ProxyStatement:
+#      level: "${logging.level.com.zaxxer.hikari.pool.ProxyStatement}"
+#      additivity: false
+#      appender-refs:
+#        - "SKYWALKING"
+#        - "CONSOLE"
+#        - "FILE-INFO"
+#    org.springframework:
+#      level: "${logging.level.org.springframework}"
+#      additivity: false
+#      appender-refs:
+#        - "CONSOLE"
+#        - "FILE-INFO"
+#    com.baomidou:
+#      level: "${logging.level.com.baomidou}"
+#      appender-refs:
+#        - "SKYWALKING"
+#        - "CONSOLE"
+#        - "FILE-INFO"

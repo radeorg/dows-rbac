@@ -1,5 +1,6 @@
 package org.dows.rbac.biz.admin;
 
+import cn.hutool.core.bean.BeanUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.rbac.api.admin.request.SaveRbacRoleRequest;
@@ -8,15 +9,13 @@ import org.dows.rbac.entity.RbacRoleEntity;
 import org.dows.rbac.handler.a.RoleHandler;
 import org.dows.rbac.service.RbacPermissionService;
 import org.dows.rbac.service.RbacRoleService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author lait.zhang
@@ -39,7 +38,7 @@ public class RoleBiz {
 
     private final Long ROOT_PID = 0L;
 
-    private final PermissionBiz permissionBiz;
+//    private final PermissionBiz permissionBiz;
 
     /**
      * @param
@@ -53,48 +52,49 @@ public class RoleBiz {
      */
 //    @RbacTrigger(handler = RoleHandler.class)
     @Transactional
-    public void save(List<SaveRbacRoleRequest> saveRbacRoles) {
-        saveRbacRoles.forEach(saveRbacRoleRequest -> {
-            if (null == saveRbacRoleRequest.getRbacRoleId()) {
-                if (roleHandler.hasRoleName(saveRbacRoleRequest.getRoleName(), saveRbacRoleRequest.getAppId())) {
-                    throw new IllegalArgumentException("角色名称已存在");
-                }
-                long id = 0L;//IdWorker.getId();
-                saveRbacRoleRequest.setRbacRoleId(id);
-            }
-            StringBuilder idPath = new StringBuilder();
-            StringBuilder namePath = new StringBuilder();
-            StringBuilder codePath = new StringBuilder();
-            if (saveRbacRoleRequest.getPid() == 0 || null == saveRbacRoleRequest.getPid()) {
-                idPath.append(saveRbacRoleRequest.getRbacRoleId());
-                namePath.append(saveRbacRoleRequest.getRoleName());
-                codePath.append(saveRbacRoleRequest.getRoleCode());
-                saveRbacRoleRequest.setPid(ROOT_PID);
+    public List<RbacRoleResponse> saveOrUpdateRole(List<SaveRbacRoleRequest> saveRbacRoles) {
+        List<RbacRoleEntity> saveOrUpdates = new ArrayList<>();
+        List<String> roleNamesToCheck = new ArrayList<>();
+        List<Long> roleIdsToCheck = new ArrayList<>();
+        // 收集需要检查的角色名和角色ID
+        saveRbacRoles.forEach(rbacRole -> {
+            if (rbacRole.getRbacRoleId() == null) {
+                roleNamesToCheck.add(rbacRole.getRoleName());
             } else {
-                if (Objects.nonNull(saveRbacRoleRequest.getPreIdPath()) && Objects.nonNull(saveRbacRoleRequest.getPreNamePath()) && Objects.nonNull(saveRbacRoleRequest.getPreCodePath())) {
-                    idPath.append(saveRbacRoleRequest.getPreIdPath()).append("/").append(saveRbacRoleRequest.getRbacRoleId());
-                    namePath.append(saveRbacRoleRequest.getPreNamePath()).append("/").append(saveRbacRoleRequest.getRoleName());
-                    codePath.append(saveRbacRoleRequest.getPreCodePath()).append("/").append(saveRbacRoleRequest.getRoleCode());
-                } else {
-                    if (Objects.isNull(saveRbacRoleRequest.getPid())) {
-                        throw new IllegalArgumentException("父类id为空");
-                    }
-                    RbacRoleEntity preRbacRoleEntity = rbacRoleService.getById(saveRbacRoleRequest.getPid());
-                    if (Objects.isNull(preRbacRoleEntity)) {
-                        throw new IllegalArgumentException("未找到对应父类信息");
-                    }
-                    idPath.append(preRbacRoleEntity.getIdPath()).append("/").append(saveRbacRoleRequest.getRbacRoleId());
-                    namePath.append(preRbacRoleEntity.getNamePath()).append("/").append(saveRbacRoleRequest.getRoleName());
-                    codePath.append(preRbacRoleEntity.getCodePath()).append("/").append(saveRbacRoleRequest.getCodePath());
-                }
+                roleIdsToCheck.add(rbacRole.getRbacRoleId());
             }
-            saveRbacRoleRequest.setIdPath(idPath.toString());
-            saveRbacRoleRequest.setNamePath(namePath.toString());
-            saveRbacRoleRequest.setCodePath(codePath.toString());
         });
-//        List<RbacRoleEntity> rbacRoleEntities = BeanConvert.beanConvert(saveRbacRoles, RbacRoleEntity.class);
-//        rbacRoleService.saveOrUpdateBatch(rbacRoleEntities);
+        // 查询数据库中是否已经存在这些角色名
+        List<String> existingRoleNames = roleHandler.checkRoleNamesExist(roleNamesToCheck);
+        // 批量查询所有需要更新的角色
+        List<RbacRoleEntity> existingRoles = roleHandler.getRoleByIds(roleIdsToCheck);
+        // 将查询结果存储在映射中，以便快速查找
+        Map<Long, RbacRoleEntity> existingRoleMap = existingRoles.stream()
+                .collect(Collectors.toMap(RbacRoleEntity::getRbacRoleId, role -> role));
+        // 检查角色名是否已存在，并收集需要保存或更新的对象
+        saveRbacRoles.forEach(rbacRole -> {
+            if (rbacRole.getRbacRoleId() == null) { // 收集新增对象
+                if (existingRoleNames.contains(rbacRole.getRoleName())) {
+                    log.info("角色名称已存在: {},将不会被创建", rbacRole.getRoleName());
+                    //throw new IllegalArgumentException("角色名称已存在: " + rbacRole.getRoleName());
+                }
+                RbacRoleEntity newRole = BeanUtil.copyProperties(rbacRole, RbacRoleEntity.class);
+                saveOrUpdates.add(newRole);
+            } else { // 收集待更新对象
+                RbacRoleEntity existingRole = existingRoleMap.get(rbacRole.getRbacRoleId());
+                if (existingRole == null) {
+                    log.info("未找到对应的角色ID: {},将不会被创建", rbacRole.getRbacRoleId());
+                    //throw new IllegalArgumentException("未找到对应的角色ID: " + rbacRole.getRbacRoleId());
+                }
+                RbacRoleEntity updatedRole = BeanUtil.copyProperties(rbacRole, RbacRoleEntity.class);
+                saveOrUpdates.add(updatedRole);
+            }
+        });
+        // 统一批量保存或更新
+        rbacRoleService.saveOrUpdateBatch(saveOrUpdates);
+        return BeanUtil.copyToList(saveOrUpdates, RbacRoleResponse.class);
     }
+
 
     /**
      * @param
@@ -178,10 +178,10 @@ public class RoleBiz {
         return BeanConvert.beanConvert(rbacRoleEntity, RbacRoleResponse.class);
     }*/
 
-    public List<RbacRoleResponse> getRolesByAccount() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        List<Long> roleIds = authorities.stream().map(GrantedAuthority::getAuthority).map(Long::parseLong).toList();
-        return permissionBiz.getRole(roleIds);
-    }
+//    public List<RbacRoleResponse> getRolesByAccount() {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+//        List<Long> roleIds = authorities.stream().map(GrantedAuthority::getAuthority).map(Long::parseLong).toList();
+//        return permissionBiz.getRole(roleIds);
+//    }
 }

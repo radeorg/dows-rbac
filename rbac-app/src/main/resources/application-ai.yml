@@ -1,0 +1,21 @@
+#String host = "outlook.office365.com"; // IMAP服务器
+#String username = "your-email@outlook.com";
+#String password = "your-password";
+#
+#Properties props = new Properties();
+#props.put("mail.imap.ssl.enable", "true");
+#props.put("mail.imap.port", "993");
+spring:
+  ai:
+    openai:
+      api-key: sk-cabea03460cd4bad8f7c6bf07108ae7e
+      base-url: https://api.deepseek.com/chat/completions
+
+dows:
+  ai:
+    - channel: deepseek
+      enabled: true
+      appId: 1
+      host: https://api.deepseek.com/chat/completions
+      username:
+      password: sk-e31cfdf43187486db26adba65bd34839

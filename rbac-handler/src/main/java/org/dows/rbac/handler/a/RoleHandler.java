@@ -1,6 +1,7 @@
 package org.dows.rbac.handler.a;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.rbac.api.RbacHandler;
@@ -8,7 +9,9 @@ import org.dows.rbac.entity.RbacRoleEntity;
 import org.dows.rbac.service.RbacRoleService;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -47,14 +50,41 @@ public class RoleHandler implements RbacHandler {
         return null;
     }
 
+    /**
+     * 根据角色名称查询角色信息
+     *
+     * @param roleName
+     * @param state
+     * @param appId
+     * @return
+     */
     public List<RbacRoleEntity> getByRoleName(String roleName, Integer state, String appId) {
-        /*return rbacRoleService.lambdaQuery()
-                .eq(Objects.nonNull(roleName), RbacRoleEntity::getRoleName, roleName)
-                .eq(Objects.nonNull(state), RbacRoleEntity::getState, state)
-                .eq(Objects.nonNull(appId), RbacRoleEntity::getAppId, appId)
-                .list();*/
-        return null;
+        QueryWrapper queryWrapper = QueryWrapper.create()
+                .eq(RbacRoleEntity::getRoleName, roleName, Objects.nonNull(roleName))
+                .eq(RbacRoleEntity::getState, state, Objects.nonNull(state))
+                .eq(RbacRoleEntity::getAppId, appId, Objects.nonNull(appId));
+        return rbacRoleService.list(queryWrapper);
     }
+
+
+    public List<String> checkRoleNamesExist(List<String> roleNames) {
+        if (CollectionUtil.isEmpty(roleNames)) {
+            return List.of();
+        }
+        return rbacRoleService
+                .list(QueryWrapper.create().in(RbacRoleEntity::getRoleName, roleNames))
+                .stream()
+                .map(RbacRoleEntity::getRoleName)
+                .collect(Collectors.toList());
+    }
+
+    public List<RbacRoleEntity> getRoleByIds(List<Long> roleIds) {
+        if (CollectionUtil.isEmpty(roleIds)) {
+            return List.of();
+        }
+        return rbacRoleService.list(QueryWrapper.create().in(RbacRoleEntity::getRbacRoleId, roleIds));
+    }
+
 
     public Boolean hasRoleName(String roleName, String appId) {
         List<RbacRoleEntity> byRoleName = getByRoleName(roleName, null, appId);
