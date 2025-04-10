@@ -6,11 +6,7 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.mybatisflex.core.keygen.KeyGenerators;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
+import lombok.*;
 import org.dows.rade.crud.BaseEntity;
 
 import java.util.Date;
@@ -21,7 +17,7 @@ import java.util.Date;
  * @author lait.zhang@gmail.com
  * @since 1.0
  */
-@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @NoArgsConstructor

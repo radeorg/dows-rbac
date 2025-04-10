@@ -1,6 +1,7 @@
 package org.dows.rbac.biz.admin;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.rbac.api.admin.request.SaveRbacRoleRequest;
@@ -58,39 +59,45 @@ public class RoleBiz {
         List<Long> roleIdsToCheck = new ArrayList<>();
         // 收集需要检查的角色名和角色ID
         saveRbacRoles.forEach(rbacRole -> {
-            if (rbacRole.getRbacRoleId() == null) {
+            if (rbacRole.getRbacRoleId() == null || rbacRole.getRbacRoleId() == 0) {
                 roleNamesToCheck.add(rbacRole.getRoleName());
             } else {
                 roleIdsToCheck.add(rbacRole.getRbacRoleId());
             }
         });
-        // 查询数据库中是否已经存在这些角色名
-        List<String> existingRoleNames = roleHandler.checkRoleNamesExist(roleNamesToCheck);
+        // 查询数据库中是否已经存在这些角色名,如果已经存在则不再增加
+        List<RbacRoleEntity> existingRoleNames = roleHandler.checkRoleByNames(roleNamesToCheck);
+        List<String> roleNames = existingRoleNames.stream().map(RbacRoleEntity::getRoleName).toList();
         // 批量查询所有需要更新的角色
-        List<RbacRoleEntity> existingRoles = roleHandler.getRoleByIds(roleIdsToCheck);
+        List<RbacRoleEntity> existingRoleIds = roleHandler.getRoleByIds(roleIdsToCheck);
         // 将查询结果存储在映射中，以便快速查找
-        Map<Long, RbacRoleEntity> existingRoleMap = existingRoles.stream()
+        Map<Long, RbacRoleEntity> existingRoleMap = existingRoleIds.stream()
                 .collect(Collectors.toMap(RbacRoleEntity::getRbacRoleId, role -> role));
         // 检查角色名是否已存在，并收集需要保存或更新的对象
         saveRbacRoles.forEach(rbacRole -> {
             if (rbacRole.getRbacRoleId() == null || rbacRole.getRbacRoleId() == 0) { // 收集新增对象
-                if (existingRoleNames.contains(rbacRole.getRoleName())) {
+                if (roleNames.contains(rbacRole.getRoleName())) {
                     log.info("角色名称已存在: {},将不会被创建", rbacRole.getRoleName());
                     //throw new IllegalArgumentException("角色名称已存在: " + rbacRole.getRoleName());
+                } else {
+                    RbacRoleEntity newRole = BeanUtil.copyProperties(rbacRole, RbacRoleEntity.class);
+                    newRole.setRbacRoleId(null);
+                    saveOrUpdates.add(newRole);
                 }
-                RbacRoleEntity newRole = BeanUtil.copyProperties(rbacRole, RbacRoleEntity.class);
-                newRole.setRbacRoleId(null);
-                saveOrUpdates.add(newRole);
             } else { // 收集待更新对象
                 RbacRoleEntity existingRole = existingRoleMap.get(rbacRole.getRbacRoleId());
                 if (existingRole == null) {
-                    log.info("未找到对应的角色ID: {},将不会被创建", rbacRole.getRbacRoleId());
+                    log.info("未找到对应的角色ID: {},将不会被更新", rbacRole.getRbacRoleId());
                     //throw new IllegalArgumentException("未找到对应的角色ID: " + rbacRole.getRbacRoleId());
+                } else {
+                    RbacRoleEntity updatedRole = BeanUtil.copyProperties(rbacRole, RbacRoleEntity.class);
+                    saveOrUpdates.add(updatedRole);
                 }
-                RbacRoleEntity updatedRole = BeanUtil.copyProperties(rbacRole, RbacRoleEntity.class);
-                saveOrUpdates.add(updatedRole);
             }
         });
+        if (CollectionUtil.isEmpty(saveOrUpdates)) {
+            return List.of();
+        }
         // 统一批量保存或更新
         rbacRoleService.saveOrUpdateBatch(saveOrUpdates);
         return BeanUtil.copyToList(saveOrUpdates, RbacRoleResponse.class);

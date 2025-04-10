@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dows.rade.context.AppContext;
 import org.dows.rbac.api.RbacHandler;
 import org.dows.rbac.entity.RbacRoleEntity;
 import org.dows.rbac.service.RbacRoleService;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -67,25 +67,25 @@ public class RoleHandler implements RbacHandler {
     }
 
 
-    public List<String> checkRoleNamesExist(List<String> roleNames) {
+    public List<RbacRoleEntity> checkRoleByNames(List<String> roleNames) {
         if (CollectionUtil.isEmpty(roleNames)) {
             return List.of();
         }
-        String appId = "1";
+        String appId = AppContext.getAppId();
         return rbacRoleService
                 .list(QueryWrapper.create()
                         .eq(RbacRoleEntity::getAppId, appId, Objects.nonNull(appId))
-                        .in(RbacRoleEntity::getRoleName, roleNames))
-                .stream()
+                        .in(RbacRoleEntity::getRoleName, roleNames));
+                /*.stream()
                 .map(RbacRoleEntity::getRoleName)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
     }
 
     public List<RbacRoleEntity> getRoleByIds(List<Long> roleIds) {
         if (CollectionUtil.isEmpty(roleIds)) {
             return List.of();
         }
-        String appId = "1";
+        String appId = AppContext.getAppId();
         return rbacRoleService.list(QueryWrapper.create()
                 .eq(RbacRoleEntity::getAppId, appId, Objects.nonNull(appId))
                 .in(RbacRoleEntity::getRbacRoleId, roleIds));

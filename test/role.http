@@ -1,0 +1,46 @@
+###
+POST http://localhost:20001/v1/rbac/role/save
+Content-Type: application/json
+AppId: 1
+
+[
+  {
+    "rbacRoleId": null,
+    "pid": 0,
+    "roleName": "HR2222",
+    "pyCode": "",
+    "roleCode": "",
+    "idPath": "",
+    "namePath": "",
+    "codePath": "",
+    "preIdPath": "",
+    "preNamePath": "",
+    "preCodePath": "",
+    "icon": "",
+    "appId": "",
+    "descr": "",
+    "roleLevel": 0,
+    "inherit": false,
+    "state": false,
+    "parentRoleCode": ""
+  },{
+  "rbacRoleId": 267818384227016704,
+  "pid": 0,
+  "roleName": "HR12222222",
+  "pyCode": "",
+  "roleCode": "",
+  "idPath": "",
+  "namePath": "",
+  "codePath": "",
+  "preIdPath": "",
+  "preNamePath": "",
+  "preCodePath": "",
+  "icon": "",
+  "appId": "",
+  "descr": "",
+  "roleLevel": 0,
+  "inherit": false,
+  "state": false,
+  "parentRoleCode": ""
+}
+]
