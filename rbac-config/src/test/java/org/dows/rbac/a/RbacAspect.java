@@ -50,7 +50,7 @@
 //            if (declaredMethod.getName().equals(methodName)) {
 //                annotation = declaredMethod.getAnnotation(RbacTrigger.class);
 //                Class<? extends RbacHandler> handler = annotation.handler();
-//                if (handler.getName().equals("org.dows.rbac.api.RbacHandler")) {
+//                if (handler.getName().equals("org.dows.rbac.handler.RbacHandler")) {
 //                    // 更新对应用户的缓存 参数账号id
 //                    publisher.publishEvent(new RbacEvent(args));
 //                    break;

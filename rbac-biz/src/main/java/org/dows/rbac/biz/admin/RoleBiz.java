@@ -4,10 +4,10 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.rbac.api.admin.request.SaveRbacRoleRequest;
-import org.dows.rbac.api.admin.response.RbacRoleResponse;
 import org.dows.rbac.entity.RbacRoleEntity;
-import org.dows.rbac.handler.a.RoleHandler;
+import org.dows.rbac.handler.RoleHandler;
+import org.dows.rbac.request.SaveRbacRoleRequest;
+import org.dows.rbac.response.RbacRoleResponse;
 import org.dows.rbac.service.RbacPermissionService;
 import org.dows.rbac.service.RbacRoleService;
 import org.springframework.stereotype.Service;
@@ -34,10 +34,6 @@ public class RoleBiz {
     private final RbacPermissionService rbacPermissionService;
 
 //    private final AccountApi accountApi;
-
-    private final Integer FIRST_LEVEL = 1;
-
-    private final Long ROOT_PID = 0L;
 
 //    private final PermissionBiz permissionBiz;
 

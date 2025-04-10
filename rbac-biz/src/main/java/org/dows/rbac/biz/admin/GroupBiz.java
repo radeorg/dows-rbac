@@ -1,15 +1,14 @@
 package org.dows.rbac.biz.admin;
 
 import lombok.RequiredArgsConstructor;
-import org.dows.rbac.api.admin.request.FindRbacGroupRequest;
-import org.dows.rbac.api.admin.request.SaveRbacGroupRequest;
+import org.dows.rbac.request.FindRbacGroupRequest;
+import org.dows.rbac.request.SaveRbacGroupRequest;
 import org.dows.rbac.entity.RbacGroupEntity;
 import org.dows.rbac.service.RbacGroupService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author lait.zhang

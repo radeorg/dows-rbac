@@ -10,7 +10,7 @@
 //import org.dows.rbac.api.InitResources;
 //import org.dows.rbac.api.RbacApi;
 //import org.dows.rbac.api.RbacContext;
-//import org.dows.rbac.api.RbacMenu;
+//import org.dows.rbac.model.RbacMenu;
 //import org.dows.rbac.api.admin.request.SaveRbacRoleRequest;
 //import org.dows.rbac.api.annotation.Menu;
 //import org.dows.rbac.config.*;

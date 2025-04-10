@@ -2,10 +2,8 @@ package org.dows.rbac.biz.admin;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.rbac.api.admin.request.SaveUrisRequest;
-import org.dows.rbac.api.admin.response.RbacUriResponse;
-import org.dows.rbac.handler.a.PermissionHandler;
-import org.dows.rbac.handler.a.UrisHandler;
+import org.dows.rbac.request.SaveUrisRequest;
+import org.dows.rbac.response.RbacUriResponse;
 import org.dows.rbac.service.RbacUriService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +21,9 @@ import java.util.List;
 public class UrisBiz {
     private final RbacUriService rbacUriService;
 
-    private final UrisHandler urisHandler;
-
-    private final PermissionHandler permissionHandler;
+//    private final UrisHandler urisHandler;
+//
+//    private final PermissionHandler permissionHandler;
 
     /**
      * @param
@@ -41,12 +39,12 @@ public class UrisBiz {
     //@RbacTrigger(handler = CommonHandler.class)
     @Transactional
     public void save(List<SaveUrisRequest> saveUris) {
-        for (SaveUrisRequest uris : saveUris) {
-            if (urisHandler.hasUriName(uris.getName(), uris.getAppId())) {
-                throw new IllegalArgumentException("菜单名称已存在");
-            }
-        }
-        urisHandler.save(saveUris);
+//        for (SaveUrisRequest uris : saveUris) {
+//            if (urisHandler.hasUriName(uris.getName(), uris.getAppId())) {
+//                throw new IllegalArgumentException("菜单名称已存在");
+//            }
+//        }
+//        urisHandler.save(saveUris);
     }
 
     /**

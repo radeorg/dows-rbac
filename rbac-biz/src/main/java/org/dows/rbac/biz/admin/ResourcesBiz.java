@@ -1,11 +1,10 @@
 package org.dows.rbac.biz.admin;
 
 import lombok.RequiredArgsConstructor;
-import org.dows.rbac.api.admin.request.FindRbacResourcesRequest;
-import org.dows.rbac.api.admin.request.SaveRbacModuleResourcesRequest;
-import org.dows.rbac.api.admin.request.SaveRbacResourcesRequest;
-import org.dows.rbac.api.admin.response.RbacResourcesQueryResponse;
-import org.dows.rbac.handler.a.ResourcesHandler;
+import org.dows.rbac.request.FindRbacResourcesRequest;
+import org.dows.rbac.request.SaveRbacModuleResourcesRequest;
+import org.dows.rbac.request.SaveRbacResourcesRequest;
+import org.dows.rbac.response.RbacResourcesQueryResponse;
 import org.dows.rbac.service.RbacMenuService;
 import org.dows.rbac.service.RbacUriService;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,7 @@ public class ResourcesBiz {
 
     private final RbacUriService rbacUriService;
 
-    private final ResourcesHandler resourcesHandler;
+//    private final ResourcesHandler resourcesHandler;
 
     /**
      * @param

@@ -1,14 +1,13 @@
 package org.dows.rbac.biz.admin;
 
 import lombok.RequiredArgsConstructor;
-import org.dows.rbac.api.admin.request.FindRbacModuleRequest;
-import org.dows.rbac.api.admin.request.SaveRbacModuleRequest;
-import org.dows.rbac.api.admin.response.RbacMoudleQueryResponse;
+import org.dows.rbac.request.FindRbacModuleRequest;
+import org.dows.rbac.request.SaveRbacModuleRequest;
+import org.dows.rbac.response.RbacMoudleQueryResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author lait.zhang

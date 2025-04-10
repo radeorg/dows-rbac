@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
-import org.dows.rbac.api.admin.request.FindRbacGroupRequest;
-import org.dows.rbac.api.admin.request.SaveRbacGroupRequest;
+import org.dows.rbac.request.FindRbacGroupRequest;
+import org.dows.rbac.request.SaveRbacGroupRequest;
 import org.dows.rbac.biz.admin.GroupBiz;
 import org.dows.rbac.entity.RbacGroupEntity;
 import org.springframework.validation.annotation.Validated;

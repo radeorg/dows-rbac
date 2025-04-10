@@ -3,10 +3,9 @@ package org.dows.rbac.admin;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.dows.rbac.api.admin.request.FindRbacMenusRequest;
-import org.dows.rbac.api.admin.request.SaveRbacMenusRequest;
-import org.dows.rbac.api.admin.response.RbacMenusResponse;
-import org.dows.rbac.api.annotation.Menu;
+import org.dows.rbac.request.SaveRbacMenusRequest;
+import org.dows.rbac.response.RbacMenusResponse;
+import org.dows.rbac.annotation.Menu;
 import org.dows.rbac.biz.admin.MenusBiz;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -72,7 +71,7 @@ public class MenusRest {
     @Operation(summary = "根据ID删除菜单集")
     @DeleteMapping("v1/admin/menus/deleteById")
     public void deleteByIds(@RequestParam List<Long> rbacMenusIds) {
-        menusBiz.deleteByIds(rbacMenusIds);
+//        menusBiz.deleteByIds(rbacMenusIds);
     }
 
 

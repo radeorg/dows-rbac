@@ -1,15 +1,9 @@
 package org.dows.rbac.biz.admin;
 
-import cn.hutool.core.collection.CollectionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.rbac.api.RbacException;
-import org.dows.rbac.api.admin.request.SaveRbacMenusRequest;
-import org.dows.rbac.api.admin.response.RbacMenusResponse;
-import org.dows.rbac.api.constant.ResourceEnum;
-import org.dows.rbac.entity.RbacPermissionEntity;
-import org.dows.rbac.handler.a.MenuHandler;
-import org.dows.rbac.handler.a.PermissionHandler;
+import org.dows.rbac.request.SaveRbacMenusRequest;
+import org.dows.rbac.response.RbacMenusResponse;
 import org.dows.rbac.service.RbacMenuService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,9 +21,9 @@ import java.util.List;
 public class MenusBiz {
     private final RbacMenuService rbacMenusService;
 
-    private final PermissionHandler permissionHandler;
-
-    private final MenuHandler menuHandler;
+//    private final PermissionHandler permissionHandler;
+//
+//    private final MenuHandler menuHandler;
 
     private final Integer FIRST_LEVEL = 1;
 
@@ -151,13 +145,13 @@ public class MenusBiz {
      */
     // todo 触发缓存变化
     //@RbacTrigger(handler = CommonHandler.class)
-    @Transactional
-    public void deleteByIds(List<Long> rbacMenusIds) {
-        List<RbacPermissionEntity> permissions = permissionHandler.getPermissionByResourceIds(rbacMenusIds, ResourceEnum.MENU.getCode());
-        if (CollectionUtil.isNotEmpty(permissions)) {
-            log.info("存在角色绑定，不能删除");
-            throw new RbacException("存在角色绑定，不能删除");
-        }
-        rbacMenusService.removeByIds(rbacMenusIds);
-    }
+//    @Transactional
+//    public void deleteByIds(List<Long> rbacMenusIds) {
+//        List<RbacPermissionEntity> permissions = permissionHandler.getPermissionByResourceIds(rbacMenusIds, ResourceEnum.MENU.getCode());
+//        if (CollectionUtil.isNotEmpty(permissions)) {
+//            log.info("存在角色绑定，不能删除");
+//            throw new RbacException("存在角色绑定，不能删除");
+//        }
+//        rbacMenusService.removeByIds(rbacMenusIds);
+//    }
 }

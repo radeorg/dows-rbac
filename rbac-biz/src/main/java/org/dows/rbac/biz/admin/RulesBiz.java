@@ -2,9 +2,7 @@ package org.dows.rbac.biz.admin;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.rbac.api.admin.request.SaveRbacRulesRequest;
-import org.dows.rbac.api.admin.response.RbacRulesResponse;
-import org.dows.rbac.handler.a.RuleHandler;
+import org.dows.rbac.response.RbacRulesResponse;
 import org.dows.rbac.service.RbacRuleService;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +13,11 @@ import java.util.List;
 @Service
 public class RulesBiz {
     private final RbacRuleService rbacRuleService;
-    private final RuleHandler ruleHandler;
+//    private final RuleHandler ruleHandler;
 
-    public void save(List<SaveRbacRulesRequest> saveRbacRules) {
-        ruleHandler.save(saveRbacRules);
-    }
+//    public void save(List<SaveRbacRulesRequest> saveRbacRules) {
+//        ruleHandler.save(saveRbacRules);
+//    }
 
     public List<RbacRulesResponse> listByAppId(String appId) {
        /* List<RbacRuleEntity> rulesEntities = rbacRuleService.lambdaQuery()
@@ -52,7 +50,7 @@ public class RulesBiz {
         return new PageResponse<>(result);
     }*/
 
-    public void deleteByIds(List<Long> rbacRulesIds) {
-        ruleHandler.deleteByIds(rbacRulesIds);
-    }
+//    public void deleteByIds(List<Long> rbacRulesIds) {
+//        ruleHandler.deleteByIds(rbacRulesIds);
+//    }
 }

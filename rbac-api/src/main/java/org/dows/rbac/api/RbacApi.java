@@ -1,8 +1,10 @@
 package org.dows.rbac.api;
 
-import org.dows.rbac.api.admin.request.FindRbacResourcesRequest;
-import org.dows.rbac.api.admin.request.SaveRbacRoleRequest;
-import org.dows.rbac.api.admin.response.*;
+import org.dows.rbac.model.InitUriResources;
+import org.dows.rbac.model.RoleResourceResponse;
+import org.dows.rbac.request.FindRbacResourcesRequest;
+import org.dows.rbac.request.SaveRbacRoleRequest;
+import org.dows.rbac.response.*;
 
 import java.util.List;
 import java.util.Map;
@@ -21,10 +23,6 @@ import java.util.Map;
  */
 
 public interface RbacApi {
-
-
-
-
 
     /**
      * 获取角色
