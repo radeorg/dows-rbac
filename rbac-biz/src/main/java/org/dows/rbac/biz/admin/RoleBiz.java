@@ -73,12 +73,13 @@ public class RoleBiz {
                 .collect(Collectors.toMap(RbacRoleEntity::getRbacRoleId, role -> role));
         // 检查角色名是否已存在，并收集需要保存或更新的对象
         saveRbacRoles.forEach(rbacRole -> {
-            if (rbacRole.getRbacRoleId() == null) { // 收集新增对象
+            if (rbacRole.getRbacRoleId() == null || rbacRole.getRbacRoleId() == 0) { // 收集新增对象
                 if (existingRoleNames.contains(rbacRole.getRoleName())) {
                     log.info("角色名称已存在: {},将不会被创建", rbacRole.getRoleName());
                     //throw new IllegalArgumentException("角色名称已存在: " + rbacRole.getRoleName());
                 }
                 RbacRoleEntity newRole = BeanUtil.copyProperties(rbacRole, RbacRoleEntity.class);
+                newRole.setRbacRoleId(null);
                 saveOrUpdates.add(newRole);
             } else { // 收集待更新对象
                 RbacRoleEntity existingRole = existingRoleMap.get(rbacRole.getRbacRoleId());

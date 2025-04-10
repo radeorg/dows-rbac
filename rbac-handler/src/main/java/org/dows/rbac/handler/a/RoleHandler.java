@@ -71,8 +71,11 @@ public class RoleHandler implements RbacHandler {
         if (CollectionUtil.isEmpty(roleNames)) {
             return List.of();
         }
+        String appId = "1";
         return rbacRoleService
-                .list(QueryWrapper.create().in(RbacRoleEntity::getRoleName, roleNames))
+                .list(QueryWrapper.create()
+                        .eq(RbacRoleEntity::getAppId, appId, Objects.nonNull(appId))
+                        .in(RbacRoleEntity::getRoleName, roleNames))
                 .stream()
                 .map(RbacRoleEntity::getRoleName)
                 .collect(Collectors.toList());
@@ -82,7 +85,10 @@ public class RoleHandler implements RbacHandler {
         if (CollectionUtil.isEmpty(roleIds)) {
             return List.of();
         }
-        return rbacRoleService.list(QueryWrapper.create().in(RbacRoleEntity::getRbacRoleId, roleIds));
+        String appId = "1";
+        return rbacRoleService.list(QueryWrapper.create()
+                .eq(RbacRoleEntity::getAppId, appId, Objects.nonNull(appId))
+                .in(RbacRoleEntity::getRbacRoleId, roleIds));
     }
 
 
