@@ -1,9 +1,11 @@
 package org.dows.rbac.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.dows.rbac.constant.ResourceType;
 
 import java.util.List;
 
@@ -28,13 +30,20 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Schema(name = "ConfigRbacPermissionRequest 配置权限", title = "配置权限")
-public class ConfigRbacPermissionRequest {
+public class ConfigPermissionRequest {
+
+    @JsonIgnore
+    String appId;
 
     @NotNull
     @Schema(description = "角色ID")
-    private Long roleId;
+    private Long rbacRoleId;
 
     @NotNull
-    @Schema(description = "菜单ID")
-    private List<Long> menuIds;
+    @Schema(description = "资源类型[0:接口，1:菜单]")
+    private ResourceType resourceType;
+
+    @NotNull
+    @Schema(description = "资源ID集合")
+    private List<Long> resourceIds;
 }

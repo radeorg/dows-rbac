@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.dows.rbac.api.InitResources;
 import org.dows.rbac.handler.RbacHandler;
 import org.dows.rbac.model.RbacResources;
-import org.dows.rbac.constant.ResourceEnum;
+import org.dows.rbac.constant.ResourceType;
 import org.dows.rbac.entity.RbacMenuEntity;
 import org.dows.rbac.service.RbacMenuService;
 import org.springframework.stereotype.Service;
@@ -146,6 +146,6 @@ public class MenuHandler implements RbacHandler {
 
     @Override
     public boolean supportResourceType(Integer resourceType) {
-        return resourceType.equals(ResourceEnum.MENU.getCode());
+        return resourceType.equals(ResourceType.MENU.getCode());
     }
 }
