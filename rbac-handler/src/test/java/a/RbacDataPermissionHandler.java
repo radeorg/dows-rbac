@@ -19,7 +19,7 @@
 //import org.apache.ibatis.mapping.SqlCommandType;
 //import org.apache.ibatis.session.ResultHandler;
 //import org.apache.ibatis.session.RowBounds;
-////import org.dows.aac.api.AacUser;
+////import org.dows.rade.aac.AacUser;
 //import org.dows.rbac.api.RbacContext;
 //import org.dows.rbac.api.constant.DataScopeEnum;
 //import org.dows.rbac.entity.RbacRuleEntity;
